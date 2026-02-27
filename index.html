@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nicole Garcia, LCSW-C – Clinical Social Work & Therapy in Towson, MD. Compassionate care for life's transitions." />
+  <title>Nicole Garcia, LCSW-C | Nature-Forward Therapy | Towson, MD</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { DEFAULT: '#162221', light: '#1e2d2b', soft: '#2d3a35' },
+            sage: { DEFAULT: '#7d9b8a', light: '#9ab5a5', dark: '#5a7266' },
+            sand: '#c4b8a8',
+            taupe: '#a89888',
+            gold: { DEFAULT: '#d4af37', glow: 'rgba(212, 175, 55, 0.4)' },
+          },
+          fontFamily: {
+            heading: ['Montserrat', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --forest: #162221;
+      --forest-soft: #2d3a35;
+      --sage: #7d9b8a;
+      --gold: #d4af37;
+      --gold-glow: rgba(212, 175, 55, 0.35);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(165deg, #162221 0%, #1e2d2b 35%, #2d3a35 70%, #1e2d2b 100%);
+      background-attachment: fixed;
+      color: #e8eae6;
+      min-height: 100vh;
+    }
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+
+    /* Glassmorphism nav */
+    .nav-glass {
+      background: rgba(22, 34, 33, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    /* Gold glow button */
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+      color: #162221;
+      box-shadow: 0 0 24px var(--gold-glow), 0 4px 14px rgba(0,0,0,0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(212, 175, 55, 0.5), 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Outline button */
+    .btn-outline {
+      border: 2px solid #d4af37;
+      color: #e8eae6;
+      background: transparent;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover {
+      background: rgba(212, 175, 55, 0.15);
+      color: #d4af37;
+    }
+
+    /* Hero background */
+    .hero-bg {
+      background-image:
+        linear-gradient(165deg, rgba(22, 34, 33, 0.88) 0%, rgba(45, 58, 53, 0.75) 50%, rgba(22, 34, 33, 0.9) 100%),
+        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: scroll;
+    }
+    @media (min-width: 768px) {
+      .hero-bg { background-attachment: fixed; }
+    }
+
+    /* Headshot ring */
+    .headshot-ring {
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.6), 0 0 24px var(--gold-glow);
+    }
+
+    /* Card hover */
+    .card-hover {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Organic curve divider */
+    .curve-bottom {
+      clip-path: ellipse(120% 100% at 50% 100%);
+    }
+
+    /* Fade-in / slide-up animations */
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    .animate-slide-up {
+      animation: slideUp 0.8s ease-out forwards;
+    }
+    .delay-1 { animation-delay: 0.15s; opacity: 0; }
+    .delay-2 { animation-delay: 0.3s; opacity: 0; }
+    .delay-3 { animation-delay: 0.45s; opacity: 0; }
+    .delay-4 { animation-delay: 0.6s; opacity: 0; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botanical accent (minimal line) */
+    .botanical-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <!-- Fixed glassmorphism nav -->
+  <header class="fixed top-0 left-0 right-0 z-50 nav-glass">
+    <nav class="max-w-5xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-6 md:gap-10">
+      <a href="#about" class="text-sage-light hover:text-gold transition-colors font-medium">About</a>
+      <span class="text-sage-dark/60 hidden sm:inline">|</span>
+      <a href="#specialties" class="text-sage-light hover:text-gold transition-colors font-medium">Specialties</a>
+      <span class="text-sage-dark/60 hidden sm:inline">|</span>
+      <a href="#contact" class="text-sage-light hover:text-gold transition-colors font-medium">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero-bg min-h-screen flex flex-col items-center justify-center relative pt-20 pb-16 px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="animate-fade-in delay-1">
+          <img
+            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=320&h=320&fit=crop"
+            alt="Nicole Garcia, LCSW-C"
+            class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover headshot-ring mx-auto mb-8"
+          />
+        </div>
+        <h1 class="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-3 animate-slide-up delay-2">
+          Nicole Garcia, LCSW-C
+        </h1>
+        <p class="text-sage-light text-lg md:text-xl mb-2 animate-slide-up delay-3">
+          Clinical Social Work &amp; Therapy | Towson, MD 21286
+        </p>
+        <div class="botanical-line w-32 mx-auto my-4 animate-fade-in delay-3"></div>
+        <p class="text-sand/95 text-lg md:text-xl max-w-2xl mx-auto mb-10 animate-slide-up delay-4">
+          Compassionate care for life's transitions. Helping you find balance in a chaotic world.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-4">
+          <a
+            href="https://headway.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-gold font-heading font-semibold px-8 py-4 rounded-lg text-center text-forest"
+          >
+            Book via Headway
+          </a>
+          <a
+            href="https://share.google/fnqjdCLYmiedRj42E"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-outline font-heading font-semibold px-8 py-4 rounded-lg text-center"
+          >
+            View Psychology Today Profile
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="relative py-20 md:py-28 px-6 curve-bottom bg-forest-soft/80">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-6 text-center">
+          A Welcoming Space for Healing
+        </h2>
+        <div class="botanical-line w-24 mx-auto mb-10"></div>
+        <p class="text-lg text-sand/90 leading-relaxed mb-6">
+          Welcome. I provide a safe, non-judgmental space in Towson, MD, to help you navigate your mental health journey. My approach is person-centered, focusing on evidence-based strategies to foster growth and resilience.
+        </p>
+        <p class="text-sage-light/95 leading-relaxed">
+          <strong class="text-gold">Licensed Clinical Social Worker (LCSW-C)</strong> focusing on holistic wellness—honoring the connection between mind, body, and environment as you move toward balance and clarity.
+        </p>
+        <div class="mt-14 rounded-2xl overflow-hidden shadow-2xl max-w-2xl mx-auto">
+          <img
+            src="https://images.unsplash.com/photo-1511497584788-876760111969?w=800&q=80"
+            alt="Sunlight through trees – calm natural setting"
+            class="w-full h-64 md:h-80 object-cover"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Specialties -->
+    <section id="specialties" class="py-20 md:py-28 px-6 bg-forest">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-6 text-center">
+          Personalized Therapeutic Approaches
+        </h2>
+        <div class="botanical-line w-24 mx-auto mb-14"></div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <article class="card-hover bg-forest-soft/90 border border-sage-dark/30 rounded-2xl p-8 text-center">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-sage-dark/40 flex items-center justify-center text-2xl" aria-hidden="true">🌿</div>
+            <h3 class="font-heading font-bold text-xl text-gold mb-3">Anxiety &amp; Stress</h3>
+            <p class="text-sand/90 leading-relaxed">
+              Helping you find calm in the chaos of modern life.
+            </p>
+          </article>
+          <article class="card-hover bg-forest-soft/90 border border-sage-dark/30 rounded-2xl p-8 text-center">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-sage-dark/40 flex items-center justify-center text-2xl" aria-hidden="true">🪨</div>
+            <h3 class="font-heading font-bold text-xl text-gold mb-3">Life Transitions</h3>
+            <p class="text-sand/90 leading-relaxed">
+              Support for career changes, relationship shifts, and identity growth.
+            </p>
+          </article>
+          <article class="card-hover bg-forest-soft/90 border border-sage-dark/30 rounded-2xl p-8 text-center">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-sage-dark/40 flex items-center justify-center text-2xl" aria-hidden="true">🌱</div>
+            <h3 class="font-heading font-bold text-xl text-gold mb-3">Clinical Support</h3>
+            <p class="text-sand/90 leading-relaxed">
+              Dedicated expertise in Clinical Social Work and therapeutic intervention.
+            </p>
+          </article>
+        </div>
+        <div class="mt-14 rounded-2xl overflow-hidden shadow-2xl">
+          <img
+            src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=1200&q=80"
+            alt="Flowing water – serene nature"
+            class="w-full h-72 md:h-96 object-cover"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 md:py-28 px-6 bg-forest-soft/90">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-6 text-center">
+          Take the Next Step
+        </h2>
+        <div class="botanical-line w-24 mx-auto mb-14"></div>
+        <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+          <div>
+            <h3 class="font-heading font-semibold text-gold text-xl mb-6">The Path</h3>
+            <ol class="space-y-5">
+              <li class="flex gap-4">
+                <span class="flex-shrink-0 w-8 h-8 rounded-full bg-gold/20 text-gold font-heading font-bold flex items-center justify-center">1</span>
+                <div>
+                  <strong class="text-sand">Initial Consultation</strong>
+                  <p class="text-sage-light/90 text-sm mt-1">We begin with a conversation to understand your needs.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex-shrink-0 w-8 h-8 rounded-full bg-gold/20 text-gold font-heading font-bold flex items-center justify-center">2</span>
+                <div>
+                  <strong class="text-sand">Collaborative Goal Setting</strong>
+                  <p class="text-sage-light/90 text-sm mt-1">Together we define what success looks like for you.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="flex-shrink-0 w-8 h-8 rounded-full bg-gold/20 text-gold font-heading font-bold flex items-center justify-center">3</span>
+                <div>
+                  <strong class="text-sand">Consistent Support</strong>
+                  <p class="text-sage-light/90 text-sm mt-1">Ongoing, evidence-based care tailored to your journey.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div>
+            <div class="rounded-2xl overflow-hidden shadow-2xl mb-8">
+              <img
+                src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80"
+                alt="Sagebrush and calm landscape"
+                class="w-full h-56 object-cover"
+              />
+            </div>
+            <h3 class="font-heading font-semibold text-gold text-xl mb-4">View Detailed Profiles</h3>
+            <div class="flex flex-col gap-4">
+              <a
+                href="https://share.google/fnqjdCLYmiedRj42E"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-outline font-heading font-semibold py-4 px-6 rounded-lg text-center"
+              >
+                Psychology Today
+              </a>
+              <a
+                href="https://headway.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-gold font-heading font-semibold py-4 px-6 rounded-lg text-center text-forest"
+              >
+                Headway
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-8 px-6 border-t border-sage-dark/40 bg-forest text-center">
+    <p class="text-sage-light/80 text-sm">
+      Nicole Garcia, LCSW-C | Towson, MD 21286
+    </p>
+    <p class="text-sage-dark/70 text-xs mt-2">
+      Powered by SAGE Federation
+    </p>
+  </footer>
+
+  <script>
+    (function () {
+      // Optional: intersection observer for scroll-triggered animations on sections
+      var sections = document.querySelectorAll('section');
+      var nav = document.querySelector('header');
+      function onScroll() {
+        if (window.scrollY > 60) nav.classList.add('shadow-lg');
+        else nav.classList.remove('shadow-lg');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+</body>
+</html>
