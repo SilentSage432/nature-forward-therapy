@@ -1,0 +1,25 @@
+{
+  "name": "nature-forward-therapy",
+  "version": "1.0.0",
+  "description": "Nature-Forward Therapy static site",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./styles/app.css -o ./styles/tailwind.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SilentSage432/nature-forward-therapy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SilentSage432/nature-forward-therapy/issues"
+  },
+  "homepage": "https://github.com/SilentSage432/nature-forward-therapy#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
