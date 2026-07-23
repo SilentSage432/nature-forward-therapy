@@ -6,6 +6,9 @@ import { getSiteContent } from "@/lib/content";
 import { isDeveloper } from "@/lib/rbac";
 import { getSystemHealth } from "@/lib/system-health";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminHomePage() {
   const session = await auth();
   if (!session?.user) {

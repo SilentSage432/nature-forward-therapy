@@ -1,5 +1,8 @@
 import { LoginForm } from "@/components/admin/LoginForm";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-16">
