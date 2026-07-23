@@ -8,6 +8,8 @@ type FooterProps = {
 };
 
 export function Footer({ profile, isAuthenticated = false }: FooterProps) {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="border-t border-sage-dark/40 bg-forest px-6 py-8 text-center">
       <div className="mb-3 flex items-center justify-center gap-2">
@@ -18,18 +20,20 @@ export function Footer({ profile, isAuthenticated = false }: FooterProps) {
           height={32}
           className="h-8 w-8 rounded-full border border-gold/30 object-cover"
         />
-        <span className="font-heading text-sm font-semibold text-gold/90">
+        <span className="font-heading text-sm font-semibold text-amber-200/70">
           Flock of Fox, LLC
         </span>
       </div>
-      <p className="text-sm text-sage-light/80">
+      <p className="text-sm text-stone-400">
         {profile.name}, {profile.credentials} | {profile.location}
       </p>
-      <p className="mt-2 text-xs text-sage-dark/70">{profile.footerCredit}</p>
+      <p className="mt-3 text-xs text-stone-400">
+        © {year} Flock of Fox, LLC. All rights reserved.
+      </p>
       <p className="mt-4">
         <Link
           href={isAuthenticated ? "/admin" : "/login"}
-          className="text-xs text-sage-dark/60 transition-colors hover:text-gold/80"
+          className="text-xs text-amber-200/70 transition-colors hover:text-gold"
         >
           {isAuthenticated ? "Dashboard" : "Portal Login"}
         </Link>

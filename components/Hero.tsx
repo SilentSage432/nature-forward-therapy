@@ -17,13 +17,13 @@ export function Hero({ profile }: HeroProps) {
   return (
     <section
       id="hero"
-      className="hero-bg relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20 pb-16"
+      className="hero-bg relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-14 sm:px-6 sm:pt-24 sm:pb-16 md:pt-28"
       style={heroStyle}
     >
       <AtmosphereGlow variant="warm" />
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
         <div className="animate-fade-in delay-1">
-          <div className="organic-portrait headshot-ring relative mx-auto mb-8 h-40 w-40 overflow-hidden md:h-48 md:w-48">
+          <div className="organic-portrait headshot-ring relative mx-auto mb-6 h-36 w-36 overflow-hidden sm:mb-8 sm:h-40 sm:w-40 md:h-48 md:w-48">
             <Image
               src={profile.headshotPath}
               alt={displayName}
@@ -34,22 +34,22 @@ export function Hero({ profile }: HeroProps) {
             />
           </div>
         </div>
-        <h1 className="animate-slide-up delay-2 mb-3 font-heading text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+        <h1 className="animate-slide-up delay-2 mb-3 font-heading text-[1.85rem] leading-tight font-bold text-white sm:mb-3 sm:text-4xl md:text-5xl lg:text-6xl">
           {displayName}
         </h1>
-        <p className="animate-slide-up delay-3 mb-2 text-lg text-sage-light md:text-xl">
+        <p className="animate-slide-up delay-3 mb-3 max-w-xl text-base leading-relaxed text-sage-light sm:mb-2 sm:text-lg md:text-xl">
           Clinical Social Work &amp; Therapy | {profile.location}
         </p>
-        <BotanicalLine className="animate-fade-in delay-3 mx-auto my-4 w-32" />
-        <p className="editorial-serif animate-slide-up delay-4 mx-auto mb-10 max-w-2xl text-2xl text-parchment/95 md:text-3xl">
+        <BotanicalLine className="animate-fade-in delay-3 mx-auto my-3 w-24 sm:my-4 sm:w-32" />
+        <p className="editorial-serif animate-slide-up delay-4 mx-auto mb-8 max-w-2xl text-xl leading-snug text-parchment/95 sm:mb-10 sm:text-2xl md:text-3xl">
           {profile.tagline}
         </p>
-        <div className="animate-slide-up delay-4 flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="animate-slide-up delay-4 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">
           <a
             href={profile.headwayUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-gold rounded-lg px-8 py-4 text-center font-heading font-semibold text-forest"
+            className="btn-gold w-full rounded-lg px-8 py-4 text-center font-heading font-semibold text-forest sm:w-auto"
           >
             Book via Headway
           </a>
@@ -57,7 +57,7 @@ export function Hero({ profile }: HeroProps) {
             href={profile.psychologyTodayUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-outline rounded-lg px-8 py-4 text-center font-heading font-semibold"
+            className="btn-outline w-full rounded-lg px-8 py-4 text-center font-heading font-semibold sm:w-auto"
           >
             View Psychology Today Profile
           </a>

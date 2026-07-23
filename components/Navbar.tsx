@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const links = [
   { href: "#about", label: "About" },
@@ -16,6 +17,11 @@ type NavbarProps = {
 
 export function Navbar({ isAuthenticated = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  const portalHref = isAuthenticated ? "/admin" : "/login";
+  const portalLabel = isAuthenticated ? "Dashboard" : "Portal Login";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -24,38 +30,72 @@ export function Navbar({ isAuthenticated = false }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function onPointerDown(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node;
+      if (headerRef.current && !headerRef.current.contains(target)) {
+        setMenuOpen(false);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 nav-glass transition-shadow ${
-        scrolled ? "shadow-lg" : ""
+      ref={headerRef}
+      className={`fixed top-0 right-0 left-0 z-50 nav-glass transition-shadow ${
+        scrolled || menuOpen ? "shadow-lg" : ""
       }`}
     >
-      <nav className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-3 md:gap-8">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3 md:px-6 md:py-4">
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm font-medium text-sage-light transition-colors hover:text-gold"
+          onClick={closeMenu}
+          className="flex min-w-0 items-center gap-2 text-sm font-medium text-sage-light transition-colors hover:text-gold"
         >
           <Image
             src="/images/fof-logo.png"
             alt="Flock of Fox, LLC"
             width={32}
             height={32}
-            className="h-8 w-8 rounded-full border border-gold/30 object-cover"
+            className="h-8 w-8 shrink-0 rounded-full border border-gold/30 object-cover"
             priority
           />
-          <span className="font-heading text-sm font-semibold tracking-wide text-gold/90">
+          <span className="font-heading truncate text-sm font-semibold tracking-wide text-gold/90">
             Flock of Fox, LLC
           </span>
         </Link>
 
-        <div className="flex flex-wrap items-center justify-center gap-5 md:gap-8">
+        <div className="hidden items-center gap-6 md:flex md:gap-8">
           {links.map((link, index) => (
             <span key={link.href} className="contents">
               {index > 0 ? (
-                <span
-                  className="hidden text-sage-dark/60 sm:inline"
-                  aria-hidden="true"
-                >
+                <span className="text-sage-dark/60" aria-hidden="true">
                   |
                 </span>
               ) : null}
@@ -67,17 +107,55 @@ export function Navbar({ isAuthenticated = false }: NavbarProps) {
               </a>
             </span>
           ))}
-          <span className="hidden text-sage-dark/60 sm:inline" aria-hidden="true">
+          <span className="text-sage-dark/60" aria-hidden="true">
             |
           </span>
           <Link
-            href={isAuthenticated ? "/admin" : "/login"}
+            href={portalHref}
             className="text-xs font-medium tracking-wide text-sage-dark/70 transition-colors hover:text-gold/90"
           >
-            {isAuthenticated ? "Dashboard" : "Portal Login"}
+            {portalLabel}
           </Link>
         </div>
+
+        <button
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gold/25 text-gold transition hover:border-gold/50 hover:bg-gold/10 md:hidden"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </nav>
+
+      <div
+        id="mobile-nav-menu"
+        className={`overflow-hidden border-b border-amber-900/30 bg-stone-950/95 backdrop-blur-md transition-[max-height,opacity] duration-300 ease-out md:hidden ${
+          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-4">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={closeMenu}
+              className="rounded-xl px-4 py-3.5 text-lg font-medium text-parchment transition hover:bg-gold/10 hover:text-gold active:bg-gold/15"
+            >
+              {link.label}
+            </a>
+          ))}
+          <Link
+            href={portalHref}
+            onClick={closeMenu}
+            className="rounded-xl border border-gold/30 bg-gold/10 px-4 py-3.5 text-lg font-semibold text-gold transition hover:bg-gold/20 active:bg-gold/25"
+          >
+            {portalLabel}
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }

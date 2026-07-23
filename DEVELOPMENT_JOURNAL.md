@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-23 — Footer copyright polish
+
+Removed public “Powered by SAGE Federation” / `footerCredit` display from `Footer.tsx`. Added dynamic `© {year} Flock of Fox, LLC. All rights reserved.` with muted stone/amber styling; fox emblem, LLC name, clinician line, and Portal Login retained. Typecheck + build green.
+
 ## 2026-07-23 — Editor preview + password gating refine
 
 Developers can toggle “Preview Editor View” on `/admin` with an exit banner; force-password modal now applies only to `EDITOR` + `mustChangePassword`. Users page supports force-change toggle and temp password resets.

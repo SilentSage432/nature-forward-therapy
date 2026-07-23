@@ -8,6 +8,7 @@
 - [x] Auth.js credentials auth with DEVELOPER / EDITOR RBAC
 - [x] Editor dashboard for business content
 - [x] Build + typecheck green
+- [x] Public footer copyright (Flock of Fox, LLC) — no SAGE Federation credit
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

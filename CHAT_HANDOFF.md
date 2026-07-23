@@ -1,7 +1,7 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/SQLite CMS and Auth.js RBAC is implemented and builds cleanly.
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC is implemented and builds cleanly. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line).
 
 ## How to run
 ```bash
