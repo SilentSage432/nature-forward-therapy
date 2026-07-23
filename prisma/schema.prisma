@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  DEVELOPER
+  EDITOR
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  email              String   @unique
+  name               String?
+  /// bcrypt-hashed password (never store plaintext)
+  passwordHash       String
+  role               Role     @default(EDITOR)
+  mustChangePassword Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+/// Singleton-style practitioner profile (one active record seeded for the site).
+model PractitionerProfile {
+  id                  String   @id @default(cuid())
+  name                String
+  credentials         String
+  location            String
+  tagline             String
+  bio                 String
+  bioHighlight        String
+  headshotPath        String
+  headwayUrl          String
+  psychologyTodayUrl  String
+  heroBackgroundUrl   String
+  aboutImageUrl       String
+  specialtiesImageUrl String
+  contactImageUrl     String
+  footerCredit        String   @default("Powered by SAGE Federation")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Specialty {
+  id          String   @id @default(cuid())
+  title       String
+  icon        String
+  description String
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FocusTag {
+  id        String   @id @default(cuid())
+  label     String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Accepted insurance carriers (editable CMS collection).
+model Insurance {
+  id        String   @id @default(cuid())
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Practice-level lists and onboarding path (singleton-style).
+model PracticeDetail {
+  id             String   @id @default(cuid())
+  expertise      Json
+  paymentMethods Json
+  therapyTypes   Json
+  processSteps   Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SiteConfig {
+  id              String   @id @default(cuid())
+  siteTitle       String
+  siteDescription String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #162221;
+  --color-forest-light: #1e2d2b;
+  --color-forest-soft: #2d3a35;
+  --color-sage: #7d9b8a;
+  --color-sage-light: #a8c3b5;
+  --color-sage-dark: #5a7266;
+  --color-gold: #d4af37;
+  --color-gold-dark: #b8962e;
+  --color-sand: #c4b8a8;
+  --color-clay: #c48b71;
+  --color-parchment: #f4f2ed;
+  --color-body-text: #e8eae6;
+  --color-gold-glow: rgba(212, 175, 55, 0.35);
+
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: linear-gradient(
+      165deg,
+      #162221 0%,
+      #1e2d2b 35%,
+      #2d3a35 70%,
+      #1e2d2b 100%
+    );
+    background-attachment: fixed;
+    color: var(--color-body-text);
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer components {
+  .nav-glass {
+    background: rgba(22, 34, 33, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+    color: #162221;
+    box-shadow:
+      0 0 24px var(--color-gold-glow),
+      0 4px 14px rgba(0, 0, 0, 0.25);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 32px rgba(212, 175, 55, 0.5),
+      0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-outline {
+    border: 2px solid #d4af37;
+    color: #e8eae6;
+    background: transparent;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .btn-outline:hover {
+    background: rgba(196, 139, 113, 0.12);
+    border-color: #c48b71;
+    color: #d4af37;
+  }
+
+  .hero-bg {
+    background-image:
+      linear-gradient(
+        165deg,
+        rgba(22, 34, 33, 0.88) 0%,
+        rgba(45, 58, 53, 0.75) 50%,
+        rgba(22, 34, 33, 0.9) 100%
+      ),
+      var(--hero-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 768px) {
+    .hero-bg {
+      background-attachment: fixed;
+    }
+  }
+
+  .headshot-ring {
+    box-shadow:
+      0 0 0 4px rgba(212, 175, 55, 0.55),
+      0 0 0 8px rgba(196, 139, 113, 0.2),
+      0 0 28px var(--color-gold-glow);
+  }
+
+  .organic-portrait {
+    border-radius: 48% 52% 45% 55% / 52% 42% 58% 48%;
+  }
+
+  .organic-frame {
+    border-radius: 1.75rem 1.75rem 42% 42% / 1.75rem 1.75rem 18% 18%;
+  }
+
+  .organic-arch {
+    border-radius: 999px 999px 1.5rem 1.5rem;
+  }
+
+  .frosted-leaf-card {
+    background: linear-gradient(
+        160deg,
+        rgba(45, 58, 53, 0.72),
+        rgba(30, 45, 43, 0.48)
+      ),
+      rgba(45, 58, 53, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(90, 114, 102, 0.4);
+    border-top-color: rgba(168, 195, 181, 0.28);
+    border-left-color: rgba(196, 139, 113, 0.22);
+    border-radius: 1rem;
+    box-shadow: inset 0 1px 0 rgba(244, 242, 237, 0.04);
+  }
+
+  .card-hover {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.25),
+      0 0 25px rgba(212, 175, 55, 0.12),
+      0 0 0 1px rgba(196, 139, 113, 0.18);
+  }
+
+  .editorial-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .curve-bottom {
+    clip-path: ellipse(120% 100% at 50% 100%);
+  }
+
+  .botanical-line {
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-clay),
+      var(--color-gold),
+      transparent
+    );
+    opacity: 0.65;
+  }
+
+  .focus-pill {
+    border: 1px solid rgba(196, 139, 113, 0.45);
+    background: rgba(196, 139, 113, 0.14);
+    color: #c48b71;
+  }
+
+  .focus-pill:hover {
+    border-color: rgba(212, 175, 55, 0.45);
+    background: rgba(212, 175, 55, 0.16);
+    color: #d4af37;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  .delay-1 {
+    animation-delay: 0.15s;
+    opacity: 0;
+  }
+
+  .delay-2 {
+    animation-delay: 0.3s;
+    opacity: 0;
+  }
+
+  .delay-3 {
+    animation-delay: 0.45s;
+    opacity: 0;
+  }
+
+  .delay-4 {
+    animation-delay: 0.6s;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
