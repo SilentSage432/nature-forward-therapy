@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-23 — Portal login / force-password routing
+
+Portal Login in Navbar/Footer always targets `/login`. Successful credentials sign-in always redirects to `/admin`. `ForcePasswordModal` mounts only in the admin layout when `mustChangePassword` is true (not on `/login`).
+
 ## 2026-07-23 — Editor seed email + in-portal support
 
 Editor seed account is now `nicolegarcia@flockoffox.org` (password `ChangeMeEditor!`, `mustChangePassword: true`), with legacy `nicole@flockoffox.org` migrated on seed. EDITOR dashboard includes a Contact Developer & Support card that submits via `submitSupportRequest` (auth + validation + success toast / log notification to `dev@flockoffox.org`).

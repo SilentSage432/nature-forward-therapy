@@ -4,16 +4,14 @@ import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { Specialties } from "@/components/Specialties";
-import { auth } from "@/lib/auth";
 import { getSiteContent } from "@/lib/content";
 
 export default async function HomePage() {
-  const [content, session] = await Promise.all([getSiteContent(), auth()]);
-  const isAuthenticated = Boolean(session?.user);
+  const content = await getSiteContent();
 
   return (
     <>
-      <Navbar isAuthenticated={isAuthenticated} />
+      <Navbar />
       <main>
         <Hero profile={content.profile} />
         <About profile={content.profile} />
@@ -28,7 +26,7 @@ export default async function HomePage() {
           processSteps={content.practice.processSteps}
         />
       </main>
-      <Footer profile={content.profile} isAuthenticated={isAuthenticated} />
+      <Footer profile={content.profile} />
     </>
   );
 }

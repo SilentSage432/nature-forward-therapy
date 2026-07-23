@@ -18,11 +18,6 @@ export async function changeOwnPassword(formData: FormData): Promise<ActionResul
     return { ok: false, message: "Unauthorized." };
   }
 
-  // Developers are never forced through this flow; editors must change when required.
-  if (session.user.role !== "EDITOR") {
-    return { ok: false, message: "Password update flow is for editor accounts." };
-  }
-
   const password = String(formData.get("password") ?? "");
   const confirm = String(formData.get("confirmPassword") ?? "");
 

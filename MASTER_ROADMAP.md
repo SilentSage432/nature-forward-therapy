@@ -10,6 +10,7 @@
 - [x] Build + typecheck green
 - [x] Public footer copyright (Flock of Fox, LLC) — no SAGE Federation credit
 - [x] Editor seed email `nicolegarcia@flockoffox.org` + in-portal support card
+- [x] Portal Login → `/login`; force-password modal only on `/admin`
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

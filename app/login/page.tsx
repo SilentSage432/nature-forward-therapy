@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { LoginForm } from "@/components/admin/LoginForm";
 
 export default function LoginPage() {
@@ -12,9 +11,7 @@ export default function LoginPage() {
           Editors manage practice content. Developers manage users and site
           settings.
         </p>
-        <Suspense fallback={<p className="text-sage-light">Loading…</p>}>
-          <LoginForm />
-        </Suspense>
+        <LoginForm />
       </div>
     </div>
   );

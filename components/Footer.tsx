@@ -4,10 +4,9 @@ import type { SiteContent } from "@/lib/types";
 
 type FooterProps = {
   profile: SiteContent["profile"];
-  isAuthenticated?: boolean;
 };
 
-export function Footer({ profile, isAuthenticated = false }: FooterProps) {
+export function Footer({ profile }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -32,10 +31,10 @@ export function Footer({ profile, isAuthenticated = false }: FooterProps) {
       </p>
       <p className="mt-4">
         <Link
-          href={isAuthenticated ? "/admin" : "/login"}
+          href="/login"
           className="text-xs text-amber-200/70 transition-colors hover:text-gold"
         >
-          {isAuthenticated ? "Dashboard" : "Portal Login"}
+          Portal Login
         </Link>
       </p>
     </footer>

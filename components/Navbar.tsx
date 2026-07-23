@@ -11,17 +11,10 @@ const links = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-type NavbarProps = {
-  isAuthenticated?: boolean;
-};
-
-export function Navbar({ isAuthenticated = false }: NavbarProps) {
+export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-
-  const portalHref = isAuthenticated ? "/admin" : "/login";
-  const portalLabel = isAuthenticated ? "Dashboard" : "Portal Login";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -111,10 +104,10 @@ export function Navbar({ isAuthenticated = false }: NavbarProps) {
             |
           </span>
           <Link
-            href={portalHref}
+            href="/login"
             className="text-xs font-medium tracking-wide text-sage-dark/70 transition-colors hover:text-gold/90"
           >
-            {portalLabel}
+            Portal Login
           </Link>
         </div>
 
@@ -148,11 +141,11 @@ export function Navbar({ isAuthenticated = false }: NavbarProps) {
             </a>
           ))}
           <Link
-            href={portalHref}
+            href="/login"
             onClick={closeMenu}
             className="rounded-xl border border-gold/30 bg-gold/10 px-4 py-3.5 text-lg font-semibold text-gold transition hover:bg-gold/20 active:bg-gold/25"
           >
-            {portalLabel}
+            Portal Login
           </Link>
         </div>
       </div>

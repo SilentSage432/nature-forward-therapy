@@ -17,13 +17,12 @@ export default async function AdminLayout({
   }
 
   const developer = isDeveloper(session.user.role);
-  const forcePassword =
-    session.user.role === "EDITOR" && Boolean(session.user.mustChangePassword);
+  const forcePassword = Boolean(session.user.mustChangePassword);
 
   return (
     <AuthSessionProvider>
       <div className="min-h-screen bg-forest text-body-text">
-        <ForcePasswordModal open={forcePassword} />
+        {forcePassword ? <ForcePasswordModal open /> : null}
         <header className="border-b border-sage-dark/40 bg-forest-soft/80">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
             <div>

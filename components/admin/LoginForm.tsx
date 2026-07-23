@@ -2,12 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin";
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [showForgotNote, setShowForgotNote] = useState(false);
@@ -31,7 +29,8 @@ export function LoginForm() {
       return;
     }
 
-    router.push(callbackUrl);
+    // Always land on /admin; ForcePasswordModal handles mustChangePassword there.
+    router.push("/admin");
     router.refresh();
   }
 
