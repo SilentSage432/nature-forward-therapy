@@ -8,11 +8,8 @@ import { Toast } from "@/components/admin/Toast";
 
 const initialState: ActionResult = { ok: false, message: "" };
 
-type ForcePasswordModalProps = {
-  open: boolean;
-};
-
-export function ForcePasswordModal({ open }: ForcePasswordModalProps) {
+/** Admin-route-only. Mount from `app/admin/layout.tsx` when mustChangePassword. */
+export function ForcePasswordModal() {
   const { update } = useSession();
   const [state, formAction, pending] = useActionState(
     async (_prev: ActionResult, formData: FormData) => changeOwnPassword(formData),
@@ -30,8 +27,6 @@ export function ForcePasswordModal({ open }: ForcePasswordModalProps) {
       }, 700);
     });
   }, [state.ok, state.message, update]);
-
-  if (!open) return null;
 
   const fieldClass =
     "w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold";

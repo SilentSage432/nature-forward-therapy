@@ -142,7 +142,6 @@ export function Navbar() {
           ))}
           <Link
             href="/login"
-            onClick={closeMenu}
             className="rounded-xl border border-gold/30 bg-gold/10 px-4 py-3.5 text-lg font-semibold text-gold transition hover:bg-gold/20 active:bg-gold/25"
           >
             Portal Login

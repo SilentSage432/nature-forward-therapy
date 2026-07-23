@@ -6,6 +6,9 @@ import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider"
 import { auth, signOut } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminLayout({
   children,
 }: {
@@ -17,12 +20,13 @@ export default async function AdminLayout({
   }
 
   const developer = isDeveloper(session.user.role);
-  const forcePassword = Boolean(session.user.mustChangePassword);
+  const forcePassword = session.user.mustChangePassword === true;
 
   return (
     <AuthSessionProvider>
       <div className="min-h-screen bg-forest text-body-text">
-        {forcePassword ? <ForcePasswordModal open /> : null}
+        {/* Force-password UI is admin-route-only; never mount on public pages. */}
+        {forcePassword ? <ForcePasswordModal /> : null}
         <header className="border-b border-sage-dark/40 bg-forest-soft/80">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
             <div>

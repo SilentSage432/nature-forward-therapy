@@ -20,10 +20,7 @@ export const proxy = auth((req) => {
     }
   }
 
-  if (pathname === "/login" && isLoggedIn) {
-    return NextResponse.redirect(new URL("/admin", req.nextUrl.origin));
-  }
-
+  // Always allow /login to render the credentials form (never bounce into admin/modal).
   return NextResponse.next();
 });
 
