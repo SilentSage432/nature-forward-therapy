@@ -10,12 +10,38 @@ async function main() {
     process.env.SEED_DEVELOPER_EMAIL ?? "dev@flockoffox.org"
   ).toLowerCase();
   const editorEmail = (
-    process.env.SEED_EDITOR_EMAIL ?? "nicole@flockoffox.org"
+    process.env.SEED_EDITOR_EMAIL ?? "nicolegarcia@flockoffox.org"
   ).toLowerCase();
   const developerPassword =
     process.env.SEED_DEVELOPER_PASSWORD ?? "ChangeMeDev!";
   const editorPassword =
     process.env.SEED_EDITOR_PASSWORD ?? "ChangeMeEditor!";
+  const editorPasswordHash = await hash(editorPassword, 12);
+
+  // Migrate legacy editor seed email if present.
+  const legacyEditorEmail = "nicole@flockoffox.org";
+  if (editorEmail !== legacyEditorEmail) {
+    const legacy = await prisma.user.findUnique({
+      where: { email: legacyEditorEmail },
+    });
+    const target = await prisma.user.findUnique({
+      where: { email: editorEmail },
+    });
+    if (legacy && !target) {
+      await prisma.user.update({
+        where: { email: legacyEditorEmail },
+        data: {
+          email: editorEmail,
+          name: "Nicole Garcia",
+          role: "EDITOR",
+          passwordHash: editorPasswordHash,
+          mustChangePassword: true,
+        },
+      });
+    } else if (legacy && target) {
+      await prisma.user.delete({ where: { email: legacyEditorEmail } });
+    }
+  }
 
   await prisma.user.upsert({
     where: { email: developerEmail },
@@ -37,12 +63,14 @@ async function main() {
     update: {
       role: "EDITOR",
       name: "Nicole Garcia",
+      passwordHash: editorPasswordHash,
+      mustChangePassword: true,
     },
     create: {
       email: editorEmail,
       name: "Nicole Garcia",
       role: "EDITOR",
-      passwordHash: await hash(editorPassword, 12),
+      passwordHash: editorPasswordHash,
       mustChangePassword: true,
     },
   });

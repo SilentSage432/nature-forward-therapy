@@ -1,7 +1,7 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC is implemented and builds cleanly. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line).
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC is implemented and builds cleanly. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line). EDITOR dashboard includes practice webmail and a developer support request form.
 
 ## How to run
 ```bash
@@ -18,7 +18,7 @@ Admin: `http://localhost:3000/admin`
 | Role | Email | Password |
 | --- | --- | --- |
 | Developer | `dev@flockoffox.org` | `ChangeMeDev!` |
-| Editor | `nicole@flockoffox.org` | `ChangeMeEditor!` |
+| Editor | `nicolegarcia@flockoffox.org` | `ChangeMeEditor!` |
 
 Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 

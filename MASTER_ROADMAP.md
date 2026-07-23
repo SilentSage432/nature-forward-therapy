@@ -9,6 +9,7 @@
 - [x] Editor dashboard for business content
 - [x] Build + typecheck green
 - [x] Public footer copyright (Flock of Fox, LLC) — no SAGE Federation credit
+- [x] Editor seed email `nicolegarcia@flockoffox.org` + in-portal support card
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

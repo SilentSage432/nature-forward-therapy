@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { SiteContent } from "@/lib/types";
+import { SupportCard } from "@/components/admin/SupportCard";
 
 type EditorDashboardProps = {
   firstName: string;
@@ -112,6 +113,8 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
           </a>
         </div>
       </div>
+
+      <SupportCard />
 
       <div className="grid gap-4 sm:grid-cols-2">
         {cards.map((card) => {
