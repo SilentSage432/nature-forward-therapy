@@ -16,14 +16,17 @@
 - [x] Admin article manager/editor + announcement banner CMS
 - [x] Site-wide Announcement Banner + Essays nav/footer links
 - [x] Force-password JWT sync via `update({ mustChangePassword })` + hard reload
+- [x] Article Photo Editor & Cover Studio (crop, filters, AI Gemini covers)
+- [x] Curated Bookshelf & Recommended Resources (`/bookshelf` + admin CMS)
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
 - [ ] Deploy target (Vercel or container) with persistent Postgres
-- [ ] Optional image upload for headshot / article covers (instead of URL fields)
+- [ ] Optional image upload for headshot (covers now use studio data URLs)
 - [x] Replace deprecated Next.js middleware convention with `proxy`
 - [ ] Remove/archive duplicate Desktop folder `Nature-Forward-Therapy` if unused
 - [ ] Draft preview for unpublished essays (admin-only)
+- [ ] Persist studio covers to object storage instead of DB data URLs at scale
 
 ## Later
 - [ ] Audit logging for CMS edits

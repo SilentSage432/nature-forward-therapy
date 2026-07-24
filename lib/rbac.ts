@@ -9,6 +9,7 @@ export const EDITOR_CONTENT_PATHS = [
   "/admin/practice",
   "/admin/details",
   "/admin/articles",
+  "/admin/bookshelf",
   "/admin/announcements",
 ] as const;
 

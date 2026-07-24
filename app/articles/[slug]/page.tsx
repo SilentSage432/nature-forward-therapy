@@ -93,14 +93,23 @@ export default async function ArticleReadingPage({ params }: ArticlePageProps) {
 
           {article.coverImage ? (
             <div className="relative my-8 aspect-[16/9] overflow-hidden rounded-2xl border border-stone-800">
-              <Image
-                src={article.coverImage}
-                alt=""
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 768px"
-              />
+              {article.coverImage.startsWith("data:") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={article.coverImage}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={article.coverImage}
+                  alt=""
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 768px"
+                />
+              )}
             </div>
           ) : null}
 

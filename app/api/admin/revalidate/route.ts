@@ -11,10 +11,11 @@ export async function POST() {
 
   revalidatePath("/");
   revalidatePath("/articles");
+  revalidatePath("/bookshelf");
   revalidatePath("/admin");
 
   return NextResponse.json({
-    message: "Public cache revalidated for /, /articles, and /admin.",
+    message: "Public cache revalidated for /, /articles, /bookshelf, and /admin.",
     revalidatedAt: new Date().toISOString(),
   });
 }

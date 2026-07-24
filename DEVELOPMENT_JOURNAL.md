@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Curated Bookshelf & Recommended Resources
+
+Added `BookshelfItem` Prisma model (`db push`). Public `/bookshelf` hub with Cormorant hero, category chips, warm library-style cards, and “Nicole’s Note” parchment callouts. Admin CMS at `/admin/bookshelf` (list, new, edit) with BookOpen sidebar link. Nav/Footer **Bookshelf** links. Seeded three recommended books. Ownership: `lib/bookshelf.ts` reads; `lib/actions/bookshelf.ts` mutations.
+
+## 2026-07-24 — Article Photo Editor & Cover Studio
+
+Added client-side `ImageEditorModal` (crop presets, brightness/contrast/saturation/warmth/blur/vignette, nature aesthetic filters, rotate/flip, JPEG/WebP compress under 500KB). Article editor supports file upload, clipboard paste, and “Open Photo Editor & Studio”. AI Botanical Cover Generator calls `POST /api/cms/generate-cover` (Gemini `gemini-3.1-flash-image-preview`) when `GEMINI_API_KEY` is set. Cover field accepts large data URLs; server Actions body limit raised to 2mb.
+
 ## 2026-07-24 — Article editor category chips + URL helper
 
 Article editor replaces the category `<select>` with preset chips plus “+ Custom Category” free text. Slug field relabeled “Article Web Address (URL)” with helper copy; still auto-slugifies from title until manually overridden. Server action accepts any category string (not only presets).

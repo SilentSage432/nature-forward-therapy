@@ -116,3 +116,18 @@ model AnnouncementBanner {
   isActive  Boolean  @default(false)
   updatedAt DateTime @updatedAt
 }
+
+/// Curated books, podcasts, and tools Nicole recommends to clients.
+model BookshelfItem {
+  id           String   @id @default(cuid())
+  title        String
+  author       String
+  type         String   @default("Book")
+  category     String
+  coverImage   String?
+  personalNote String   @db.Text
+  externalUrl  String?
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

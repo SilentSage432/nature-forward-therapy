@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  BookOpen,
   Briefcase,
   ExternalLink,
   Leaf,
@@ -53,6 +54,13 @@ const cards = [
     emoji: "✍️",
     title: "Articles & Essays",
     description: "Draft and publish reflections for the Publication Hub",
+  },
+  {
+    href: "/admin/bookshelf",
+    icon: BookOpen,
+    emoji: "📚",
+    title: "Curated Bookshelf",
+    description: "Books, podcasts, and tools you recommend to clients",
   },
   {
     href: "/admin/announcements",

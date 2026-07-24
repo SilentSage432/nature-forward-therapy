@@ -6,6 +6,7 @@ import { useTransition } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Activity,
+  BookOpen,
   Briefcase,
   LayoutDashboard,
   MapPin,
@@ -30,6 +31,7 @@ const contentLinks: NavItem[] = [
   { href: "/admin/specialties", label: "Specialties", icon: Sparkles },
   { href: "/admin/practice", label: "The Path & Details", icon: MapPin },
   { href: "/admin/articles", label: "Articles & Essays", icon: PenLine },
+  { href: "/admin/bookshelf", label: "Curated Bookshelf", icon: BookOpen },
   { href: "/admin/announcements", label: "Announcement Banner", icon: Megaphone },
 ];
 

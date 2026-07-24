@@ -40,6 +40,15 @@ export function Footer({ profile }: FooterProps) {
           ·
         </span>
         <Link
+          href="/bookshelf"
+          className="text-amber-200/70 transition-colors hover:text-gold"
+        >
+          Bookshelf
+        </Link>
+        <span className="text-stone-600" aria-hidden="true">
+          ·
+        </span>
+        <Link
           href="/login"
           className="text-amber-200/70 transition-colors hover:text-gold"
         >

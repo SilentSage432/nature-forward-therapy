@@ -19,7 +19,7 @@ const articleSchema = z.object({
   excerpt: z.string().min(1).max(1000),
   content: z.string().min(1).max(100_000),
   category: z.string().trim().min(1).max(80),
-  coverImage: z.string().max(2000).optional().nullable(),
+  coverImage: z.string().max(1_500_000).optional().nullable(),
   published: z.boolean(),
 });
 

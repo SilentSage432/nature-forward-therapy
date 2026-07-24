@@ -20,13 +20,22 @@ export function ArticleCard({ article }: ArticleCardProps) {
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-stone-800 bg-stone-900/40 transition hover:border-amber-500/40">
       <div className="relative aspect-[16/10] overflow-hidden bg-forest-soft">
         {article.coverImage ? (
-          <Image
-            src={article.coverImage}
-            alt=""
-            fill
-            className="object-cover transition duration-500 group-hover:scale-[1.03]"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+          article.coverImage.startsWith("data:") ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={article.coverImage}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <Image
+              src={article.coverImage}
+              alt=""
+              fill
+              className="object-cover transition duration-500 group-hover:scale-[1.03]"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          )
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-forest-soft via-forest to-stone-900" />
         )}

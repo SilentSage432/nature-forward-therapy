@@ -211,10 +211,61 @@ In therapy, we practice this art together—so that the capacity for safety can 
     });
   }
 
+  const sampleBooks = [
+    {
+      title: "The Body Keeps the Score",
+      author: "Bessel van der Kolk, M.D.",
+      type: "Book",
+      category: "Trauma & Healing",
+      personalNote:
+        "Start with Chapter 4—it completely shifts how you view stress and nervous system resilience.",
+      coverImage:
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&q=80",
+      externalUrl: "https://bookshop.org/p/books/the-body-keeps-the-score-brain-mind-and-body-in-the-healing-of-trauma-bessel-a-van-der-kolk/16675798",
+    },
+    {
+      title: "Attached: The New Science of Adult Attachment",
+      author: "Amir Levine and Rachel Heller",
+      type: "Book",
+      category: "Relationships",
+      personalNote:
+        "An indispensable guide for understanding your relational patterns and creating emotional safety.",
+      coverImage:
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80",
+      externalUrl: "https://bookshop.org/p/books/attached-the-new-science-of-adult-attachment-and-how-it-can-help-you-find-and-keep-love-amir-levine/6877039",
+    },
+    {
+      title: "Burnout: The Secret to Unlocking the Stress Cycle",
+      author: "Emily Nagoski & Amelia Nagoski",
+      type: "Book",
+      category: "Mindfulness",
+      personalNote:
+        "Essential reading for anyone feeling chronically overwhelmed by modern life demands.",
+      coverImage:
+        "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=600&q=80",
+      externalUrl: "https://bookshop.org/p/books/burnout-the-secret-to-unlocking-the-stress-cycle-emily-nagoski/11235824",
+    },
+  ] as const;
+
+  for (const book of sampleBooks) {
+    const existing = await prisma.bookshelfItem.findFirst({
+      where: { title: book.title },
+    });
+    if (!existing) {
+      await prisma.bookshelfItem.create({
+        data: {
+          ...book,
+          published: true,
+        },
+      });
+    }
+  }
+
   console.log("Seed complete.");
   console.log(`Developer: ${developerEmail} (DEVELOPER)`);
   console.log(`Editor:    ${editorEmail} (EDITOR)`);
   console.log(`Articles:  ${sampleArticles.length} sample essays upserted`);
+  console.log(`Bookshelf: ${sampleBooks.length} sample resources ensured`);
 }
 
 main()
