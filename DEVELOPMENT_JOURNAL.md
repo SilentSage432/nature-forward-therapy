@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Announcement banner styling controls
+
+Extended `AnnouncementBanner` with `isDismissible` (default false), `alignment`, `theme`, and `fontStyle`. Admin CMS adds live preview, alignment segmented control, dismissible toggle, theme swatches (amber/sage/clay/forest), and sans vs serif typography. Public banner renders those styles and only shows the close `X` when dismissible.
+
 ## 2026-07-24 — Article cover remove button
 
 Article editor cover section now includes a “🗑️ Remove Image” control that clears `coverImage` / studio source, resets the file input, hides the preview, and confirms with a short success message.

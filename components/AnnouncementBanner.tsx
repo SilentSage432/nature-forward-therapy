@@ -3,6 +3,15 @@
 import Link from "next/link";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import {
+  bannerDismissClass,
+  bannerLinkClass,
+  bannerShellClass,
+  bannerTextClass,
+  normalizeBannerAlignment,
+  normalizeBannerFontStyle,
+  normalizeBannerTheme,
+} from "@/lib/announcement-banner";
 import type { AnnouncementBannerData } from "@/lib/articles";
 
 const DISMISS_KEY = "fof-announcement-dismissed";
@@ -29,6 +38,14 @@ export function AnnouncementBanner({
       return;
     }
 
+    // Permanent banners (default) cannot be dismissed.
+    if (!banner.isDismissible) {
+      setDismissed(false);
+      setHydrated(true);
+      onVisibilityChangeRef.current?.(true);
+      return;
+    }
+
     try {
       const stored = sessionStorage.getItem(DISMISS_KEY);
       const isDismissed = stored === banner.id;
@@ -45,8 +62,13 @@ export function AnnouncementBanner({
     return null;
   }
 
+  const theme = normalizeBannerTheme(banner.theme);
+  const alignment = normalizeBannerAlignment(banner.alignment);
+  const fontStyle = normalizeBannerFontStyle(banner.fontStyle);
+  const isSplit = alignment === "left";
+
   function dismiss() {
-    if (!banner) return;
+    if (!banner?.isDismissible) return;
     try {
       sessionStorage.setItem(DISMISS_KEY, banner.id);
     } catch {
@@ -56,35 +78,54 @@ export function AnnouncementBanner({
     onVisibilityChangeRef.current?.(false);
   }
 
+  const linkEl = banner.link ? (
+    <Link
+      href={banner.link}
+      className={bannerLinkClass(theme)}
+    >
+      {banner.linkText?.trim() || "Learn more"}
+    </Link>
+  ) : null;
+
   return (
     <div
       role="region"
       aria-label="Site announcement"
-      className="fixed top-0 right-0 left-0 z-[60] border-b border-amber-900/20 bg-gradient-to-r from-amber-200 via-gold to-amber-300 text-forest"
+      className={`fixed top-0 right-0 left-0 z-[60] border-b ${bannerShellClass(theme)}`}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-        <p className="min-w-0 flex-1 text-center text-sm font-medium sm:text-left">
+      <div
+        className={`mx-auto flex max-w-5xl items-center gap-3 px-4 py-2.5 sm:px-6 ${
+          isSplit ? "justify-between" : "justify-center"
+        }`}
+      >
+        <p
+          className={`min-w-0 text-sm ${bannerTextClass(fontStyle)} ${
+            isSplit ? "flex-1 text-left" : "text-center"
+          }`}
+        >
           <span>{banner.text}</span>
-          {banner.link ? (
+          {!isSplit && linkEl ? (
             <>
               {" "}
-              <Link
-                href={banner.link}
-                className="font-semibold underline underline-offset-2 transition hover:text-forest-soft"
-              >
-                {banner.linkText?.trim() || "Learn more"}
-              </Link>
+              {linkEl}
             </>
           ) : null}
         </p>
-        <button
-          type="button"
-          onClick={dismiss}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-forest/70 transition hover:bg-forest/10 hover:text-forest"
-          aria-label="Dismiss announcement"
-        >
-          <X className="h-4 w-4" />
-        </button>
+
+        {isSplit && linkEl ? (
+          <div className="shrink-0">{linkEl}</div>
+        ) : null}
+
+        {banner.isDismissible ? (
+          <button
+            type="button"
+            onClick={dismiss}
+            className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md transition ${bannerDismissClass(theme)}`}
+            aria-label="Dismiss announcement"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        ) : null}
       </div>
     </div>
   );

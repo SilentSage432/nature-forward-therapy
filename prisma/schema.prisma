@@ -109,12 +109,16 @@ model BlogPost {
 
 /// Singleton-style site-wide announcement strip (one active banner at a time).
 model AnnouncementBanner {
-  id        String   @id @default(cuid())
-  text      String
-  link      String?
-  linkText  String?
-  isActive  Boolean  @default(false)
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  text          String
+  link          String?
+  linkText      String?
+  isActive      Boolean  @default(false)
+  isDismissible Boolean  @default(false)
+  alignment     String   @default("center")
+  theme         String   @default("amber")
+  fontStyle     String   @default("sans")
+  updatedAt     DateTime @updatedAt
 }
 
 /// Curated books, podcasts, and tools Nicole recommends to clients.

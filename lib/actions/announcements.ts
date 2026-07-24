@@ -3,6 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import {
+  BANNER_ALIGNMENTS,
+  BANNER_FONT_STYLES,
+  BANNER_THEMES,
+} from "@/lib/announcement-banner";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
 
@@ -16,6 +21,10 @@ const bannerSchema = z.object({
   link: z.string().max(2000).optional().nullable(),
   linkText: z.string().max(80).optional().nullable(),
   isActive: z.boolean(),
+  isDismissible: z.boolean(),
+  alignment: z.enum(BANNER_ALIGNMENTS),
+  theme: z.enum(BANNER_THEMES),
+  fontStyle: z.enum(BANNER_FONT_STYLES),
 });
 
 export async function upsertAnnouncementBanner(
@@ -34,6 +43,10 @@ export async function upsertAnnouncementBanner(
     link: linkRaw || null,
     linkText: linkTextRaw || null,
     isActive: formData.get("isActive") === "true",
+    isDismissible: formData.get("isDismissible") === "true",
+    alignment: formData.get("alignment") ?? "center",
+    theme: formData.get("theme") ?? "amber",
+    fontStyle: formData.get("fontStyle") ?? "sans",
   });
 
   if (!parsed.success) {
@@ -64,6 +77,7 @@ export async function upsertAnnouncementBanner(
 
   revalidatePath("/");
   revalidatePath("/articles");
+  revalidatePath("/bookshelf");
   revalidatePath("/admin/announcements");
 
   return { ok: true, message: "Announcement banner saved." };

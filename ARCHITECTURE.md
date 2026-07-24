@@ -61,5 +61,10 @@ Browser
 - Mutations: article form `coverImage` (compressed data URL) via `lib/actions/articles.ts`
 - AI generation: `POST /api/cms/generate-cover` → Gemini image model (requires `GEMINI_API_KEY`)
 
+## Announcement banner
+- Style tokens: `lib/announcement-banner.ts` (theme / alignment / font helpers)
+- CMS: `components/admin/AnnouncementBannerEditor.tsx` (live preview + controls)
+- Public: `components/AnnouncementBanner.tsx` — dismissible only when `isDismissible`
+
 ## Design tokens
 Canonical hex values live in `app/globals.css` `@theme` and are documented in `AUDIT_CATALOG.md`.

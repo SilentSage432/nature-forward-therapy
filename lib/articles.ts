@@ -25,7 +25,15 @@ export type PublicArticle = Pick<
 
 export type AnnouncementBannerData = Pick<
   AnnouncementBanner,
-  "id" | "text" | "link" | "linkText" | "isActive"
+  | "id"
+  | "text"
+  | "link"
+  | "linkText"
+  | "isActive"
+  | "isDismissible"
+  | "alignment"
+  | "theme"
+  | "fontStyle"
 >;
 
 export function slugify(input: string): string {
@@ -123,6 +131,10 @@ export async function getActiveAnnouncement(): Promise<AnnouncementBannerData | 
         link: true,
         linkText: true,
         isActive: true,
+        isDismissible: true,
+        alignment: true,
+        theme: true,
+        fontStyle: true,
       },
     });
     return banner;

@@ -18,6 +18,7 @@
 - [x] Force-password JWT sync via `update({ mustChangePassword })` + hard reload
 - [x] Article Photo Editor & Cover Studio (crop, filters, AI Gemini covers)
 - [x] Curated Bookshelf & Recommended Resources (`/bookshelf` + admin CMS)
+- [x] Announcement banner themes, alignment, typography, dismissible toggle
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
