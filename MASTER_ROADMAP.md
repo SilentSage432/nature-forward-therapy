@@ -12,15 +12,19 @@
 - [x] Editor seed email `nicolegarcia@flockoffox.org` + in-portal support card
 - [x] Portal Login → `/login`; force-password modal only on `/admin`
 - [x] 30-day JWT session, login auto-redirect, password visibility toggles
+- [x] Article Engine + Publication Hub (`/articles`, `/articles/[slug]`)
+- [x] Admin article manager/editor + announcement banner CMS
+- [x] Site-wide Announcement Banner + Essays nav/footer links
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
-- [ ] Deploy target (Vercel or container) with persistent SQLite or Postgres
-- [ ] Optional image upload for headshot (instead of path/URL fields)
+- [ ] Deploy target (Vercel or container) with persistent Postgres
+- [ ] Optional image upload for headshot / article covers (instead of URL fields)
 - [x] Replace deprecated Next.js middleware convention with `proxy`
 - [ ] Remove/archive duplicate Desktop folder `Nature-Forward-Therapy` if unused
+- [ ] Draft preview for unpublished essays (admin-only)
 
 ## Later
 - [ ] Audit logging for CMS edits
-- [ ] Preview unpublished content drafts
+- [ ] Rich-text / markdown preview in article editor
 - [ ] Accessibility pass on admin forms and public CTAs

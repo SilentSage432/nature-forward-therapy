@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Article Engine, Publication Hub & Announcement Banner
+
+Added `BlogPost` and `AnnouncementBanner` Prisma models (`db push`). Public hub at `/articles` with category filters and frosted article cards; reading room at `/articles/[slug]` with share/copy, author badge, and Headway CTA. Admin CMS: `/admin/articles` list + editor (`new` / `[id]`), `/admin/announcements` banner manager; sidebar + editor dashboard links. Site-wide amber banner above Navbar when active (session dismiss). Nav/Footer **Essays** links. Seeded two published sample essays. Ownership: schema + `lib/articles.ts` reads; mutations via `lib/actions/articles.ts` / `announcements.ts`.
+
 ## 2026-07-23 — Session persistence + login UX
 
 JWT/session cookie `maxAge` extended to 30 days. Login auto-redirects authenticated users to `/admin` (server + client). Admin shell waits for `useSession` loading before treating unauthenticated as a logout. Password fields on login and force-password modal include Eye/EyeOff toggles. Admin header shows “Signed in as {email}” with Sign Out.

@@ -1,7 +1,7 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC is implemented and builds cleanly. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line). EDITOR dashboard includes practice webmail and a developer support request form.
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public Publication Hub (`/articles`) and site-wide announcement banner are live. Sample essays are seeded. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line). EDITOR dashboard includes practice webmail, support request form, Articles & Essays, and Announcement Banner.
 
 ## How to run
 ```bash
@@ -11,6 +11,7 @@ npm run dev
 ```
 
 Public site: `http://localhost:3000`  
+Articles hub: `http://localhost:3000/articles`  
 CMS login: `http://localhost:3000/login`  
 Admin: `http://localhost:3000/admin`
 
@@ -25,19 +26,20 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 ## Ownership map
 | Concern | Owner |
 | --- | --- |
-| Public presentation | `components/*`, `app/page.tsx` |
+| Public presentation | `components/*`, `app/page.tsx`, `app/articles/**` |
 | Design tokens | `app/globals.css` `@theme` |
-| Content reads | `lib/content.ts` |
+| Content reads | `lib/content.ts`, `lib/articles.ts` |
 | Auth / sessions | `lib/auth.ts`, `proxy.ts` |
 | RBAC rules | `lib/rbac.ts` |
-| CMS mutations | `app/api/cms/**` |
+| CMS mutations | `app/api/cms/**`, `lib/actions/**` |
 | Schema / seed | `prisma/schema.prisma`, `prisma/seed.ts` |
 
 ## Editor vs developer
-- **Editor:** profile, specialties, practice details (bio, insurance, booking URLs, etc.).
+- **Editor:** profile, specialties, practice details, articles/essays, announcement banner.
 - **Developer:** everything editors can do, plus users, site title/description, footer credit.
 
 ## Do not regress
 - Keep audit color hex values exact.
-- Public page must remain a single-page composition with in-page anchors.
+- Public home page must remain a single-page composition with in-page anchors (`/#about` etc. from Essays).
 - Editors must not reach `/admin/users` or `/admin/settings`.
+- Unpublished essays must not appear on `/articles` or `[slug]`.

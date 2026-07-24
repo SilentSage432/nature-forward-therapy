@@ -4,14 +4,18 @@ import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { Specialties } from "@/components/Specialties";
+import { getActiveAnnouncement } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
 
 export default async function HomePage() {
-  const content = await getSiteContent();
+  const [content, banner] = await Promise.all([
+    getSiteContent(),
+    getActiveAnnouncement(),
+  ]);
 
   return (
     <>
-      <Navbar />
+      <Navbar banner={banner} />
       <main>
         <Hero profile={content.profile} />
         <About profile={content.profile} />

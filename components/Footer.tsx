@@ -29,10 +29,19 @@ export function Footer({ profile }: FooterProps) {
       <p className="mt-3 text-xs text-stone-400">
         © {year} Flock of Fox, LLC. All rights reserved.
       </p>
-      <p className="mt-4">
+      <p className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
+        <Link
+          href="/articles"
+          className="text-amber-200/70 transition-colors hover:text-gold"
+        >
+          Essays
+        </Link>
+        <span className="text-stone-600" aria-hidden="true">
+          ·
+        </span>
         <Link
           href="/login"
-          className="text-xs text-amber-200/70 transition-colors hover:text-gold"
+          className="text-amber-200/70 transition-colors hover:text-gold"
         >
           Portal Login
         </Link>

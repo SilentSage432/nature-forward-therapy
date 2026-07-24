@@ -6,6 +6,8 @@ import {
   Leaf,
   Mail,
   MapPin,
+  Megaphone,
+  PenLine,
   Sparkles,
 } from "lucide-react";
 import type { SiteContent } from "@/lib/types";
@@ -44,6 +46,20 @@ const cards = [
     emoji: "📍",
     title: "Practice Details & The Path",
     description: "Location, onboarding steps, and therapy modalities",
+  },
+  {
+    href: "/admin/articles",
+    icon: PenLine,
+    emoji: "✍️",
+    title: "Articles & Essays",
+    description: "Draft and publish reflections for the Publication Hub",
+  },
+  {
+    href: "/admin/announcements",
+    icon: Megaphone,
+    emoji: "📣",
+    title: "Announcement Banner",
+    description: "Optional site-wide notice above the main navigation",
   },
 ] as const;
 

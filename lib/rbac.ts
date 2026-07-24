@@ -8,6 +8,8 @@ export const EDITOR_CONTENT_PATHS = [
   "/admin/specialties",
   "/admin/practice",
   "/admin/details",
+  "/admin/articles",
+  "/admin/announcements",
 ] as const;
 
 export const DEVELOPER_ONLY_PATHS = [

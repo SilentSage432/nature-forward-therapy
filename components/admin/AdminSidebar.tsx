@@ -9,6 +9,8 @@ import {
   Briefcase,
   LayoutDashboard,
   MapPin,
+  Megaphone,
+  PenLine,
   Settings,
   Shield,
   Sparkles,
@@ -27,6 +29,8 @@ const contentLinks: NavItem[] = [
   { href: "/admin/details", label: "Insurances & Payments", icon: Briefcase },
   { href: "/admin/specialties", label: "Specialties", icon: Sparkles },
   { href: "/admin/practice", label: "The Path & Details", icon: MapPin },
+  { href: "/admin/articles", label: "Articles & Essays", icon: PenLine },
+  { href: "/admin/announcements", label: "Announcement Banner", icon: Megaphone },
 ];
 
 const developerLinks: NavItem[] = [
