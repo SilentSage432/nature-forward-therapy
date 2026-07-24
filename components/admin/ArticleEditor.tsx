@@ -11,6 +11,10 @@ type ArticleEditorProps = {
   article?: BlogPost | null;
 };
 
+function isPresetCategory(value: string): boolean {
+  return (ARTICLE_CATEGORIES as readonly string[]).includes(value);
+}
+
 export function ArticleEditor({ article = null }: ArticleEditorProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -18,11 +22,18 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
   const [error, setError] = useState<string | null>(null);
   const [title, setTitle] = useState(article?.title ?? "");
   const [slug, setSlug] = useState(article?.slug ?? "");
-  const [slugTouched, setSlugTouched] = useState(Boolean(article));
+  const [slugTouched, setSlugTouched] = useState(Boolean(article?.slug));
   const [excerpt, setExcerpt] = useState(article?.excerpt ?? "");
   const [content, setContent] = useState(article?.content ?? "");
-  const [category, setCategory] = useState(
-    article?.category ?? ARTICLE_CATEGORIES[0],
+  const initialCategory = article?.category ?? ARTICLE_CATEGORIES[0];
+  const [category, setCategory] = useState(initialCategory);
+  const [customMode, setCustomMode] = useState(
+    Boolean(article?.category && !isPresetCategory(article.category)),
+  );
+  const [customCategory, setCustomCategory] = useState(
+    article?.category && !isPresetCategory(article.category)
+      ? article.category
+      : "",
   );
   const [coverImage, setCoverImage] = useState(article?.coverImage ?? "");
   const [published, setPublished] = useState(article?.published ?? false);
@@ -34,13 +45,44 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
     }
   }
 
+  function selectPreset(value: string) {
+    setCustomMode(false);
+    setCustomCategory("");
+    setCategory(value);
+  }
+
+  function enableCustom() {
+    setCustomMode(true);
+    setCategory(customCategory.trim() || "");
+  }
+
+  function onCustomCategoryChange(value: string) {
+    setCustomCategory(value);
+    setCategory(value.trim());
+  }
+
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage(null);
     setError(null);
 
+    const resolvedCategory = customMode
+      ? customCategory.trim()
+      : category.trim();
+
+    if (!resolvedCategory) {
+      setError(
+        customMode
+          ? "Please enter a custom category name."
+          : "Please choose a category.",
+      );
+      return;
+    }
+
     const formData = new FormData(event.currentTarget);
     formData.set("published", published ? "true" : "false");
+    formData.set("category", resolvedCategory);
+    formData.set("slug", slugify(slug || title));
 
     startTransition(async () => {
       const result = article
@@ -113,7 +155,10 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
         </p>
       ) : null}
       {error ? (
-        <p className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+        <p
+          role="alert"
+          className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+        >
           {error}
         </p>
       ) : null}
@@ -137,35 +182,71 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="category"
-              className="mb-2 block text-sm font-medium text-gold"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
-            >
-              {ARTICLE_CATEGORIES.map((item) => (
-                <option key={item} value={item}>
+        <div>
+          <p className="mb-2 text-sm font-medium text-gold" id="category-label">
+            Category
+          </p>
+          <div
+            role="group"
+            aria-labelledby="category-label"
+            className="flex flex-wrap gap-2"
+          >
+            {ARTICLE_CATEGORIES.map((item) => {
+              const active = !customMode && category === item;
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => selectPreset(item)}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    active
+                      ? "border-gold/60 bg-gold/15 text-gold"
+                      : "border-sage-dark/40 bg-forest text-sage-light hover:border-gold/40 hover:text-gold"
+                  }`}
+                >
                   {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="slug"
-              className="mb-2 block text-sm font-medium text-gold"
+                </button>
+              );
+            })}
+            <button
+              type="button"
+              onClick={enableCustom}
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                customMode
+                  ? "border-gold/60 bg-gold/15 text-gold"
+                  : "border-dashed border-sage-dark/50 bg-forest text-sage-light hover:border-gold/40 hover:text-gold"
+              }`}
             >
-              Slug
-            </label>
+              + Custom Category
+            </button>
+          </div>
+          {customMode ? (
+            <input
+              id="customCategory"
+              type="text"
+              value={customCategory}
+              onChange={(e) => onCustomCategoryChange(e.target.value)}
+              maxLength={80}
+              autoFocus
+              className="mt-3 w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
+              placeholder="Type a custom topic name…"
+              aria-label="Custom category name"
+            />
+          ) : null}
+          <input type="hidden" name="category" value={category} />
+        </div>
+
+        <div>
+          <label
+            htmlFor="slug"
+            className="mb-2 block text-sm font-medium text-gold"
+          >
+            Article Web Address (URL)
+          </label>
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 focus-within:border-gold">
+            <span className="shrink-0 text-sm text-sage-dark">
+              /articles/
+            </span>
             <input
               id="slug"
               name="slug"
@@ -175,10 +256,15 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
                 setSlugTouched(true);
                 setSlug(slugify(e.target.value));
               }}
-              className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 font-mono text-sm text-body-text outline-none focus:border-gold"
-              placeholder="url-friendly-slug"
+              className="min-w-0 flex-1 bg-transparent font-mono text-sm text-body-text outline-none"
+              placeholder="your-title"
             />
           </div>
+          <p className="mt-2 text-sm leading-relaxed text-sage-light">
+            This creates the web link for your article (e.g.
+            flockoffox.org/articles/your-title). It auto-generates from your
+            title, but you can edit it if desired.
+          </p>
         </div>
 
         <div>

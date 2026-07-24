@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { ARTICLE_CATEGORIES, slugify } from "@/lib/articles";
+import { slugify } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
 
@@ -18,7 +18,7 @@ const articleSchema = z.object({
   slug: z.string().min(1).max(120),
   excerpt: z.string().min(1).max(1000),
   content: z.string().min(1).max(100_000),
-  category: z.enum(ARTICLE_CATEGORIES),
+  category: z.string().trim().min(1).max(80),
   coverImage: z.string().max(2000).optional().nullable(),
   published: z.boolean(),
 });

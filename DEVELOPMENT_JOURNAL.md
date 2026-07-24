@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Article editor category chips + URL helper
+
+Article editor replaces the category `<select>` with preset chips plus “+ Custom Category” free text. Slug field relabeled “Article Web Address (URL)” with helper copy; still auto-slugifies from title until manually overridden. Server action accepts any category string (not only presets).
+
 ## 2026-07-24 — Force-password session sync fix
 
 JWT `update` trigger now applies `session.mustChangePassword` from `update({ mustChangePassword: false })` instead of only re-reading the DB (which raced with soft refresh). `ForcePasswordModal` awaits that session patch then hard-navigates to `/admin`. `AdminShell` prefers live client session for the modal gate. Seed: editor `mustChangePassword: true`, developer `false`.
