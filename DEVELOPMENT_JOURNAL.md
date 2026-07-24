@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-23 — Change-password API + session refresh
+
+Added `POST /api/user/change-password` (auth, bcrypt hash, `mustChangePassword: false`). `ForcePasswordModal` now posts to that API with client/API error messages, spinner disabled submit, success toast, `session.update()`, and `router.refresh()`. JWT callback re-reads `mustChangePassword` on `trigger === "update"`.
+
 ## 2026-07-23 — Force-password modal admin-only
 
 Confirmed `ForcePasswordModal` mounts only from `app/admin/layout.tsx` when `mustChangePassword === true`. Public layout/Navbar/Footer/home never import it. Portal Login is a plain `/login` link; proxy no longer auto-redirects authenticated users from `/login` into admin (avoids modal appearing from the public portal link).

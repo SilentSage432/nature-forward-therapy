@@ -96,7 +96,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.mustChangePassword = user.mustChangePassword;
       }
 
-      if (token.id && (user || trigger === "update" || token.mustChangePassword === undefined)) {
+      // On session.update() (and first hydrate), re-read flags from the database
+      // so mustChangePassword reflects password-change API results immediately.
+      if (
+        token.id &&
+        (user ||
+          trigger === "update" ||
+          token.mustChangePassword === undefined)
+      ) {
         const fresh = await prisma.user.findUnique({
           where: { id: token.id },
           select: {
