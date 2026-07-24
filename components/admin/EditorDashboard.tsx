@@ -127,7 +127,7 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
             </div>
           </div>
           <a
-            href="https://webmail.privatemail.com"
+            href="https://privateemail.com"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-gold inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest"
