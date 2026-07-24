@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
 
 export const dynamic = "force-dynamic";
@@ -18,21 +18,10 @@ export default async function AdminLayout({
   }
 
   const developer = isDeveloper(session.user.role);
-  const forcePassword = session.user.mustChangePassword === true;
-
-  async function signOutAction() {
-    "use server";
-    await signOut({ redirectTo: "/login" });
-  }
 
   return (
     <AuthSessionProvider session={session}>
-      <AdminShell
-        developer={developer}
-        forcePassword={forcePassword}
-        email={session.user.email}
-        signOutAction={signOutAction}
-      >
+      <AdminShell developer={developer} email={session.user.email}>
         {children}
       </AdminShell>
     </AuthSessionProvider>

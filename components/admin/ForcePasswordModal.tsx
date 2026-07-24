@@ -4,13 +4,28 @@ import { FormEvent, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 
-/** Admin-route-only. Mount from `app/admin/layout.tsx` when mustChangePassword. */
+/**
+ * Admin-route-only password gate.
+ * Renders only for authenticated EDITOR users with mustChangePassword.
+ */
 export function ForcePasswordModal() {
-  const { update } = useSession();
+  const { data: session, status, update } = useSession();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  if (status === "loading" || status === "unauthenticated") {
+    return null;
+  }
+
+  if (
+    status !== "authenticated" ||
+    session?.user?.role !== "EDITOR" ||
+    session?.user?.mustChangePassword !== true
+  ) {
+    return null;
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

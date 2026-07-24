@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Sign-out + force-password mount guards
+
+Sign Out now uses client `signOut({ callbackUrl: "/", redirect: true })` and skips the login bounce while signing out. `ForcePasswordModal` mounts only when `status === "authenticated"`, `role === "EDITOR"`, and `mustChangePassword === true` — never during loading/unauthenticated.
+
 ## 2026-07-24 — Announcement banner styling controls
 
 Extended `AnnouncementBanner` with `isDismissible` (default false), `alignment`, `theme`, and `fontStyle`. Admin CMS adds live preview, alignment segmented control, dismissible toggle, theme swatches (amber/sage/clay/forest), and sans vs serif typography. Public banner renders those styles and only shows the close `X` when dismissible.

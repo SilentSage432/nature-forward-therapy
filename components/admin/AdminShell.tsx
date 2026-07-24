@@ -1,52 +1,55 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AuthLoadingScreen } from "@/components/admin/AuthLoadingScreen";
 import { ForcePasswordModal } from "@/components/admin/ForcePasswordModal";
 
 type AdminShellProps = {
   developer: boolean;
-  forcePassword: boolean;
   email: string;
-  signOutAction: () => Promise<void>;
   children: React.ReactNode;
 };
 
-export function AdminShell({
-  developer,
-  forcePassword,
-  email,
-  signOutAction,
-  children,
-}: AdminShellProps) {
+export function AdminShell({ developer, email, children }: AdminShellProps) {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [signingOut, setSigningOut] = useState(false);
 
-  // Prefer live client session after update(); fall back to server prop on first paint.
-  const mustChangePassword =
-    session?.user?.mustChangePassword ?? forcePassword;
+  const showForcePassword =
+    status === "authenticated" &&
+    session?.user?.role === "EDITOR" &&
+    session.user.mustChangePassword === true;
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (status === "unauthenticated" && !signingOut) {
       router.replace("/login");
     }
-  }, [status, router]);
+  }, [status, router, signingOut]);
 
-  if (status === "loading") {
-    return <AuthLoadingScreen />;
+  async function handleSignOut() {
+    setSigningOut(true);
+    await signOut({ callbackUrl: "/", redirect: true });
+  }
+
+  if (status === "loading" || signingOut) {
+    return (
+      <AuthLoadingScreen
+        label={signingOut ? "Signing out…" : undefined}
+      />
+    );
   }
 
   if (status === "unauthenticated") {
-    return <AuthLoadingScreen label="Redirecting to sign in…" />;
+    return <AuthLoadingScreen label="Redirecting…" />;
   }
 
   return (
     <div className="min-h-screen bg-forest text-body-text">
-      {mustChangePassword ? <ForcePasswordModal /> : null}
+      {showForcePassword ? <ForcePasswordModal /> : null}
       <header className="border-b border-sage-dark/40 bg-forest-soft/80">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
           <div>
@@ -70,23 +73,22 @@ export function AdminShell({
             >
               {developer ? "View site" : "Live site ↗"}
             </Link>
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                className="rounded-lg border border-gold/30 bg-gold/10 px-3 py-2 text-sm font-medium text-amber-200/90 transition hover:border-gold hover:bg-gold/20 hover:text-gold"
-              >
-                Sign Out
-              </button>
-            </form>
+            <button
+              type="button"
+              onClick={() => void handleSignOut()}
+              className="rounded-lg border border-gold/30 bg-gold/10 px-3 py-2 text-sm font-medium text-amber-200/90 transition hover:border-gold hover:bg-gold/20 hover:text-gold"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </header>
 
       <div
         className={`mx-auto grid max-w-6xl gap-8 px-6 py-8 md:grid-cols-[240px_1fr] ${
-          mustChangePassword ? "pointer-events-none select-none opacity-40" : ""
+          showForcePassword ? "pointer-events-none select-none opacity-40" : ""
         }`}
-        aria-hidden={mustChangePassword}
+        aria-hidden={showForcePassword}
       >
         <AdminSidebar isDeveloper={developer} />
         <main className="min-w-0">{children}</main>
