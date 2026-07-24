@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Force-password session sync fix
+
+JWT `update` trigger now applies `session.mustChangePassword` from `update({ mustChangePassword: false })` instead of only re-reading the DB (which raced with soft refresh). `ForcePasswordModal` awaits that session patch then hard-navigates to `/admin`. `AdminShell` prefers live client session for the modal gate. Seed: editor `mustChangePassword: true`, developer `false`.
+
 ## 2026-07-24 — Article Engine, Publication Hub & Announcement Banner
 
 Added `BlogPost` and `AnnouncementBanner` Prisma models (`db push`). Public hub at `/articles` with category filters and frosted article cards; reading room at `/articles/[slug]` with share/copy, author badge, and Headway CTA. Admin CMS: `/admin/articles` list + editor (`new` / `[id]`), `/admin/announcements` banner manager; sidebar + editor dashboard links. Site-wide amber banner above Navbar when active (session dismiss). Nav/Footer **Essays** links. Seeded two published sample essays. Ownership: schema + `lib/articles.ts` reads; mutations via `lib/actions/articles.ts` / `announcements.ts`.

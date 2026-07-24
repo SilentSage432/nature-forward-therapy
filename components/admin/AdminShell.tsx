@@ -24,7 +24,11 @@ export function AdminShell({
   children,
 }: AdminShellProps) {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+
+  // Prefer live client session after update(); fall back to server prop on first paint.
+  const mustChangePassword =
+    session?.user?.mustChangePassword ?? forcePassword;
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -42,7 +46,7 @@ export function AdminShell({
 
   return (
     <div className="min-h-screen bg-forest text-body-text">
-      {forcePassword ? <ForcePasswordModal /> : null}
+      {mustChangePassword ? <ForcePasswordModal /> : null}
       <header className="border-b border-sage-dark/40 bg-forest-soft/80">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
           <div>
@@ -80,9 +84,9 @@ export function AdminShell({
 
       <div
         className={`mx-auto grid max-w-6xl gap-8 px-6 py-8 md:grid-cols-[240px_1fr] ${
-          forcePassword ? "pointer-events-none select-none opacity-40" : ""
+          mustChangePassword ? "pointer-events-none select-none opacity-40" : ""
         }`}
-        aria-hidden={forcePassword}
+        aria-hidden={mustChangePassword}
       >
         <AdminSidebar isDeveloper={developer} />
         <main className="min-w-0">{children}</main>

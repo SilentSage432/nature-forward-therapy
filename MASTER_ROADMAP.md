@@ -15,6 +15,7 @@
 - [x] Article Engine + Publication Hub (`/articles`, `/articles/[slug]`)
 - [x] Admin article manager/editor + announcement banner CMS
 - [x] Site-wide Announcement Banner + Essays nav/footer links
+- [x] Force-password JWT sync via `update({ mustChangePassword })` + hard reload
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

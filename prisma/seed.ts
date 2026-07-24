@@ -48,13 +48,15 @@ async function main() {
     update: {
       role: "DEVELOPER",
       name: "Site Developer",
+      // Developers must never be blocked by the force-password modal.
+      mustChangePassword: false,
     },
     create: {
       email: developerEmail,
       name: "Site Developer",
       role: "DEVELOPER",
       passwordHash: await hash(developerPassword, 12),
-      mustChangePassword: true,
+      mustChangePassword: false,
     },
   });
 

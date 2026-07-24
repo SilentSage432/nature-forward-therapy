@@ -46,5 +46,11 @@ Browser
 | Site settings / footer credit | | ✓ |
 | Raw env / schema (repo access) | | ✓ (outside app) |
 
+## Force-password flow
+1. Seed/editor login with `mustChangePassword: true` → admin layout mounts `ForcePasswordModal`.
+2. `POST /api/user/change-password` hashes password and sets DB `mustChangePassword: false`.
+3. Client calls `update({ mustChangePassword: false })` so the JWT callback patches the token.
+4. Hard navigate to `/admin` so the server layout re-reads the updated session (avoid `router.refresh()` race).
+
 ## Design tokens
 Canonical hex values live in `app/globals.css` `@theme` and are documented in `AUDIT_CATALOG.md`.

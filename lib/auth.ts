@@ -90,21 +90,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id!;
         token.role = user.role;
         token.mustChangePassword = user.mustChangePassword;
       }
 
-      // On session.update() (and first hydrate), re-read flags from the database
-      // so mustChangePassword reflects password-change API results immediately.
-      if (
-        token.id &&
-        (user ||
-          trigger === "update" ||
-          token.mustChangePassword === undefined)
-      ) {
+      // Client session.update({ mustChangePassword: false }) after password change
+      if (trigger === "update" && session) {
+        const patch = session as {
+          mustChangePassword?: boolean;
+          user?: { mustChangePassword?: boolean };
+        };
+        const nextFlag =
+          typeof patch.mustChangePassword !== "undefined"
+            ? patch.mustChangePassword
+            : patch.user?.mustChangePassword;
+        if (typeof nextFlag !== "undefined") {
+          token.mustChangePassword = Boolean(nextFlag);
+        }
+      }
+
+      // Keep role/email fresh from DB on sign-in and when flag is missing
+      if (token.id && (user || token.mustChangePassword === undefined)) {
         const fresh = await prisma.user.findUnique({
           where: { id: token.id },
           select: {
@@ -116,7 +125,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         });
         if (fresh) {
           token.role = fresh.role;
-          token.mustChangePassword = fresh.mustChangePassword;
+          if (token.mustChangePassword === undefined) {
+            token.mustChangePassword = fresh.mustChangePassword;
+          }
           token.name = fresh.name;
           token.email = fresh.email;
         }
@@ -125,9 +136,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
+      if (session.user && token) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as Role;
         session.user.mustChangePassword = Boolean(token.mustChangePassword);
       }
       return session;

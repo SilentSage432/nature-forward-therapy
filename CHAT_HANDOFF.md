@@ -16,10 +16,10 @@ CMS login: `http://localhost:3000/login`
 Admin: `http://localhost:3000/admin`
 
 ### Seeded accounts (from `.env` / `.env.example`)
-| Role | Email | Password |
-| --- | --- | --- |
-| Developer | `dev@flockoffox.org` | `ChangeMeDev!` |
-| Editor | `nicolegarcia@flockoffox.org` | `ChangeMeEditor!` |
+| Role | Email | Password | Force password |
+| --- | --- | --- | --- |
+| Developer | `dev@flockoffox.org` | `ChangeMeDev!` | `false` (never blocked) |
+| Editor | `nicolegarcia@flockoffox.org` | `ChangeMeEditor!` | `true` on seed (modal on first login) |
 
 Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 
@@ -43,3 +43,5 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 - Public home page must remain a single-page composition with in-page anchors (`/#about` etc. from Essays).
 - Editors must not reach `/admin/users` or `/admin/settings`.
 - Unpublished essays must not appear on `/articles` or `[slug]`.
+- After force-password change: call `update({ mustChangePassword: false })` then hard reload — do not rely on `router.refresh()` alone.
+- Seed: editor starts with `mustChangePassword: true`; developer stays `false`.
