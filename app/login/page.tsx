@@ -1,21 +1,20 @@
-import { LoginForm } from "@/components/admin/LoginForm";
+import { redirect } from "next/navigation";
+import { LoginPageClient } from "@/components/admin/LoginPageClient";
+import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await auth();
+  if (session?.user) {
+    redirect("/admin");
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md rounded-2xl border border-sage-dark/30 bg-forest-soft/90 p-8 shadow-2xl">
-        <h1 className="mb-2 font-heading text-2xl font-bold text-white">
-          CMS Sign In
-        </h1>
-        <p className="mb-8 text-sm text-sage-light">
-          Editors manage practice content. Developers manage users and site
-          settings.
-        </p>
-        <LoginForm />
-      </div>
-    </div>
+    <AuthSessionProvider session={null}>
+      <LoginPageClient />
+    </AuthSessionProvider>
   );
 }

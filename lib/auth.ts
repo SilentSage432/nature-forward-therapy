@@ -30,7 +30,7 @@ declare module "@auth/core/jwt" {
   }
 }
 
-const SESSION_MAX_AGE = 60 * 60 * 24; // 24 hours
+const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30 days
 const useSecureCookies = process.env.NODE_ENV === "production";
 
 const credentialsSchema = z.object({
@@ -82,6 +82,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         sameSite: "lax",
         path: "/",
         secure: useSecureCookies,
+        maxAge: SESSION_MAX_AGE,
       },
     },
   },

@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-23 — Session persistence + login UX
+
+JWT/session cookie `maxAge` extended to 30 days. Login auto-redirects authenticated users to `/admin` (server + client). Admin shell waits for `useSession` loading before treating unauthenticated as a logout. Password fields on login and force-password modal include Eye/EyeOff toggles. Admin header shows “Signed in as {email}” with Sign Out.
+
 ## 2026-07-23 — Change-password API + session refresh
 
 Added `POST /api/user/change-password` (auth, bcrypt hash, `mustChangePassword: false`). `ForcePasswordModal` now posts to that API with client/API error messages, spinner disabled submit, success toast, `session.update()`, and `router.refresh()`. JWT callback re-reads `mustChangePassword` on `trigger === "update"`.

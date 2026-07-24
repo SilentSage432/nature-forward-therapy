@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Toast } from "@/components/admin/Toast";
 
 /** Admin-route-only. Mount from `app/admin/layout.tsx` when mustChangePassword. */
@@ -14,6 +14,8 @@ export function ForcePasswordModal() {
   const [pending, setPending] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [closed, setClosed] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,7 +69,7 @@ export function ForcePasswordModal() {
   }
 
   const fieldClass =
-    "w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold";
+    "w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 pr-11 text-body-text outline-none focus:border-gold";
 
   return (
     <>
@@ -101,16 +103,30 @@ export function ForcePasswordModal() {
                 >
                   New password
                 </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  minLength={8}
-                  autoComplete="new-password"
-                  disabled={pending}
-                  className={fieldClass}
-                />
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    minLength={8}
+                    autoComplete="new-password"
+                    disabled={pending}
+                    className={fieldClass}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((value) => !value)}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-stone-400 transition-colors hover:text-amber-200"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div>
                 <label
@@ -119,16 +135,34 @@ export function ForcePasswordModal() {
                 >
                   Confirm password
                 </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  minLength={8}
-                  autoComplete="new-password"
-                  disabled={pending}
-                  className={fieldClass}
-                />
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    minLength={8}
+                    autoComplete="new-password"
+                    disabled={pending}
+                    className={fieldClass}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((value) => !value)}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-stone-400 transition-colors hover:text-amber-200"
+                    aria-label={
+                      showConfirmPassword
+                        ? "Hide confirm password"
+                        : "Show confirm password"
+                    }
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               {error ? <p className="text-sm text-red-300">{error}</p> : null}
