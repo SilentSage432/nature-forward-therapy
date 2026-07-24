@@ -122,6 +122,16 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
     }
   }
 
+  function clearCoverImage() {
+    setCoverImage("");
+    setStudioSource(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    setError(null);
+    setMessage("Cover image removed.");
+  }
+
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage(null);
@@ -372,6 +382,15 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
               >
                 ✨ AI Botanical Cover
               </button>
+              {coverImage ? (
+                <button
+                  type="button"
+                  onClick={clearCoverImage}
+                  className="rounded-lg border border-red-500/30 px-3 py-1.5 text-sm text-red-400 transition-colors hover:bg-red-500/10"
+                >
+                  🗑️ Remove Image
+                </button>
+              ) : null}
             </div>
 
             <p className="mt-2 text-sm text-sage-light">

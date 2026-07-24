@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Article cover remove button
+
+Article editor cover section now includes a “🗑️ Remove Image” control that clears `coverImage` / studio source, resets the file input, hides the preview, and confirms with a short success message.
+
 ## 2026-07-24 — Curated Bookshelf & Recommended Resources
 
 Added `BookshelfItem` Prisma model (`db push`). Public `/bookshelf` hub with Cormorant hero, category chips, warm library-style cards, and “Nicole’s Note” parchment callouts. Admin CMS at `/admin/bookshelf` (list, new, edit) with BookOpen sidebar link. Nav/Footer **Bookshelf** links. Seeded three recommended books. Ownership: `lib/bookshelf.ts` reads; `lib/actions/bookshelf.ts` mutations.
