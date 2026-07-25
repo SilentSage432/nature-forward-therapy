@@ -50,3 +50,4 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 - Seed: editor starts with `mustChangePassword: true`; developer stays `false`.
 - Article covers from the Photo Studio are stored as compressed data URLs; set `GEMINI_API_KEY` for AI botanical generation.
 - Force-password modal: authenticated EDITOR + mustChangePassword only; Sign Out → `/` via client `signOut`.
+- Optional `DISCORD_SUPPORT_WEBHOOK_URL` posts EDITOR support messages to Discord (failures never block the DB save).

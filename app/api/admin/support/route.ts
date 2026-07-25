@@ -61,6 +61,48 @@ export async function POST(request: Request) {
     },
   });
 
+  // Notify Discord when Nicole / EDITOR posts (never block DB success on webhook failure).
+  if (
+    session.user.role === "EDITOR" &&
+    process.env.DISCORD_SUPPORT_WEBHOOK_URL
+  ) {
+    try {
+      const discordMessage =
+        parsed.data.message.length > 1024
+          ? `${parsed.data.message.slice(0, 1021)}...`
+          : parsed.data.message;
+
+      await fetch(process.env.DISCORD_SUPPORT_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: "Nicole - Support Chat",
+          embeds: [
+            {
+              title: "💬 New In-App Support Message",
+              description: "Message from Nicole on flockoffox.org",
+              color: 13919335,
+              fields: [
+                {
+                  name: "Sender Email",
+                  value: session.user.email,
+                  inline: true,
+                },
+                {
+                  name: "Message",
+                  value: discordMessage,
+                },
+              ],
+              timestamp: new Date().toISOString(),
+            },
+          ],
+        }),
+      });
+    } catch {
+      // Discord outage / rate limit must not fail the support message save.
+    }
+  }
+
   return NextResponse.json({ message: created }, { status: 201 });
 }
 
