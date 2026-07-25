@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
 import {
@@ -10,31 +9,47 @@ import {
   bumpSessionEpoch,
 } from "@/lib/system-settings";
 
-const maintenanceSchema = z.object({
-  enabled: z.boolean(),
-  message: z.string().trim().max(500).optional(),
-});
+function parseEnabled(value: unknown): boolean {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value === "true";
+  return false;
+}
 
-const flushSchema = z.object({
-  flushSessions: z.literal(true),
-});
-
-function revalidatePublicSurfaces() {
+function revalidateMaintenanceSurfaces() {
   revalidatePath("/", "layout");
+  revalidatePath("/admin/settings");
+  revalidatePath("/admin", "layout");
   revalidatePath("/articles", "layout");
   revalidatePath("/bookshelf", "layout");
   revalidatePath("/maintenance", "page");
-  revalidatePath("/admin", "layout");
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!isDeveloper(session?.user?.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const action = searchParams.get("action");
+
+  // Fail-safe: instantly force maintenance OFF and clear layout cache.
+  if (action === "off") {
+    const maintenance = await setMaintenanceMode(false);
+    revalidateMaintenanceSurfaces();
+    return NextResponse.json({
+      message: "Maintenance mode forced OFF. Layout cache cleared.",
+      maintenance,
+    });
+  }
+
   const maintenance = await getMaintenanceMode();
-  return NextResponse.json({ maintenance });
+  return NextResponse.json({
+    maintenance,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
 }
 
 export async function POST(request: Request) {
@@ -43,15 +58,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  let body: unknown;
+  let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    body = (await request.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const flushParsed = flushSchema.safeParse(body);
-  if (flushParsed.success) {
+  if (body.flushSessions === true) {
     const epoch = await bumpSessionEpoch();
     return NextResponse.json({
       message: "Active JWT sessions invalidated. Users must sign in again.",
@@ -59,25 +73,43 @@ export async function POST(request: Request) {
     });
   }
 
-  const parsed = maintenanceSchema.safeParse(body);
-  if (!parsed.success) {
+  if (!("enabled" in body)) {
     return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Invalid body." },
+      { error: "Missing enabled flag." },
       { status: 400 },
     );
   }
 
-  const maintenance = await setMaintenanceMode(
-    parsed.data.enabled,
-    parsed.data.message ?? DEFAULT_MAINTENANCE_MESSAGE,
+  // Cleanly handle enabled === false (do not truthiness-coerce).
+  const enabled =
+    typeof body.enabled === "boolean"
+      ? body.enabled
+      : body.enabled === "true";
+
+  const message =
+    typeof body.message === "string" && body.message.trim()
+      ? body.message.trim()
+      : DEFAULT_MAINTENANCE_MESSAGE;
+
+  const maintenance = await setMaintenanceMode(enabled, message);
+
+  // Bust root layout + settings immediately so toggle-off is visible.
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/settings");
+  revalidateMaintenanceSurfaces();
+
+  return NextResponse.json(
+    {
+      message: maintenance.enabled
+        ? "Maintenance mode enabled. Public visitors will see the holding page."
+        : "Maintenance mode disabled. Public site restored.",
+      maintenance,
+      enabledParsed: parseEnabled(body.enabled),
+    },
+    {
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    },
   );
-
-  revalidatePublicSurfaces();
-
-  return NextResponse.json({
-    message: maintenance.enabled
-      ? "Maintenance mode enabled. Public visitors will see the holding page."
-      : "Maintenance mode disabled. Public site restored.",
-    maintenance,
-  });
 }

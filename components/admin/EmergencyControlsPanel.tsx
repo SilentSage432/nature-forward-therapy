@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AlertTriangle, ShieldOff } from "lucide-react";
 import { DEFAULT_MAINTENANCE_MESSAGE } from "@/lib/system-settings-shared";
 
@@ -10,6 +11,7 @@ type MaintenanceState = {
 };
 
 export function EmergencyControlsPanel() {
+  const router = useRouter();
   const [maintenance, setMaintenance] = useState<MaintenanceState>({
     enabled: false,
     message: DEFAULT_MAINTENANCE_MESSAGE,
@@ -20,10 +22,16 @@ export function EmergencyControlsPanel() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    void fetch("/api/admin/maintenance")
+    void fetch("/api/admin/maintenance", { cache: "no-store" })
       .then((res) => res.json())
       .then((data: { maintenance?: MaintenanceState }) => {
-        if (data.maintenance) setMaintenance(data.maintenance);
+        if (data.maintenance) {
+          setMaintenance({
+            enabled: data.maintenance.enabled === true,
+            message:
+              data.maintenance.message?.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+          });
+        }
       })
       .catch(() => undefined);
   }, []);
@@ -32,11 +40,18 @@ export function EmergencyControlsPanel() {
     setPending(true);
     setMessage(null);
     setError(null);
+
+    const payload = {
+      enabled: next.enabled === true,
+      message: next.message?.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+    };
+
     try {
       const res = await fetch("/api/admin/maintenance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(next),
+        cache: "no-store",
+        body: JSON.stringify(payload),
       });
       const body = (await res.json().catch(() => null)) as {
         message?: string;
@@ -47,8 +62,53 @@ export function EmergencyControlsPanel() {
         setError(body?.error ?? "Could not update maintenance mode.");
         return;
       }
-      if (body?.maintenance) setMaintenance(body.maintenance);
+      if (body?.maintenance) {
+        setMaintenance({
+          enabled: body.maintenance.enabled === true,
+          message:
+            body.maintenance.message?.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+        });
+      } else {
+        setMaintenance(payload);
+      }
       setMessage(body?.message ?? "Saved.");
+      // Sync root layout / developer banner immediately.
+      router.refresh();
+    } catch {
+      setError("Network error.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function forceOff() {
+    setPending(true);
+    setMessage(null);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/maintenance?action=off", {
+        cache: "no-store",
+      });
+      const body = (await res.json().catch(() => null)) as {
+        message?: string;
+        error?: string;
+        maintenance?: MaintenanceState;
+      } | null;
+      if (!res.ok) {
+        setError(body?.error ?? "Could not force maintenance off.");
+        return;
+      }
+      if (body?.maintenance) {
+        setMaintenance({
+          enabled: false,
+          message:
+            body.maintenance.message?.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+        });
+      } else {
+        setMaintenance((prev) => ({ ...prev, enabled: false }));
+      }
+      setMessage(body?.message ?? "Maintenance forced OFF.");
+      router.refresh();
     } catch {
       setError("Network error.");
     } finally {
@@ -71,6 +131,7 @@ export function EmergencyControlsPanel() {
       const res = await fetch("/api/admin/maintenance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        cache: "no-store",
         body: JSON.stringify({ flushSessions: true }),
       });
       const body = (await res.json().catch(() => null)) as {
@@ -82,6 +143,7 @@ export function EmergencyControlsPanel() {
         return;
       }
       setMessage(body?.message ?? "Sessions flushed.");
+      router.refresh();
     } catch {
       setError("Network error.");
     } finally {
@@ -105,14 +167,16 @@ export function EmergencyControlsPanel() {
         <label className="mt-4 flex items-center gap-3 text-sm text-sage-light">
           <input
             type="checkbox"
-            checked={maintenance.enabled}
+            checked={maintenance.enabled === true}
             disabled={pending}
-            onChange={(e) =>
+            onChange={(e) => {
+              const enabled = e.target.checked === true;
               void saveMaintenance({
-                ...maintenance,
-                enabled: e.target.checked,
-              })
-            }
+                enabled,
+                message:
+                  maintenance.message.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+              });
+            }}
             className="h-4 w-4 accent-gold"
           />
           Master switch — maintenance mode{" "}
@@ -131,14 +195,32 @@ export function EmergencyControlsPanel() {
             className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-sm text-body-text outline-none focus:border-gold"
           />
         </label>
-        <button
-          type="button"
-          disabled={pending}
-          onClick={() => void saveMaintenance(maintenance)}
-          className="btn-gold mt-3 rounded-lg px-5 py-2.5 font-heading text-sm font-semibold text-forest disabled:opacity-60"
-        >
-          {pending ? "Saving…" : "Save maintenance message"}
-        </button>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() =>
+              void saveMaintenance({
+                enabled: maintenance.enabled === true,
+                message:
+                  maintenance.message.trim() || DEFAULT_MAINTENANCE_MESSAGE,
+              })
+            }
+            className="btn-gold rounded-lg px-5 py-2.5 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+          >
+            {pending ? "Saving…" : "Save maintenance message"}
+          </button>
+          {maintenance.enabled ? (
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => void forceOff()}
+              className="rounded-lg border border-amber-300/40 bg-amber-400/10 px-5 py-2.5 text-sm font-medium text-amber-100 transition hover:bg-amber-400/20 disabled:opacity-60"
+            >
+              Force OFF now
+            </button>
+          ) : null}
+        </div>
       </div>
 
       <div className="rounded-2xl border border-red-400/25 bg-red-400/5 p-5">

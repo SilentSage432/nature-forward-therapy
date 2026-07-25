@@ -1,12 +1,15 @@
 import { headers } from "next/headers";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Montserrat } from "next/font/google";
+import { connection } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import { PublicMaintenanceGate } from "@/components/PublicMaintenanceGate";
 import { getSiteContent } from "@/lib/content";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -96,6 +99,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  noStore();
+  await connection();
   const headerStore = await headers();
   const pathname = resolvePathname(headerStore);
 

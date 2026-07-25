@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Maintenance toggle-off cache bust
+
+Hardened MAINTENANCE_MODE reads with `noStore()` + `connection()`, explicit `enabled === false` parsing in POST, `revalidatePath("/", "layout")` + `/admin/settings`, fail-safe `GET ?action=off`, and `router.refresh()` in Emergency Controls so turning maintenance off clears the public holding card and developer banner immediately.
+
 ## 2026-07-24 — Ops suite audit: maintenance gate fix
 
 Fixed Emergency Maintenance Mode: root layout is `force-dynamic`, `getMaintenanceMode` uses `noStore`, proxy sets `x-pathname` on all page routes, and `PublicMaintenanceGate` blocks public visitors/editors while developers see an amber ACTIVE banner site-wide. Also hardened revalidate (layout+page), magic-login (`redirect: false`), audit rollback try/catch, diagnostics 5s AbortController + `/admin/diagnostics` UI.
