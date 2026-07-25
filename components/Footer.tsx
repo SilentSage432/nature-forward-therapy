@@ -17,6 +17,8 @@ export function Footer({ profile }: FooterProps) {
           alt="Flock of Fox, LLC"
           width={32}
           height={32}
+          quality={80}
+          sizes="32px"
           className="h-8 w-8 rounded-full border border-gold/30 object-cover"
         />
         <span className="font-heading text-sm font-semibold text-amber-200/70">

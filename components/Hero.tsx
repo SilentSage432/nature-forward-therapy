@@ -30,6 +30,8 @@ export function Hero({ profile }: HeroProps) {
               width={192}
               height={192}
               priority
+              quality={80}
+              sizes="(max-width: 640px) 144px, (max-width: 768px) 160px, 192px"
               className="h-full w-full object-cover"
             />
           </div>

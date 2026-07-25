@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Public scroll / render performance
+
+GPU-accelerated ambient light leaks (`transform-gpu will-change-transform` on `AtmosphereGlow`), replaced heavy frosted `backdrop-filter` cards/nav with solid `bg-stone-950/85` fills, confirmed Navbar scroll uses `{ passive: true }`, and set public `<Image />` `quality={80}` + `sizes`. Dropped hero `background-attachment: fixed` to reduce scroll paint cost.
+
 ## 2026-07-24 — Maintenance toggle-off cache bust
 
 Hardened MAINTENANCE_MODE reads with `noStore()` + `connection()`, explicit `enabled === false` parsing in POST, `revalidatePath("/", "layout")` + `/admin/settings`, fail-safe `GET ?action=off`, and `router.refresh()` in Emergency Controls so turning maintenance off clears the public holding card and developer banner immediately.

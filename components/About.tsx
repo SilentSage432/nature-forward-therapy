@@ -37,6 +37,8 @@ export function About({ profile }: AboutProps) {
             alt="Sunlight through trees – calm natural setting"
             width={800}
             height={480}
+            quality={80}
+            sizes="(max-width: 768px) 100vw, 672px"
             className="h-64 w-full object-cover md:h-80"
           />
         </div>

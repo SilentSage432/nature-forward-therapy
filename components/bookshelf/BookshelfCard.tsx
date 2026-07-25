@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { PublicBookshelfItem } from "@/lib/bookshelf";
 
 type BookshelfCardProps = {
@@ -5,16 +6,32 @@ type BookshelfCardProps = {
 };
 
 export function BookshelfCard({ item }: BookshelfCardProps) {
+  const cover = item.coverImage;
+  const isDataUrl = Boolean(cover?.startsWith("data:"));
+
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-amber-900/30 bg-gradient-to-b from-stone-900/70 via-forest-soft/80 to-stone-950/90 shadow-[inset_0_1px_0_rgba(212,175,55,0.08)] transition hover:border-amber-500/40">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-amber-900/30 bg-stone-950/90 shadow-[inset_0_1px_0_rgba(212,175,55,0.08)] transition hover:border-amber-500/40">
       <div className="relative aspect-[3/4] overflow-hidden bg-forest">
-        {item.coverImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={item.coverImage}
-            alt=""
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-          />
+        {cover ? (
+          isDataUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={cover}
+              alt=""
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <Image
+              src={cover}
+              alt=""
+              fill
+              quality={80}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition duration-500 group-hover:scale-[1.03]"
+            />
+          )
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-amber-900/30 via-forest-soft to-stone-950 px-4 text-center">
             <p className="font-serif text-lg text-parchment/80 italic">
@@ -22,7 +39,7 @@ export function BookshelfCard({ item }: BookshelfCardProps) {
             </p>
           </div>
         )}
-        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-forest/85 px-3 py-1 text-xs font-semibold tracking-wide text-gold backdrop-blur-sm">
+        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-stone-950/90 px-3 py-1 text-xs font-semibold tracking-wide text-gold">
           {item.type}
         </span>
       </div>

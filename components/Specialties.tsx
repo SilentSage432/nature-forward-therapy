@@ -16,7 +16,7 @@ function splitList<T>(items: T[]): [T[], T[]] {
 }
 
 const frostedCardClass =
-  "card-hover frosted-leaf-card border border-sage-dark/40 bg-forest-soft/70 p-8 backdrop-blur-md hover:shadow-[0_0_25px_rgba(212,175,55,0.12)]";
+  "card-hover frosted-leaf-card border border-sage-dark/40 bg-stone-950/85 p-8 hover:shadow-[0_0_25px_rgba(212,175,55,0.12)]";
 
 export function Specialties({
   profile,
@@ -218,6 +218,8 @@ export function Specialties({
             alt="Flowing water – serene nature"
             width={1200}
             height={480}
+            quality={80}
+            sizes="(max-width: 768px) 100vw, 1024px"
             className="h-72 w-full object-cover md:h-96"
           />
         </div>

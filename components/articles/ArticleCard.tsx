@@ -17,7 +17,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   );
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-stone-800 bg-stone-900/40 transition hover:border-amber-500/40">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-stone-800 bg-stone-950/85 transition hover:border-amber-500/40">
       <div className="relative aspect-[16/10] overflow-hidden bg-forest-soft">
         {article.coverImage ? (
           article.coverImage.startsWith("data:") ? (
@@ -26,20 +26,23 @@ export function ArticleCard({ article }: ArticleCardProps) {
               src={article.coverImage}
               alt=""
               className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <Image
               src={article.coverImage}
               alt=""
               fill
+              quality={80}
               className="object-cover transition duration-500 group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           )
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-forest-soft via-forest to-stone-900" />
         )}
-        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-forest/80 px-3 py-1 text-xs font-semibold tracking-wide text-gold backdrop-blur-sm">
+        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-stone-950/90 px-3 py-1 text-xs font-semibold tracking-wide text-gold">
           {article.category}
         </span>
       </div>

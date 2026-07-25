@@ -50,9 +50,9 @@
 
 @layer components {
   .nav-glass {
-    background: rgba(22, 34, 33, 0.75);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(12, 18, 17, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-bottom: 1px solid rgba(212, 175, 55, 0.15);
   }
 
@@ -106,7 +106,8 @@
 
   @media (min-width: 768px) {
     .hero-bg {
-      background-attachment: fixed;
+      /* Keep scroll attachment — fixed backgrounds cause expensive paint on scroll. */
+      background-attachment: scroll;
     }
   }
 
@@ -130,14 +131,7 @@
   }
 
   .frosted-leaf-card {
-    background: linear-gradient(
-        160deg,
-        rgba(45, 58, 53, 0.72),
-        rgba(30, 45, 43, 0.48)
-      ),
-      rgba(45, 58, 53, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(18, 24, 23, 0.88);
     border: 1px solid rgba(90, 114, 102, 0.4);
     border-top-color: rgba(168, 195, 181, 0.28);
     border-left-color: rgba(196, 139, 113, 0.22);

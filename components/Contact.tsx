@@ -32,7 +32,7 @@ export function Contact({ profile, processSteps }: ContactProps) {
               {processSteps.map((step, index) => (
                 <li
                   key={step.title}
-                  className="card-hover frosted-leaf-card flex gap-4 border border-sage-dark/40 bg-forest-soft/60 p-4 backdrop-blur-md hover:shadow-[0_0_25px_rgba(212,175,55,0.12)]"
+                  className="card-hover frosted-leaf-card flex gap-4 border border-sage-dark/40 bg-stone-950/85 p-4 hover:shadow-[0_0_25px_rgba(212,175,55,0.12)]"
                 >
                   <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-clay/30 bg-gold/20 font-heading font-bold text-gold">
                     {index + 1}
@@ -54,6 +54,8 @@ export function Contact({ profile, processSteps }: ContactProps) {
                 alt="Sagebrush and calm landscape"
                 width={800}
                 height={320}
+                quality={80}
+                sizes="(max-width: 768px) 100vw, 480px"
                 className="h-56 w-full object-cover"
               />
             </div>

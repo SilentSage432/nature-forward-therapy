@@ -92,6 +92,8 @@ export function Navbar({ banner = null }: NavbarProps) {
               alt="Flock of Fox, LLC"
               width={32}
               height={32}
+              quality={80}
+              sizes="32px"
               className="h-8 w-8 shrink-0 rounded-full border border-gold/30 object-cover"
               priority
             />
@@ -141,7 +143,7 @@ export function Navbar({ banner = null }: NavbarProps) {
 
         <div
           id="mobile-nav-menu"
-          className={`overflow-hidden border-b border-amber-900/30 bg-stone-950/95 backdrop-blur-md transition-[max-height,opacity] duration-300 ease-out md:hidden ${
+          className={`overflow-hidden border-b border-amber-900/30 bg-stone-950/95 transition-[max-height,opacity] duration-300 ease-out md:hidden ${
             menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
