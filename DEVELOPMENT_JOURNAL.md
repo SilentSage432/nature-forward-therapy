@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Support chat drawer mount + preview mode
+
+`SupportChatDrawer` restyled (emerald floating CTA) and mounted from `app/admin/layout.tsx` via `AdminSupportChatHost` for EDITORS and when DEVELOPER Preview Editor View is on (`EditorPreviewContext`).
+
+## 2026-07-24 — Developer command center sidebar & ops widgets
+
+Developer sidebar drops CMS content links and uses Command Center / Management / Controls. Overview gains JSON backup export, activity feed preview, and Headway/webmail link checks. New developer routes: `/admin/activity`, `/admin/backup`, `/admin/seo`. Ownership: `lib/admin-ops.ts` + `GET /api/admin/backup`.
+
 ## 2026-07-24 — Discord webhook for editor support messages
 
 `POST /api/admin/support` now notifies `DISCORD_SUPPORT_WEBHOOK_URL` when an EDITOR posts (embed with email + message). Failures are swallowed so DB saves still succeed.

@@ -7,7 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AuthLoadingScreen } from "@/components/admin/AuthLoadingScreen";
 import { ForcePasswordModal } from "@/components/admin/ForcePasswordModal";
-import { SupportChatDrawer } from "@/components/admin/SupportChatDrawer";
+import { useEditorPreview } from "@/components/admin/EditorPreviewContext";
 
 type AdminShellProps = {
   developer: boolean;
@@ -18,6 +18,7 @@ type AdminShellProps = {
 export function AdminShell({ developer, email, children }: AdminShellProps) {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const { previewEditor, setPreviewEditor } = useEditorPreview();
   const [signingOut, setSigningOut] = useState(false);
 
   const showForcePassword =
@@ -25,19 +26,23 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
     session?.user?.role === "EDITOR" &&
     session.user.mustChangePassword === true;
 
-  const showSupportChat =
-    status === "authenticated" &&
-    session?.user?.role === "EDITOR" &&
-    !showForcePassword;
-
+  // Leaving admin sub-routes while previewing: keep preview only on /admin home content.
+  // Preview state lives in context so SupportChatHost can see it across the shell.
   useEffect(() => {
     if (status === "unauthenticated" && !signingOut) {
       router.replace("/login");
     }
   }, [status, router, signingOut]);
 
+  useEffect(() => {
+    if (!developer && previewEditor) {
+      setPreviewEditor(false);
+    }
+  }, [developer, previewEditor, setPreviewEditor]);
+
   async function handleSignOut() {
     setSigningOut(true);
+    setPreviewEditor(false);
     await signOut({ callbackUrl: "/", redirect: true });
   }
 
@@ -56,6 +61,22 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-forest text-body-text">
       {showForcePassword ? <ForcePasswordModal /> : null}
+      {previewEditor ? (
+        <div className="border-b border-gold/35 bg-gold/10 px-6 py-2.5">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+            <p className="text-sm font-medium text-gold">
+              Preview Editor View — Tech Desk chat is available
+            </p>
+            <button
+              type="button"
+              onClick={() => setPreviewEditor(false)}
+              className="rounded-lg border border-gold/40 bg-forest/40 px-3 py-1.5 text-xs font-semibold text-gold transition hover:bg-forest/70"
+            >
+              Exit Preview
+            </button>
+          </div>
+        </div>
+      ) : null}
       <header className="border-b border-sage-dark/40 bg-forest-soft/80">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
           <div>
@@ -96,10 +117,9 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
         }`}
         aria-hidden={showForcePassword}
       >
-        <AdminSidebar isDeveloper={developer} />
+        <AdminSidebar isDeveloper={developer && !previewEditor} />
         <main className="min-w-0">{children}</main>
       </div>
-      {showSupportChat ? <SupportChatDrawer /> : null}
     </div>
   );
 }

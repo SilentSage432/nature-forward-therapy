@@ -40,6 +40,10 @@ const ADMIN_ROUTES = [
   "/admin/practice",
   "/admin/users",
   "/admin/settings",
+  "/admin/support",
+  "/admin/activity",
+  "/admin/backup",
+  "/admin/seo",
 ];
 const API_ROUTES = [
   "/api/auth/[...nextauth]",
@@ -50,6 +54,8 @@ const API_ROUTES = [
   "/api/cms/settings",
   "/api/admin/health",
   "/api/admin/revalidate",
+  "/api/admin/support",
+  "/api/admin/backup",
 ];
 
 function connectionModeFromUrl(url: string | undefined): string {

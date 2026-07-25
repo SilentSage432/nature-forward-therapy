@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 type SupportMessage = {
@@ -113,11 +113,10 @@ export function SupportChatDrawer() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed right-5 bottom-5 z-40 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-forest-soft/95 px-4 py-3 font-heading text-sm font-semibold text-gold shadow-[0_8px_28px_rgba(0,0,0,0.35)] backdrop-blur transition hover:border-gold hover:bg-forest-soft hover:text-amber-100"
+        className="fixed right-6 bottom-6 z-50 inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-900/90 px-4 py-3 font-heading text-sm font-semibold text-stone-100 shadow-xl backdrop-blur-md transition-all hover:bg-emerald-800"
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        <MessageCircle className="h-4 w-4" aria-hidden="true" />
         💬 Need Help / Chat with Dev
       </button>
 
@@ -133,13 +132,13 @@ export function SupportChatDrawer() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="support-desk-title"
-            className="support-drawer-panel relative flex h-full w-full max-w-md flex-col border-l border-sage-dark/40 bg-forest-light shadow-2xl"
+            className="support-drawer-panel relative flex h-full w-full max-w-md flex-col border-l border-emerald-500/30 bg-emerald-950/95 shadow-2xl backdrop-blur-md"
           >
-            <header className="flex items-start justify-between gap-3 border-b border-sage-dark/40 bg-forest-soft/90 px-5 py-4">
+            <header className="flex items-start justify-between gap-3 border-b border-emerald-500/25 bg-emerald-900/80 px-5 py-4">
               <div>
                 <h2
                   id="support-desk-title"
-                  className="font-heading text-lg font-semibold text-gold"
+                  className="font-heading text-lg font-semibold text-stone-100"
                 >
                   Flock of Fox Tech Desk
                 </h2>
@@ -154,14 +153,14 @@ export function SupportChatDrawer() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="rounded-lg border border-sage-dark/40 p-2 text-sage-light hover:border-gold/50 hover:text-gold"
+                className="rounded-lg border border-emerald-500/30 p-2 text-stone-200 hover:border-emerald-400/50 hover:text-white"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
               </button>
             </header>
 
-            <div className="flex flex-wrap gap-2 border-b border-sage-dark/30 px-4 py-3">
+            <div className="flex flex-wrap gap-2 border-b border-emerald-500/20 px-4 py-3">
               {QUICK_PROMPTS.map((prompt) => (
                 <button
                   key={prompt.label}
@@ -169,7 +168,7 @@ export function SupportChatDrawer() {
                   onClick={() =>
                     setDraft(`${prompt.emoji} ${prompt.label}: `)
                   }
-                  className="rounded-full border border-sage-dark/50 bg-forest/70 px-3 py-1.5 text-xs text-sage-light transition hover:border-gold/40 hover:text-gold"
+                  className="rounded-full border border-emerald-500/35 bg-emerald-900/70 px-3 py-1.5 text-xs text-stone-200 transition hover:border-emerald-400/50 hover:text-white"
                 >
                   {prompt.emoji} {prompt.label}
                 </button>
@@ -178,18 +177,20 @@ export function SupportChatDrawer() {
 
             <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               {loading && messages.length === 0 ? (
-                <p className="text-center text-sm text-sage-dark">
+                <p className="text-center text-sm text-emerald-200/60">
                   Loading conversation…
                 </p>
               ) : null}
               {!loading && messages.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-sage-dark/40 bg-forest/40 px-4 py-6 text-center text-sm text-sage-light">
+                <p className="rounded-xl border border-dashed border-emerald-500/30 bg-emerald-900/40 px-4 py-6 text-center text-sm text-stone-300">
                   Say hello — tap a quick prompt or type a note for the
                   developer desk.
                 </p>
               ) : null}
               {messages.map((msg) => {
-                const mine = userId ? msg.senderId === userId : msg.senderRole === "EDITOR";
+                const mine = userId
+                  ? msg.senderId === userId
+                  : msg.senderRole === "EDITOR";
                 return (
                   <div
                     key={msg.id}
@@ -199,13 +200,13 @@ export function SupportChatDrawer() {
                       className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm ${
                         mine
                           ? "rounded-br-md bg-sage/40 text-parchment ring-1 ring-amber-200/25"
-                          : "rounded-bl-md bg-[#12201e] text-sage-light ring-1 ring-sage-dark/50"
+                          : "rounded-bl-md bg-[#0f1c1a] text-sage-light ring-1 ring-emerald-500/25"
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{msg.message}</p>
                       <p
                         className={`mt-1.5 text-[10px] ${
-                          mine ? "text-amber-200/70" : "text-sage-dark"
+                          mine ? "text-amber-200/70" : "text-emerald-200/50"
                         }`}
                       >
                         {formatTime(msg.createdAt)}
@@ -220,7 +221,7 @@ export function SupportChatDrawer() {
 
             <form
               onSubmit={onSubmit}
-              className="border-t border-sage-dark/40 bg-forest-soft/80 px-4 py-3"
+              className="border-t border-emerald-500/25 bg-emerald-900/70 px-4 py-3"
             >
               {error ? (
                 <p className="mb-2 text-xs text-red-300" role="alert">
@@ -236,12 +237,12 @@ export function SupportChatDrawer() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Type your message…"
-                className="mb-2 w-full resize-none rounded-xl border border-sage-dark/40 bg-forest/80 px-3 py-2 text-sm text-sage-light placeholder:text-sage-dark focus:border-gold/50 focus:outline-none"
+                className="mb-2 w-full resize-none rounded-xl border border-emerald-500/30 bg-emerald-950/80 px-3 py-2 text-sm text-stone-100 placeholder:text-emerald-200/40 focus:border-emerald-400/50 focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={sending || draft.trim().length === 0}
-                className="btn-gold inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-heading text-sm font-semibold text-forest disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-400/40 bg-emerald-700/90 px-4 py-2.5 font-heading text-sm font-semibold text-stone-100 transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Send className="h-4 w-4" aria-hidden="true" />
                 {sending ? "Sending…" : "Send Message"}

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Activity,
+  Archive,
   BookOpen,
   Briefcase,
   LayoutDashboard,
@@ -13,6 +14,7 @@ import {
   Megaphone,
   MessageCircle,
   PenLine,
+  Search,
   Settings,
   Shield,
   Sparkles,
@@ -26,21 +28,63 @@ type NavItem = {
   badge?: number;
 };
 
-const contentLinks: NavItem[] = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin/profile", label: "Practice Profile", icon: User },
-  { href: "/admin/details", label: "Insurances & Payments", icon: Briefcase },
-  { href: "/admin/specialties", label: "Specialties", icon: Sparkles },
-  { href: "/admin/practice", label: "The Path & Details", icon: MapPin },
-  { href: "/admin/articles", label: "Articles & Essays", icon: PenLine },
-  { href: "/admin/bookshelf", label: "Curated Bookshelf", icon: BookOpen },
-  { href: "/admin/announcements", label: "Announcement Banner", icon: Megaphone },
+type NavSection = {
+  title: string;
+  icon: LucideIcon;
+  items: NavItem[];
+};
+
+const editorSections: NavSection[] = [
+  {
+    title: "Practice",
+    icon: MapPin,
+    items: [
+      { href: "/admin", label: "Overview", icon: LayoutDashboard },
+      { href: "/admin/profile", label: "Practice Profile", icon: User },
+      { href: "/admin/details", label: "Insurances & Payments", icon: Briefcase },
+      { href: "/admin/specialties", label: "Specialties", icon: Sparkles },
+      { href: "/admin/practice", label: "The Path & Details", icon: MapPin },
+      { href: "/admin/articles", label: "Articles & Essays", icon: PenLine },
+      { href: "/admin/bookshelf", label: "Curated Bookshelf", icon: BookOpen },
+      {
+        href: "/admin/announcements",
+        label: "Announcement Banner",
+        icon: Megaphone,
+      },
+    ],
+  },
 ];
 
-const developerBaseLinks: NavItem[] = [
-  { href: "/admin/support", label: "💬 Client Support Desk", icon: MessageCircle },
-  { href: "/admin/users", label: "Users", icon: Shield },
-  { href: "/admin/settings", label: "Site Settings", icon: Settings },
+const developerSections: NavSection[] = [
+  {
+    title: "Command Center",
+    icon: LayoutDashboard,
+    items: [
+      { href: "/admin", label: "Overview", icon: LayoutDashboard },
+      {
+        href: "/admin/support",
+        label: "Client Support Desk",
+        icon: MessageCircle,
+      },
+    ],
+  },
+  {
+    title: "Management",
+    icon: Shield,
+    items: [
+      { href: "/admin/activity", label: "Activity Log", icon: Activity },
+      { href: "/admin/backup", label: "Site Backups", icon: Archive },
+      { href: "/admin/users", label: "Users", icon: Shield },
+    ],
+  },
+  {
+    title: "Controls",
+    icon: Settings,
+    items: [
+      { href: "/admin/seo", label: "SEO & Indexing", icon: Search },
+      { href: "/admin/settings", label: "System Settings", icon: Settings },
+    ],
+  },
 ];
 
 function isActivePath(pathname: string, href: string): boolean {
@@ -85,7 +129,9 @@ function NavLink({
           : "border-transparent text-sage-light hover:bg-forest-soft/80 hover:text-gold"
       } ${pending && !active ? "opacity-70" : ""}`}
     >
-      <Icon className={`h-4 w-4 shrink-0 ${active ? "text-gold" : "text-sage-dark"}`} />
+      <Icon
+        className={`h-4 w-4 shrink-0 ${active ? "text-gold" : "text-sage-dark"}`}
+      />
       <span className="min-w-0 flex-1">{item.label}</span>
       {badge > 0 ? (
         <span
@@ -136,9 +182,16 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
     });
   }
 
-  const developerLinks = developerBaseLinks.map((link) =>
-    link.href === "/admin/support" ? { ...link, badge: openCount } : link,
-  );
+  const sections = isDeveloper
+    ? developerSections.map((section) => ({
+        ...section,
+        items: section.items.map((item) =>
+          item.href === "/admin/support"
+            ? { ...item, badge: openCount }
+            : item,
+        ),
+      }))
+    : editorSections;
 
   return (
     <aside className="space-y-6 rounded-2xl border border-sage-dark/30 bg-forest-soft/40 p-4">
@@ -147,48 +200,31 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
           Loading…
         </p>
       ) : null}
-      <nav className="space-y-1">
-        <p className="mb-3 flex items-center gap-2 px-1 text-xs font-semibold tracking-wide text-gold uppercase">
-          {isDeveloper ? (
-            <>
-              <Activity className="h-3.5 w-3.5" />
-              System
-            </>
-          ) : (
-            <>
-              <MapPin className="h-3.5 w-3.5" />
-              Practice
-            </>
-          )}
-        </p>
-        {contentLinks.map((link) => (
-          <NavLink
-            key={link.href}
-            item={link}
-            pathname={pathname}
-            pending={pending}
-            onNavigate={onNavigate}
-          />
-        ))}
-      </nav>
-
-      {isDeveloper ? (
-        <nav className="space-y-1 border-t border-sage-dark/30 pt-4">
-          <p className="mb-3 flex items-center gap-2 px-1 text-xs font-semibold tracking-wide text-gold uppercase">
-            <Shield className="h-3.5 w-3.5" />
-            Developer
-          </p>
-          {developerLinks.map((link) => (
-            <NavLink
-              key={link.href}
-              item={link}
-              pathname={pathname}
-              pending={pending}
-              onNavigate={onNavigate}
-            />
-          ))}
-        </nav>
-      ) : null}
+      {sections.map((section, index) => {
+        const SectionIcon = section.icon;
+        return (
+          <nav
+            key={section.title}
+            className={`space-y-1 ${
+              index > 0 ? "border-t border-sage-dark/30 pt-4" : ""
+            }`}
+          >
+            <p className="mb-3 flex items-center gap-2 px-1 text-xs font-semibold tracking-wide text-gold uppercase">
+              <SectionIcon className="h-3.5 w-3.5" />
+              {section.title}
+            </p>
+            {section.items.map((link) => (
+              <NavLink
+                key={link.href}
+                item={link}
+                pathname={pathname}
+                pending={pending}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </nav>
+        );
+      })}
     </aside>
   );
 }

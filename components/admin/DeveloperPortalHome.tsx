@@ -1,23 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { DeveloperDashboard } from "@/components/admin/DeveloperDashboard";
 import { EditorDashboard } from "@/components/admin/EditorDashboard";
+import { useEditorPreview } from "@/components/admin/EditorPreviewContext";
+import type {
+  ActivityItem,
+  ExternalLinkCheck,
+} from "@/lib/admin-ops";
 import type { SystemHealth } from "@/lib/system-health";
 import type { SiteContent } from "@/lib/types";
 
 type DeveloperPortalHomeProps = {
   health: SystemHealth;
+  activity: ActivityItem[];
+  externalLinks: ExternalLinkCheck[];
   editorFirstName: string;
   content: SiteContent;
 };
 
 export function DeveloperPortalHome({
   health,
+  activity,
+  externalLinks,
   editorFirstName,
   content,
 }: DeveloperPortalHomeProps) {
-  const [previewEditor, setPreviewEditor] = useState(false);
+  const { previewEditor, setPreviewEditor } = useEditorPreview();
 
   if (previewEditor) {
     return (
@@ -50,7 +58,11 @@ export function DeveloperPortalHome({
           👁️ Preview Editor View
         </button>
       </div>
-      <DeveloperDashboard health={health} />
+      <DeveloperDashboard
+        health={health}
+        activity={activity}
+        externalLinks={externalLinks}
+      />
     </div>
   );
 }

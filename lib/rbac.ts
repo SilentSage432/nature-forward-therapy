@@ -17,6 +17,9 @@ export const DEVELOPER_ONLY_PATHS = [
   "/admin/users",
   "/admin/settings",
   "/admin/support",
+  "/admin/activity",
+  "/admin/backup",
+  "/admin/seo",
 ] as const;
 
 export function isDeveloper(role: AppRole | undefined | null): boolean {

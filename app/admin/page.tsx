@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
 import { DeveloperPortalHome } from "@/components/admin/DeveloperPortalHome";
 import { EditorDashboard } from "@/components/admin/EditorDashboard";
+import {
+  checkExternalLinks,
+  getRecentActivity,
+} from "@/lib/admin-ops";
 import { auth } from "@/lib/auth";
 import { getSiteContent } from "@/lib/content";
 import { isDeveloper } from "@/lib/rbac";
@@ -22,10 +26,16 @@ export default async function AdminHomePage() {
     "Nicole";
 
   if (isDeveloper(session.user.role)) {
-    const health = await getSystemHealth();
+    const [health, activity, externalLinks] = await Promise.all([
+      getSystemHealth(),
+      getRecentActivity(8),
+      checkExternalLinks(),
+    ]);
     return (
       <DeveloperPortalHome
         health={health}
+        activity={activity}
+        externalLinks={externalLinks}
         editorFirstName={firstName}
         content={content}
       />

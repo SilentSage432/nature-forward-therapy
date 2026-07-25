@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { AdminSupportChatHost } from "@/components/admin/AdminSupportChatHost";
+import { EditorPreviewProvider } from "@/components/admin/EditorPreviewContext";
 import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
 import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
@@ -21,9 +23,12 @@ export default async function AdminLayout({
 
   return (
     <AuthSessionProvider session={session}>
-      <AdminShell developer={developer} email={session.user.email}>
-        {children}
-      </AdminShell>
+      <EditorPreviewProvider>
+        <AdminShell developer={developer} email={session.user.email}>
+          {children}
+        </AdminShell>
+        <AdminSupportChatHost />
+      </EditorPreviewProvider>
     </AuthSessionProvider>
   );
 }
