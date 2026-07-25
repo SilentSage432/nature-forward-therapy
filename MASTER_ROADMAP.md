@@ -19,6 +19,7 @@
 - [x] Article Photo Editor & Cover Studio (crop, filters, AI Gemini covers)
 - [x] Curated Bookshelf & Recommended Resources (`/bookshelf` + admin CMS)
 - [x] Announcement banner themes, alignment, typography, dismissible toggle
+- [x] In-app Dev Support Chat & Feedback Desk (`SupportMessage` + editor drawer + `/admin/support`)
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

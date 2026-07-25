@@ -16,6 +16,7 @@ export const EDITOR_CONTENT_PATHS = [
 export const DEVELOPER_ONLY_PATHS = [
   "/admin/users",
   "/admin/settings",
+  "/admin/support",
 ] as const;
 
 export function isDeveloper(role: AppRole | undefined | null): boolean {

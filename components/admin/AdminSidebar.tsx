@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Activity,
@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   MapPin,
   Megaphone,
+  MessageCircle,
   PenLine,
   Settings,
   Shield,
@@ -22,6 +23,7 @@ type NavItem = {
   href: string;
   label: string;
   icon: LucideIcon;
+  badge?: number;
 };
 
 const contentLinks: NavItem[] = [
@@ -35,7 +37,8 @@ const contentLinks: NavItem[] = [
   { href: "/admin/announcements", label: "Announcement Banner", icon: Megaphone },
 ];
 
-const developerLinks: NavItem[] = [
+const developerBaseLinks: NavItem[] = [
+  { href: "/admin/support", label: "💬 Client Support Desk", icon: MessageCircle },
   { href: "/admin/users", label: "Users", icon: Shield },
   { href: "/admin/settings", label: "Site Settings", icon: Settings },
 ];
@@ -58,6 +61,7 @@ function NavLink({
 }) {
   const active = isActivePath(pathname, item.href);
   const Icon = item.icon;
+  const badge = item.badge ?? 0;
 
   return (
     <Link
@@ -81,8 +85,16 @@ function NavLink({
           : "border-transparent text-sage-light hover:bg-forest-soft/80 hover:text-gold"
       } ${pending && !active ? "opacity-70" : ""}`}
     >
-      <Icon className={`h-4 w-4 ${active ? "text-gold" : "text-sage-dark"}`} />
-      <span>{item.label}</span>
+      <Icon className={`h-4 w-4 shrink-0 ${active ? "text-gold" : "text-sage-dark"}`} />
+      <span className="min-w-0 flex-1">{item.label}</span>
+      {badge > 0 ? (
+        <span
+          className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-amber-400/90 px-1.5 py-0.5 text-[10px] font-bold text-forest"
+          aria-label={`${badge} open support items`}
+        >
+          {badge > 99 ? "99+" : badge}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -95,12 +107,38 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const [openCount, setOpenCount] = useState(0);
+
+  const refreshOpenCount = useCallback(async () => {
+    if (!isDeveloper) return;
+    try {
+      const res = await fetch("/api/admin/support");
+      if (!res.ok) return;
+      const data = (await res.json()) as { openCount?: number };
+      setOpenCount(data.openCount ?? 0);
+    } catch {
+      // Ignore badge poll errors.
+    }
+  }, [isDeveloper]);
+
+  useEffect(() => {
+    if (!isDeveloper) return;
+    void refreshOpenCount();
+    const id = window.setInterval(() => {
+      void refreshOpenCount();
+    }, 8000);
+    return () => window.clearInterval(id);
+  }, [isDeveloper, refreshOpenCount, pathname]);
 
   function onNavigate(href: string) {
     startTransition(() => {
       router.push(href);
     });
   }
+
+  const developerLinks = developerBaseLinks.map((link) =>
+    link.href === "/admin/support" ? { ...link, badge: openCount } : link,
+  );
 
   return (
     <aside className="space-y-6 rounded-2xl border border-sage-dark/30 bg-forest-soft/40 p-4">

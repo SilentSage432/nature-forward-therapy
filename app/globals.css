@@ -183,6 +183,10 @@
     opacity: 0.65;
   }
 
+  .support-drawer-panel {
+    animation: supportDrawerIn 0.28s ease-out forwards;
+  }
+
   .focus-pill {
     border: 1px solid rgba(196, 139, 113, 0.45);
     background: rgba(196, 139, 113, 0.14);
@@ -243,5 +247,16 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes supportDrawerIn {
+  from {
+    opacity: 0.85;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

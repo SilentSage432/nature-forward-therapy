@@ -1,7 +1,7 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public Publication Hub (`/articles`) and site-wide announcement banner are live. Sample essays are seeded. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line). EDITOR dashboard includes practice webmail, support request form, Articles & Essays, and Announcement Banner.
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public Publication Hub (`/articles`), Curated Bookshelf (`/bookshelf`), and site-wide announcement banner are live. In-app Dev Support Desk persists editor↔developer chat (`SupportMessage` + `/api/admin/support`); EDITORS use the floating Tech Desk drawer, DEVELOPERS use `/admin/support` with an unread sidebar badge. Public footer shows Flock of Fox branding + copyright (no SAGE Federation credit line).
 
 ## How to run
 ```bash
@@ -14,7 +14,8 @@ Public site: `http://localhost:3000`
 Articles hub: `http://localhost:3000/articles`  
 Bookshelf: `http://localhost:3000/bookshelf`  
 CMS login: `http://localhost:3000/login`  
-Admin: `http://localhost:3000/admin`
+Admin: `http://localhost:3000/admin`  
+Developer support desk: `http://localhost:3000/admin/support`
 
 ### Seeded accounts (from `.env` / `.env.example`)
 | Role | Email | Password | Force password |
@@ -33,16 +34,17 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | Auth / sessions | `lib/auth.ts`, `proxy.ts` |
 | RBAC rules | `lib/rbac.ts` |
 | CMS mutations | `app/api/cms/**`, `lib/actions/**` |
+| Support desk | `app/api/admin/support/route.ts`, `SupportChatDrawer`, `SupportDesk` |
 | Schema / seed | `prisma/schema.prisma`, `prisma/seed.ts` |
 
 ## Editor vs developer
-- **Editor:** profile, specialties, practice details, articles/essays, curated bookshelf, announcement banner.
-- **Developer:** everything editors can do, plus users, site title/description, footer credit.
+- **Editor:** profile, specialties, practice details, articles/essays, curated bookshelf, announcement banner, floating Tech Desk chat.
+- **Developer:** everything editors can do, plus users, site settings, Client Support Desk (`/admin/support`).
 
 ## Do not regress
 - Keep audit color hex values exact.
 - Public home page must remain a single-page composition with in-page anchors (`/#about` etc. from Essays).
-- Editors must not reach `/admin/users` or `/admin/settings`.
+- Editors must not reach `/admin/users`, `/admin/settings`, or `/admin/support`.
 - Unpublished essays must not appear on `/articles` or `[slug]`.
 - After force-password change: call `update({ mustChangePassword: false })` then hard reload — do not rely on `router.refresh()` alone.
 - Seed: editor starts with `mustChangePassword: true`; developer stays `false`.

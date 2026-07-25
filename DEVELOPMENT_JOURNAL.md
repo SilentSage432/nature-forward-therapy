@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — In-app Dev Support Chat & Feedback Desk
+
+Added `SupportMessage` Prisma model and `GET/POST/PATCH /api/admin/support`. EDITORS get a floating “Need Help / Chat with Dev” drawer (Flock of Fox Tech Desk, quick-prompt chips, polled thread). DEVELOPERS get `/admin/support` Client Support Desk with sidebar unread badge and “Mark Topic Resolved”. Ownership: schema + API route; presentation in `SupportChatDrawer` / `SupportDesk`.
+
 ## 2026-07-24 — Sign-out + force-password mount guards
 
 Sign Out now uses client `signOut({ callbackUrl: "/", redirect: true })` and skips the login bounce while signing out. `ForcePasswordModal` mounts only when `status === "authenticated"`, `role === "EDITOR"`, and `mustChangePassword === true` — never during loading/unauthenticated.

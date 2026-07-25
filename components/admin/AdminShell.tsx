@@ -7,6 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AuthLoadingScreen } from "@/components/admin/AuthLoadingScreen";
 import { ForcePasswordModal } from "@/components/admin/ForcePasswordModal";
+import { SupportChatDrawer } from "@/components/admin/SupportChatDrawer";
 
 type AdminShellProps = {
   developer: boolean;
@@ -23,6 +24,11 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
     status === "authenticated" &&
     session?.user?.role === "EDITOR" &&
     session.user.mustChangePassword === true;
+
+  const showSupportChat =
+    status === "authenticated" &&
+    session?.user?.role === "EDITOR" &&
+    !showForcePassword;
 
   useEffect(() => {
     if (status === "unauthenticated" && !signingOut) {
@@ -93,6 +99,7 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
         <AdminSidebar isDeveloper={developer} />
         <main className="min-w-0">{children}</main>
       </div>
+      {showSupportChat ? <SupportChatDrawer /> : null}
     </div>
   );
 }

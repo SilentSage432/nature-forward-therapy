@@ -135,3 +135,14 @@ model BookshelfItem {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+/// In-app editor ↔ developer support desk thread messages.
+model SupportMessage {
+  id          String   @id @default(cuid())
+  senderId    String
+  senderEmail String
+  senderRole  String // "EDITOR" or "DEVELOPER"
+  message     String   @db.Text
+  status      String   @default("OPEN") // "OPEN", "IN_PROGRESS", "RESOLVED"
+  createdAt   DateTime @default(now())
+}
