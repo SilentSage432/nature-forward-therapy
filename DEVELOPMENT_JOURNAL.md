@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Diagnostics probe browser headers + CF 403
+
+External link probes send browser-like `User-Agent` / `Accept` / `Accept-Language` headers. Status `200` / `301` / `302`, and Cloudflare/WAF `403` responses, count as reachable so Headway bot gates do not false-alarm the diagnostics dashboard.
+
 ## 2026-07-24 — Public scroll / render performance
 
 GPU-accelerated ambient light leaks (`transform-gpu will-change-transform` on `AtmosphereGlow`), replaced heavy frosted `backdrop-filter` cards/nav with solid `bg-stone-950/85` fills, confirmed Navbar scroll uses `{ passive: true }`, and set public `<Image />` `quality={80}` + `sizes`. Dropped hero `background-attachment: fixed` to reduce scroll paint cost.

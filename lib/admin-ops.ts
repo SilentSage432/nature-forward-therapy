@@ -273,6 +273,29 @@ export async function buildSiteBackup(): Promise<SiteBackupPayload> {
   };
 }
 
+const LINK_PROBE_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+} as const;
+
+function looksLikeAntiBotGate(headers: Headers): boolean {
+  const server = headers.get("server")?.toLowerCase() ?? "";
+  return Boolean(
+    headers.get("cf-ray") ||
+      headers.get("cf-mitigated") ||
+      server.includes("cloudflare"),
+  );
+}
+
+function isReachableProbe(status: number, headers: Headers): boolean {
+  if (status === 200 || status === 301 || status === 302) return true;
+  if (status === 403 && looksLikeAntiBotGate(headers)) return true;
+  return false;
+}
+
 async function probeUrl(
   id: string,
   label: string,
@@ -282,21 +305,24 @@ async function probeUrl(
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 6000);
-    const res = await fetch(url, {
-      method: "GET",
-      redirect: "follow",
-      signal: controller.signal,
-      headers: { "User-Agent": "NatureForward-AdminLinkCheck/1.0" },
-    });
-    clearTimeout(timeout);
-    return {
-      id,
-      label,
-      url,
-      ok: res.ok || (res.status >= 300 && res.status < 500),
-      statusCode: res.status,
-      latencyMs: Math.round(performance.now() - started),
-    };
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        redirect: "follow",
+        signal: controller.signal,
+        headers: LINK_PROBE_HEADERS,
+      });
+      return {
+        id,
+        label,
+        url,
+        ok: isReachableProbe(res.status, res.headers),
+        statusCode: res.status,
+        latencyMs: Math.round(performance.now() - started),
+      };
+    } finally {
+      clearTimeout(timeout);
+    }
   } catch (error) {
     return {
       id,

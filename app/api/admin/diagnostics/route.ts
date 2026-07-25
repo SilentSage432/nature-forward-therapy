@@ -15,6 +15,31 @@ type ProbeResult = {
   error?: string;
 };
 
+/** Browser-like headers so Cloudflare / WAF probes are not blank-bot 403s. */
+const PROBE_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+} as const;
+
+function looksLikeAntiBotGate(headers: Headers): boolean {
+  const server = headers.get("server")?.toLowerCase() ?? "";
+  return Boolean(
+    headers.get("cf-ray") ||
+      headers.get("cf-mitigated") ||
+      server.includes("cloudflare"),
+  );
+}
+
+/** Reachable for ops dashboards — includes CF challenge 403s (not real outages). */
+function isReachableProbe(status: number, headers: Headers): boolean {
+  if (status === 200 || status === 301 || status === 302) return true;
+  if (status === 403 && looksLikeAntiBotGate(headers)) return true;
+  return false;
+}
+
 async function probe(
   id: string,
   label: string,
@@ -29,14 +54,15 @@ async function probe(
         method: "GET",
         redirect: "follow",
         signal: controller.signal,
-        headers: { "User-Agent": "NatureForward-Diagnostics/1.0" },
+        headers: PROBE_HEADERS,
       });
       const latency = Math.round(performance.now() - started);
+      const ok = isReachableProbe(res.status, res.headers);
       return {
         id,
         label,
         url,
-        ok: res.status >= 200 && res.status < 400,
+        ok,
         status: res.status,
         statusCode: res.status,
         latency,
