@@ -20,7 +20,7 @@ const QUICK_PROMPTS = [
   { emoji: "❓", label: "Help with an essay / image" },
 ] as const;
 
-const POLL_MS = 5000;
+const POLL_MS = 4000;
 
 function formatTime(iso: string): string {
   try {
@@ -33,6 +33,27 @@ function formatTime(iso: string): string {
   } catch {
     return "";
   }
+}
+
+function QuickPromptChips({
+  onSelect,
+}: {
+  onSelect: (emoji: string, label: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      {QUICK_PROMPTS.map((prompt) => (
+        <button
+          key={prompt.label}
+          type="button"
+          onClick={() => onSelect(prompt.emoji, prompt.label)}
+          className="rounded-full border border-emerald-500/35 bg-emerald-900/70 px-3 py-1.5 text-xs text-stone-200 transition hover:border-emerald-400/50 hover:text-white"
+        >
+          {prompt.emoji} {prompt.label}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 export function SupportChatDrawer() {
@@ -51,6 +72,7 @@ export function SupportChatDrawer() {
       const res = await fetch("/api/admin/support");
       if (!res.ok) return;
       const data = (await res.json()) as { messages: SupportMessage[] };
+      // Active feed only — RESOLVED messages are excluded by the API.
       setMessages(data.messages ?? []);
     } catch {
       // Quiet poll failures; keep last known thread.
@@ -68,7 +90,7 @@ export function SupportChatDrawer() {
   }, [open, loadMessages]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || messages.length === 0) return;
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
@@ -107,6 +129,12 @@ export function SupportChatDrawer() {
     event.preventDefault();
     void sendMessage(draft);
   }
+
+  function applyQuickPrompt(emoji: string, label: string) {
+    setDraft(`${emoji} ${label}: `);
+  }
+
+  const showGreeting = !loading && messages.length === 0;
 
   return (
     <>
@@ -160,20 +188,11 @@ export function SupportChatDrawer() {
               </button>
             </header>
 
-            <div className="flex flex-wrap gap-2 border-b border-emerald-500/20 px-4 py-3">
-              {QUICK_PROMPTS.map((prompt) => (
-                <button
-                  key={prompt.label}
-                  type="button"
-                  onClick={() =>
-                    setDraft(`${prompt.emoji} ${prompt.label}: `)
-                  }
-                  className="rounded-full border border-emerald-500/35 bg-emerald-900/70 px-3 py-1.5 text-xs text-stone-200 transition hover:border-emerald-400/50 hover:text-white"
-                >
-                  {prompt.emoji} {prompt.label}
-                </button>
-              ))}
-            </div>
+            {!showGreeting ? (
+              <div className="flex flex-wrap gap-2 border-b border-emerald-500/20 px-4 py-3">
+                <QuickPromptChips onSelect={applyQuickPrompt} />
+              </div>
+            ) : null}
 
             <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               {loading && messages.length === 0 ? (
@@ -181,12 +200,21 @@ export function SupportChatDrawer() {
                   Loading conversation…
                 </p>
               ) : null}
-              {!loading && messages.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-emerald-500/30 bg-emerald-900/40 px-4 py-6 text-center text-sm text-stone-300">
-                  Say hello — tap a quick prompt or type a note for the
-                  developer desk.
-                </p>
+
+              {showGreeting ? (
+                <div className="flex h-full min-h-[220px] flex-col items-center justify-center gap-5 px-2 text-center">
+                  <div>
+                    <p className="font-heading text-xl font-semibold text-stone-100">
+                      How can we help you today?
+                    </p>
+                    <p className="mt-2 text-sm text-emerald-200/70">
+                      Tap a quick prompt or type a note for the developer desk.
+                    </p>
+                  </div>
+                  <QuickPromptChips onSelect={applyQuickPrompt} />
+                </div>
               ) : null}
+
               {messages.map((msg) => {
                 const mine = userId
                   ? msg.senderId === userId
@@ -210,7 +238,6 @@ export function SupportChatDrawer() {
                         }`}
                       >
                         {formatTime(msg.createdAt)}
-                        {msg.status === "RESOLVED" ? " · Resolved" : ""}
                       </p>
                     </div>
                   </div>

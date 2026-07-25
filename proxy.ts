@@ -7,6 +7,9 @@ export const proxy = auth((req) => {
   const isAdmin = pathname.startsWith("/admin");
   const isLoggedIn = !!req.auth;
 
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", pathname);
+
   if (isAdmin) {
     if (!isLoggedIn) {
       const loginUrl = new URL("/login", req.nextUrl.origin);
@@ -20,10 +23,19 @@ export const proxy = auth((req) => {
     }
   }
 
-  // Always allow /login to render the credentials form (never bounce into admin/modal).
-  return NextResponse.next();
+  return NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
+  matcher: [
+    "/admin/:path*",
+    "/login",
+    "/",
+    "/articles",
+    "/articles/:path*",
+    "/bookshelf",
+    "/maintenance",
+  ],
 };

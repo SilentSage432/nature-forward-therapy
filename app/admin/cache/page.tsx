@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
-import { SupportDesk } from "@/components/admin/SupportDesk";
+import { CacheRevalidationPanel } from "@/components/admin/CacheRevalidationPanel";
 
-export default async function AdminSupportPage() {
+export default async function AdminCachePage() {
   const session = await auth();
   if (!isDeveloper(session?.user?.role)) {
     redirect("/admin");
@@ -13,16 +13,14 @@ export default async function AdminSupportPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-heading text-3xl font-bold text-white">
-          💬 Client Support Desk
+          Cache &amp; Revalidation
         </h1>
         <p className="mt-2 text-sage-light">
-          Active thread with Nicole from the practice portal. Reply here and
-          mark topics resolved when done — resolved messages leave the live
-          feed.
+          Flush Next.js route caches and open cache-busted preview links.
         </p>
       </div>
       <div className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
-        <SupportDesk />
+        <CacheRevalidationPanel />
       </div>
     </div>
   );

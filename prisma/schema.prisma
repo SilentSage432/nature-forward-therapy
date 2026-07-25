@@ -146,3 +146,32 @@ model SupportMessage {
   status      String   @default("OPEN") // "OPEN", "IN_PROGRESS", "RESOLVED"
   createdAt   DateTime @default(now())
 }
+
+/// Immutable CMS change history for developer rollback & activity feeds.
+model AuditLog {
+  id            String   @id @default(cuid())
+  userId        String
+  userEmail     String
+  action        String // e.g. "UPDATE_ARTICLE", "CHANGE_INSURANCE"
+  entity        String // e.g. "BlogPost", "PracticeDetail"
+  entityId      String?
+  previousState String?  @db.Text
+  newState      String?  @db.Text
+  createdAt     DateTime @default(now())
+}
+
+/// Key/value system controls (maintenance mode, session epoch, announcements).
+model SystemSetting {
+  key       String   @id // "MAINTENANCE_MODE", "DEV_ANNOUNCEMENT", "SESSION_EPOCH"
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+/// Single-use passwordless login tokens (15-minute magic links).
+model MagicToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

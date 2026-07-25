@@ -15,6 +15,7 @@ type SupportMessage = {
 };
 
 const POLL_MS = 4000;
+export const SUPPORT_DESK_UPDATED_EVENT = "support-desk:updated";
 
 function formatTime(iso: string): string {
   try {
@@ -29,6 +30,15 @@ function formatTime(iso: string): string {
   }
 }
 
+function notifySupportDeskUpdated(openCount: number) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent(SUPPORT_DESK_UPDATED_EVENT, {
+      detail: { openCount },
+    }),
+  );
+}
+
 export function SupportDesk() {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<SupportMessage[]>([]);
@@ -37,7 +47,7 @@ export function SupportDesk() {
   const [sending, setSending] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [toast, setToast] = useState<string | null>(null);
+  const [resolvedBanner, setResolvedBanner] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const userId = session?.user?.id;
 
@@ -49,8 +59,14 @@ export function SupportDesk() {
         messages: SupportMessage[];
         openCount: number;
       };
-      setMessages(data.messages ?? []);
-      setOpenCount(data.openCount ?? 0);
+      const nextMessages = data.messages ?? [];
+      const nextCount = data.openCount ?? nextMessages.length;
+      setMessages(nextMessages);
+      setOpenCount(nextCount);
+      if (nextCount > 0) {
+        setResolvedBanner(false);
+      }
+      notifySupportDeskUpdated(nextCount);
     } catch {
       // Keep last known thread on poll failure.
     }
@@ -65,6 +81,7 @@ export function SupportDesk() {
   }, [loadMessages]);
 
   useEffect(() => {
+    if (messages.length === 0) return;
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -75,6 +92,7 @@ export function SupportDesk() {
 
     setSending(true);
     setError(null);
+    setResolvedBanner(false);
     try {
       const res = await fetch("/api/admin/support", {
         method: "POST",
@@ -91,6 +109,7 @@ export function SupportDesk() {
       }
       if (data.message) {
         setMessages((prev) => [...prev, data.message!]);
+        setOpenCount((prev) => prev + 1);
       }
       setDraft("");
       void loadMessages();
@@ -119,9 +138,10 @@ export function SupportDesk() {
         setError(data.error ?? "Could not update status.");
         return;
       }
-      setToast(
-        `Marked ${data.updatedCount ?? 0} message(s) resolved.`,
-      );
+      setMessages([]);
+      setOpenCount(0);
+      setResolvedBanner(true);
+      notifySupportDeskUpdated(0);
       void loadMessages();
     } catch {
       setError("Network error — please try again.");
@@ -129,6 +149,8 @@ export function SupportDesk() {
       setResolving(false);
     }
   }
+
+  const showEmptyResolved = messages.length === 0 && (resolvedBanner || openCount === 0);
 
   return (
     <div className="space-y-4">
@@ -155,12 +177,22 @@ export function SupportDesk() {
         </button>
       </div>
 
+      {showEmptyResolved && resolvedBanner ? (
+        <div
+          className="rounded-xl border border-emerald-400/35 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200"
+          role="status"
+        >
+          All support topics resolved! No active messages.
+        </div>
+      ) : null}
+
       <div className="flex max-h-[min(60vh,520px)] flex-col rounded-2xl border border-sage-dark/30 bg-forest/50">
         <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
           {messages.length === 0 ? (
             <p className="py-10 text-center text-sm text-sage-dark">
-              No messages yet. When Nicole writes from the practice portal, her
-              notes will appear here.
+              {resolvedBanner
+                ? "All support topics resolved! No active messages."
+                : "No active messages. When Nicole writes from the practice portal, her notes will appear here."}
             </p>
           ) : (
             messages.map((msg) => {
@@ -205,11 +237,6 @@ export function SupportDesk() {
           {error ? (
             <p className="mb-2 text-xs text-red-300" role="alert">
               {error}
-            </p>
-          ) : null}
-          {toast ? (
-            <p className="mb-2 text-xs text-emerald-300" role="status">
-              {toast}
             </p>
           ) : null}
           <label className="sr-only" htmlFor="support-desk-reply">

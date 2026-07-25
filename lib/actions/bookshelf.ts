@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { writeAuditLog } from "@/lib/audit";
 import { BOOKSHELF_TYPES } from "@/lib/bookshelf";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
@@ -57,6 +58,16 @@ export async function createBookshelfItem(
   }
 
   const item = await prisma.bookshelfItem.create({ data: parsed.data });
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "CREATE_BOOKSHELF_ITEM",
+    entity: "BookshelfItem",
+    entityId: item.id,
+    previousState: null,
+    newState: item,
+  });
+
   revalidateBookshelfSurfaces();
   return { ok: true, message: "Bookshelf item saved.", id: item.id };
 }
@@ -93,9 +104,18 @@ export async function updateBookshelfItem(
     return { ok: false, message: "Please check the form fields and try again." };
   }
 
-  await prisma.bookshelfItem.update({
+  const item = await prisma.bookshelfItem.update({
     where: { id },
     data: parsed.data,
+  });
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "UPDATE_BOOKSHELF_ITEM",
+    entity: "BookshelfItem",
+    entityId: item.id,
+    previousState: existing,
+    newState: item,
   });
 
   revalidateBookshelfSurfaces();
@@ -114,6 +134,16 @@ export async function deleteBookshelfItem(id: string): Promise<ActionResult> {
   }
 
   await prisma.bookshelfItem.delete({ where: { id } });
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "DELETE_BOOKSHELF_ITEM",
+    entity: "BookshelfItem",
+    entityId: existing.id,
+    previousState: existing,
+    newState: null,
+  });
+
   revalidateBookshelfSurfaces();
   return { ok: true, message: "Bookshelf item deleted." };
 }

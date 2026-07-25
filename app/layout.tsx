@@ -1,5 +1,7 @@
+import { headers } from "next/headers";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Montserrat } from "next/font/google";
+import { PublicMaintenanceGate } from "@/components/MaintenanceGate";
 import { getSiteContent } from "@/lib/content";
 import "./globals.css";
 
@@ -65,17 +67,24 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const pathname = headerStore.get("x-pathname") ?? "";
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${montserrat.variable} ${cormorant.variable} scroll-smooth antialiased`}
     >
-      <body className="min-h-screen font-body">{children}</body>
+      <body className="min-h-screen font-body">
+        <PublicMaintenanceGate pathname={pathname}>
+          {children}
+        </PublicMaintenanceGate>
+      </body>
     </html>
   );
 }

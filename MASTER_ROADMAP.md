@@ -21,6 +21,7 @@
 - [x] Announcement banner themes, alignment, typography, dismissible toggle
 - [x] In-app Dev Support Chat & Feedback Desk (`SupportMessage` + editor drawer + `/admin/support`)
 - [x] Developer command center sidebar + backup / activity / SEO ops surfaces
+- [x] Developer Operational Suite (audit, maintenance, magic links, cache console, diagnostics)
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { writeAuditLog } from "@/lib/audit";
 import {
   BANNER_ALIGNMENTS,
   BANNER_FONT_STYLES,
@@ -65,13 +66,29 @@ export async function upsertAnnouncementBanner(
   });
 
   if (existing) {
-    await prisma.announcementBanner.update({
+    const updated = await prisma.announcementBanner.update({
       where: { id: existing.id },
       data: parsed.data,
     });
+    await writeAuditLog({
+      actor: { id: session!.user!.id, email: session!.user!.email },
+      action: "UPDATE_ANNOUNCEMENT",
+      entity: "AnnouncementBanner",
+      entityId: updated.id,
+      previousState: existing,
+      newState: updated,
+    });
   } else {
-    await prisma.announcementBanner.create({
+    const created = await prisma.announcementBanner.create({
       data: parsed.data,
+    });
+    await writeAuditLog({
+      actor: { id: session!.user!.id, email: session!.user!.email },
+      action: "CREATE_ANNOUNCEMENT",
+      entity: "AnnouncementBanner",
+      entityId: created.id,
+      previousState: null,
+      newState: created,
     });
   }
 

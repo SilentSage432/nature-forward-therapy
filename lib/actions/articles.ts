@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { writeAuditLog } from "@/lib/audit";
 import { slugify } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
@@ -70,6 +71,15 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
     },
   });
 
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "CREATE_ARTICLE",
+    entity: "BlogPost",
+    entityId: post.id,
+    previousState: null,
+    newState: post,
+  });
+
   revalidateArticleSurfaces(post.slug);
   return { ok: true, message: "Essay saved.", id: post.id };
 }
@@ -128,6 +138,15 @@ export async function updateArticle(
     },
   });
 
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "UPDATE_ARTICLE",
+    entity: "BlogPost",
+    entityId: post.id,
+    previousState: existing,
+    newState: post,
+  });
+
   revalidateArticleSurfaces(post.slug);
   if (existing.slug !== post.slug) {
     revalidatePath(`/articles/${existing.slug}`);
@@ -148,6 +167,16 @@ export async function deleteArticle(id: string): Promise<ActionResult> {
   }
 
   await prisma.blogPost.delete({ where: { id } });
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "DELETE_ARTICLE",
+    entity: "BlogPost",
+    entityId: existing.id,
+    previousState: existing,
+    newState: null,
+  });
+
   revalidateArticleSurfaces(existing.slug);
   return { ok: true, message: "Essay deleted." };
 }

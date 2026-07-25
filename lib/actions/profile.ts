@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { writeAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
 
@@ -46,9 +47,22 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
     return { ok: false, message: "Profile not found." };
   }
 
-  await prisma.practitionerProfile.update({
+  const updated = await prisma.practitionerProfile.update({
     where: { id: profile.id },
     data: parsed.data,
+  });
+
+  const bookingChanged =
+    profile.headwayUrl !== updated.headwayUrl ||
+    profile.psychologyTodayUrl !== updated.psychologyTodayUrl;
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: bookingChanged ? "UPDATE_BOOKING_LINK" : "UPDATE_PROFILE",
+    entity: "PractitionerProfile",
+    entityId: updated.id,
+    previousState: profile,
+    newState: updated,
   });
 
   revalidatePath("/");

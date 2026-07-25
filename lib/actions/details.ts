@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
+import { writeAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
 import { INSURANCE_OPTIONS, PAYMENT_OPTIONS } from "@/lib/cms-options";
@@ -32,6 +33,10 @@ export async function updateInsurancesAndPayments(
     return { ok: false, message: "Practice details not found." };
   }
 
+  const previousInsurances = await prisma.insurance.findMany({
+    orderBy: { sortOrder: "asc" },
+  });
+
   await prisma.$transaction([
     prisma.practiceDetail.update({
       where: { id: practice.id },
@@ -50,6 +55,26 @@ export async function updateInsurancesAndPayments(
       })),
     });
   }
+
+  const updatedPractice = await prisma.practiceDetail.findUnique({
+    where: { id: practice.id },
+  });
+
+  await writeAuditLog({
+    actor: { id: session!.user!.id, email: session!.user!.email },
+    action: "CHANGE_INSURANCE",
+    entity: "PracticeDetail",
+    entityId: practice.id,
+    previousState: {
+      practice,
+      insurances: previousInsurances,
+    },
+    newState: {
+      practice: updatedPractice,
+      insurances: validInsurances,
+      paymentMethods: validPayments,
+    },
+  });
 
   revalidatePath("/");
   revalidatePath("/admin");

@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Developer Operational Suite
+
+Added `AuditLog`, `SystemSetting`, and `MagicToken` models. Developer APIs: revalidate (path-aware), maintenance + session flush, magic-link, audit list/rollback, diagnostics. New `/admin/cache` console; settings emergency controls; users magic-login button; activity feed with snapshot revert. Public maintenance holding card via `PublicMaintenanceGate` (developers exempt). CMS mutations write audit snapshots. Ownership: `lib/audit.ts`, `lib/system-settings.ts`, `app/api/admin/*`.
+
+## 2026-07-24 — Support desk active-feed resolve flow
+
+`GET /api/admin/support` returns only `OPEN` / `IN_PROGRESS` messages. Marking resolved bulk-updates those rows; developer desk empties with a resolved banner, sidebar badge clears via `support-desk:updated`, and the editor drawer re-polls to the “How can we help you today?” greeting.
+
 ## 2026-07-24 — Support chat drawer mount + preview mode
 
 `SupportChatDrawer` restyled (emerald floating CTA) and mounted from `app/admin/layout.tsx` via `AdminSupportChatHost` for EDITORS and when DEVELOPER Preview Editor View is on (`EditorPreviewContext`).

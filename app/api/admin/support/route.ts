@@ -20,14 +20,16 @@ export async function GET() {
   }
 
   const messages = await prisma.supportMessage.findMany({
+    where: {
+      status: { in: ["OPEN", "IN_PROGRESS"] },
+    },
     orderBy: { createdAt: "asc" },
   });
 
-  const openCount = messages.filter(
-    (m) => m.status === "OPEN" || m.status === "IN_PROGRESS",
-  ).length;
-
-  return NextResponse.json({ messages, openCount });
+  return NextResponse.json({
+    messages,
+    openCount: messages.length,
+  });
 }
 
 export async function POST(request: Request) {
@@ -125,6 +127,16 @@ export async function PATCH(request: Request) {
       { error: parsed.error.issues[0]?.message ?? "Invalid status update." },
       { status: 400 },
     );
+  }
+
+  if (parsed.data.status === "RESOLVED") {
+    const result = await prisma.supportMessage.updateMany({
+      where: {
+        status: { in: ["OPEN", "IN_PROGRESS"] },
+      },
+      data: { status: "RESOLVED" },
+    });
+    return NextResponse.json({ updatedCount: result.count });
   }
 
   if (parsed.data.id) {

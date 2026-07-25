@@ -14,12 +14,14 @@ import {
   Megaphone,
   MessageCircle,
   PenLine,
+  RefreshCw,
   Search,
   Settings,
   Shield,
   Sparkles,
   User,
 } from "lucide-react";
+import { SUPPORT_DESK_UPDATED_EVENT } from "@/components/admin/SupportDesk";
 
 type NavItem = {
   href: string;
@@ -81,6 +83,7 @@ const developerSections: NavSection[] = [
     title: "Controls",
     icon: Settings,
     items: [
+      { href: "/admin/cache", label: "Cache & Revalidation", icon: RefreshCw },
       { href: "/admin/seo", label: "SEO & Indexing", icon: Search },
       { href: "/admin/settings", label: "System Settings", icon: Settings },
     ],
@@ -173,7 +176,21 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
     const id = window.setInterval(() => {
       void refreshOpenCount();
     }, 8000);
-    return () => window.clearInterval(id);
+
+    function onSupportUpdated(event: Event) {
+      const detail = (event as CustomEvent<{ openCount?: number }>).detail;
+      if (typeof detail?.openCount === "number") {
+        setOpenCount(detail.openCount);
+        return;
+      }
+      void refreshOpenCount();
+    }
+
+    window.addEventListener(SUPPORT_DESK_UPDATED_EVENT, onSupportUpdated);
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener(SUPPORT_DESK_UPDATED_EVENT, onSupportUpdated);
+    };
   }, [isDeveloper, refreshOpenCount, pathname]);
 
   function onNavigate(href: string) {

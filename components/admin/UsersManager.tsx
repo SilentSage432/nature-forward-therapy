@@ -29,6 +29,8 @@ export function UsersManager() {
   const [resetUser, setResetUser] = useState<CmsUser | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [toastTone, setToastTone] = useState<"success" | "error">("success");
+  const [magicPending, setMagicPending] = useState<string | null>(null);
+  const [magicUrl, setMagicUrl] = useState<string | null>(null);
 
   const [resetState, resetAction, resetPending] = useActionState(
     async (_prev: ActionResult, formData: FormData) => resetUserPassword(formData),
@@ -58,6 +60,42 @@ export function UsersManager() {
       void loadUsers();
     }
   }, [resetState]);
+
+  async function generateMagicLink(user: CmsUser) {
+    setMagicPending(user.id);
+    setMagicUrl(null);
+    try {
+      const res = await fetch("/api/admin/magic-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, email: user.email }),
+      });
+      const body = (await res.json().catch(() => null)) as {
+        url?: string;
+        message?: string;
+        error?: string;
+      } | null;
+      if (!res.ok || !body?.url) {
+        setToastTone("error");
+        setToast(body?.error ?? "Could not generate magic link.");
+        return;
+      }
+      setMagicUrl(body.url);
+      try {
+        await navigator.clipboard.writeText(body.url);
+        setToastTone("success");
+        setToast("Magic login link copied to clipboard (15 minutes).");
+      } catch {
+        setToastTone("success");
+        setToast("Magic login link generated — copy it from the box below.");
+      }
+    } catch {
+      setToastTone("error");
+      setToast("Network error generating magic link.");
+    } finally {
+      setMagicPending(null);
+    }
+  }
 
   async function onCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -135,6 +173,18 @@ export function UsersManager() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
+                      {user.role === "EDITOR" ? (
+                        <button
+                          type="button"
+                          disabled={magicPending === user.id}
+                          onClick={() => void generateMagicLink(user)}
+                          className="rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-400/15 disabled:opacity-60"
+                        >
+                          {magicPending === user.id
+                            ? "Generating…"
+                            : "🔑 Generate 15-Min Magic Login Link"}
+                        </button>
+                      ) : null}
                       <button
                         type="button"
                         disabled={togglePending}
@@ -171,6 +221,28 @@ export function UsersManager() {
           </table>
         </div>
       </section>
+
+      {magicUrl ? (
+        <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-4">
+          <p className="text-xs font-semibold tracking-wide text-emerald-200 uppercase">
+            Magic login link (15 min, single use)
+          </p>
+          <p className="mt-2 break-all font-mono text-xs text-sage-light">
+            {magicUrl}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              void navigator.clipboard.writeText(magicUrl);
+              setToastTone("success");
+              setToast("Copied again.");
+            }}
+            className="mt-3 rounded-lg border border-emerald-400/40 px-3 py-1.5 text-xs text-emerald-100 hover:bg-emerald-400/15"
+          >
+            Copy link
+          </button>
+        </div>
+      ) : null}
 
       <form onSubmit={onCreate} className="space-y-4">
         <h2 className="font-heading text-xl font-semibold text-gold">
