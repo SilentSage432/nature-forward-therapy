@@ -10,6 +10,14 @@ const bodySchema = z.object({
 
 const DEFAULT_PATHS = ["/", "/articles", "/bookshelf", "/admin"] as const;
 
+function safeRevalidate(path: string) {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  // Revalidate the route segment tree so nested layouts refresh.
+  revalidatePath(normalized, "layout");
+  revalidatePath(normalized, "page");
+  return normalized;
+}
+
 export async function POST(request: Request) {
   const session = await auth();
   if (!isDeveloper(session?.user?.role)) {
@@ -28,23 +36,35 @@ export async function POST(request: Request) {
     // Empty body → flush defaults.
   }
 
-  if (path) {
-    const normalized = path.startsWith("/") ? path : `/${path}`;
-    revalidatePath(normalized);
+  try {
+    if (path) {
+      const normalized = safeRevalidate(path);
+      return NextResponse.json({
+        ok: true,
+        message: `Revalidated ${normalized} (page + layout).`,
+        paths: [normalized],
+        revalidatedAt: new Date().toISOString(),
+      });
+    }
+
+    const paths = DEFAULT_PATHS.map((p) => safeRevalidate(p));
     return NextResponse.json({
-      message: `Revalidated ${normalized}.`,
-      paths: [normalized],
+      ok: true,
+      message:
+        "Public cache flushed for /, /articles, /bookshelf, and /admin (page + layout).",
+      paths,
       revalidatedAt: new Date().toISOString(),
     });
+  } catch (error) {
+    console.error("[revalidate]", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Cache revalidation failed.",
+      },
+      { status: 500 },
+    );
   }
-
-  for (const p of DEFAULT_PATHS) {
-    revalidatePath(p);
-  }
-
-  return NextResponse.json({
-    message: "Public cache revalidated for /, /articles, /bookshelf, and /admin.",
-    paths: [...DEFAULT_PATHS],
-    revalidatedAt: new Date().toISOString(),
-  });
 }

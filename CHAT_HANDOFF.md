@@ -54,5 +54,6 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 - Force-password modal: authenticated EDITOR + mustChangePassword only; Sign Out → `/` via client `signOut`.
 - Optional `DISCORD_SUPPORT_WEBHOOK_URL` posts EDITOR support messages to Discord (failures never block the DB save).
 - JSON backups via `/api/admin/backup` never include password hashes.
-- Maintenance mode blocks public visitors; DEVELOPER sessions remain able to browse.
+- Maintenance mode blocks public visitors; DEVELOPER sessions remain able to browse and see an amber ACTIVE banner on all pages.
+- Root layout is `force-dynamic`; maintenance toggles revalidate public layouts so the holding card appears immediately.
 - Magic links are single-use and expire in 15 minutes (`MagicToken`).

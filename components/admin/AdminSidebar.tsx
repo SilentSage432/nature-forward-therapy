@@ -19,6 +19,7 @@ import {
   Settings,
   Shield,
   Sparkles,
+  Stethoscope,
   User,
 } from "lucide-react";
 import { SUPPORT_DESK_UPDATED_EVENT } from "@/components/admin/SupportDesk";
@@ -84,6 +85,7 @@ const developerSections: NavSection[] = [
     icon: Settings,
     items: [
       { href: "/admin/cache", label: "Cache & Revalidation", icon: RefreshCw },
+      { href: "/admin/diagnostics", label: "Diagnostics", icon: Stethoscope },
       { href: "/admin/seo", label: "SEO & Indexing", icon: Search },
       { href: "/admin/settings", label: "System Settings", icon: Settings },
     ],

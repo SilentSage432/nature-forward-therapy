@@ -21,6 +21,7 @@ export const DEVELOPER_ONLY_PATHS = [
   "/admin/backup",
   "/admin/seo",
   "/admin/cache",
+  "/admin/diagnostics",
 ] as const;
 
 export function isDeveloper(role: AppRole | undefined | null): boolean {

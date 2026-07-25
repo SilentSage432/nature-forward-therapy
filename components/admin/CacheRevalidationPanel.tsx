@@ -2,18 +2,22 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { ExternalLink, RefreshCw, Zap } from "lucide-react";
+import { Toast } from "@/components/admin/Toast";
 
 export function CacheRevalidationPanel() {
   const [path, setPath] = useState("/articles");
   const [pending, setPending] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const [toastTone, setToastTone] = useState<"success" | "error">("success");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [previewStamp, setPreviewStamp] = useState(() => Date.now());
 
   const previewHref = useMemo(() => {
     const normalized = path.startsWith("/") ? path : `/${path}`;
     const sep = normalized.includes("?") ? "&" : "?";
-    return `${normalized}${sep}nocache=${Date.now()}`;
-  }, [path]);
+    return `${normalized}${sep}nocache=${previewStamp}`;
+  }, [path, previewStamp]);
 
   async function revalidate(target?: string) {
     setPending(true);
@@ -28,14 +32,25 @@ export function CacheRevalidationPanel() {
       const body = (await res.json().catch(() => null)) as {
         message?: string;
         error?: string;
+        ok?: boolean;
       } | null;
       if (!res.ok) {
-        setError(body?.error ?? "Revalidation failed.");
+        const err = body?.error ?? "Revalidation failed.";
+        setError(err);
+        setToastTone("error");
+        setToast(err);
         return;
       }
-      setMessage(body?.message ?? "Cache revalidated.");
+      const okMsg = body?.message ?? "Cache revalidated.";
+      setMessage(okMsg);
+      setToastTone("success");
+      setToast(okMsg);
+      setPreviewStamp(Date.now());
     } catch {
-      setError("Network error while revalidating.");
+      const err = "Network error while revalidating.";
+      setError(err);
+      setToastTone("error");
+      setToast(err);
     } finally {
       setPending(false);
     }
@@ -118,6 +133,11 @@ export function CacheRevalidationPanel() {
 
       {message ? <p className="text-sm text-gold">{message}</p> : null}
       {error ? <p className="text-sm text-red-300">{error}</p> : null}
+      <Toast
+        message={toast}
+        tone={toastTone}
+        onDismiss={() => setToast(null)}
+      />
     </div>
   );
 }

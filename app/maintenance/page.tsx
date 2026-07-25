@@ -1,5 +1,8 @@
-import { MaintenanceHolding } from "@/components/MaintenanceGate";
+import { MaintenanceHolding } from "@/components/PublicMaintenanceGate";
 import { getMaintenanceMode } from "@/lib/system-settings";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function MaintenancePage() {
   const maintenance = await getMaintenanceMode();

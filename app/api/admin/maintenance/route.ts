@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
@@ -17,6 +18,14 @@ const maintenanceSchema = z.object({
 const flushSchema = z.object({
   flushSessions: z.literal(true),
 });
+
+function revalidatePublicSurfaces() {
+  revalidatePath("/", "layout");
+  revalidatePath("/articles", "layout");
+  revalidatePath("/bookshelf", "layout");
+  revalidatePath("/maintenance", "page");
+  revalidatePath("/admin", "layout");
+}
 
 export async function GET() {
   const session = await auth();
@@ -63,10 +72,12 @@ export async function POST(request: Request) {
     parsed.data.message ?? DEFAULT_MAINTENANCE_MESSAGE,
   );
 
+  revalidatePublicSurfaces();
+
   return NextResponse.json({
     message: maintenance.enabled
-      ? "Maintenance mode enabled."
-      : "Maintenance mode disabled.",
+      ? "Maintenance mode enabled. Public visitors will see the holding page."
+      : "Maintenance mode disabled. Public site restored.",
     maintenance,
   });
 }

@@ -1,21 +1,31 @@
 import { NextResponse } from "next/server";
+import { AuthError } from "next-auth";
 import { signIn } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token")?.trim();
+  const loginError = new URL("/login?error=magic", request.url);
+  const adminUrl = new URL("/admin", request.url);
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login?error=magic", request.url));
+    return NextResponse.redirect(loginError);
   }
 
   try {
-    await signIn("magic-link", {
+    const result = await signIn("magic-link", {
       token,
-      redirectTo: "/admin",
+      redirect: false,
     });
+
+    if (!result || result.error || (result as { ok?: boolean }).ok === false) {
+      console.error("[magic-login] rejected", result);
+      return NextResponse.redirect(loginError);
+    }
+
+    return NextResponse.redirect(adminUrl);
   } catch (error) {
-    // Auth.js throws NEXT_REDIRECT on success — rethrow those.
+    // Some Auth.js versions still throw a redirect on success.
     if (
       error &&
       typeof error === "object" &&
@@ -24,9 +34,11 @@ export async function GET(request: Request) {
     ) {
       throw error;
     }
+    if (error instanceof AuthError) {
+      console.error("[magic-login]", error.type, error.message);
+      return NextResponse.redirect(loginError);
+    }
     console.error("[magic-login]", error);
-    return NextResponse.redirect(new URL("/login?error=magic", request.url));
+    return NextResponse.redirect(loginError);
   }
-
-  return NextResponse.redirect(new URL("/admin", request.url));
 }

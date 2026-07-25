@@ -162,8 +162,12 @@ export function EmergencyControlsPanel() {
         </button>
       </div>
 
-      {message ? <p className="text-sm text-gold">{message}</p> : null}
       {error ? <p className="text-sm text-red-300">{error}</p> : null}
+      {message ? (
+        <p className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-sm text-emerald-200">
+          {message}
+        </p>
+      ) : null}
     </div>
   );
 }

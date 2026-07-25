@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { RotateCcw, Search } from "lucide-react";
+import { Toast } from "@/components/admin/Toast";
 
 type AuditLog = {
   id: string;
@@ -36,6 +37,8 @@ export function AuditActivityPanel() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const [toastTone, setToastTone] = useState<"success" | "error">("success");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -85,13 +88,22 @@ export function AuditActivityPanel() {
         error?: string;
       } | null;
       if (!res.ok) {
-        setError(body?.error ?? "Rollback failed.");
+        const err = body?.error ?? "Rollback failed.";
+        setError(err);
+        setToastTone("error");
+        setToast(err);
         return;
       }
-      setMessage(body?.message ?? "Rollback complete.");
+      const okMsg = body?.message ?? "Rollback complete.";
+      setMessage(okMsg);
+      setToastTone("success");
+      setToast(okMsg);
       void load();
     } catch {
-      setError("Network error during rollback.");
+      const err = "Network error during rollback.";
+      setError(err);
+      setToastTone("error");
+      setToast(err);
     } finally {
       setPendingId(null);
     }
@@ -179,6 +191,11 @@ export function AuditActivityPanel() {
           })}
         </ul>
       )}
+      <Toast
+        message={toast}
+        tone={toastTone}
+        onDismiss={() => setToast(null)}
+      />
     </div>
   );
 }

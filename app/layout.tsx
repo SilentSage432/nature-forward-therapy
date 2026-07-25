@@ -1,9 +1,12 @@
 import { headers } from "next/headers";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Montserrat } from "next/font/google";
-import { PublicMaintenanceGate } from "@/components/MaintenanceGate";
+import { PublicMaintenanceGate } from "@/components/PublicMaintenanceGate";
 import { getSiteContent } from "@/lib/content";
 import "./globals.css";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const inter = Inter({
   subsets: ["latin"],
@@ -67,13 +70,34 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+function resolvePathname(headerStore: Headers): string {
+  const candidates = [
+    headerStore.get("x-pathname"),
+    headerStore.get("x-invoke-path"),
+    headerStore.get("x-matched-path"),
+    headerStore.get("next-url"),
+  ];
+  for (const raw of candidates) {
+    if (!raw) continue;
+    try {
+      if (raw.startsWith("http://") || raw.startsWith("https://")) {
+        return new URL(raw).pathname || "/";
+      }
+      return raw.split("?")[0] || "/";
+    } catch {
+      return raw.split("?")[0] || "/";
+    }
+  }
+  return "";
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const headerStore = await headers();
-  const pathname = headerStore.get("x-pathname") ?? "";
+  const pathname = resolvePathname(headerStore);
 
   return (
     <html

@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Ops suite audit: maintenance gate fix
+
+Fixed Emergency Maintenance Mode: root layout is `force-dynamic`, `getMaintenanceMode` uses `noStore`, proxy sets `x-pathname` on all page routes, and `PublicMaintenanceGate` blocks public visitors/editors while developers see an amber ACTIVE banner site-wide. Also hardened revalidate (layout+page), magic-login (`redirect: false`), audit rollback try/catch, diagnostics 5s AbortController + `/admin/diagnostics` UI.
+
 ## 2026-07-24 — Developer Operational Suite
 
 Added `AuditLog`, `SystemSetting`, and `MagicToken` models. Developer APIs: revalidate (path-aware), maintenance + session flush, magic-link, audit list/rollback, diagnostics. New `/admin/cache` console; settings emergency controls; users magic-login button; activity feed with snapshot revert. Public maintenance holding card via `PublicMaintenanceGate` (developers exempt). CMS mutations write audit snapshots. Ownership: `lib/audit.ts`, `lib/system-settings.ts`, `app/api/admin/*`.
