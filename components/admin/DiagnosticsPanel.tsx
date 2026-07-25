@@ -52,7 +52,7 @@ export function DiagnosticsPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <p className="text-sm text-sage-light">
           Live HTTP probes for Headway, Psychology Today, and practice webmail
           (5s timeout).
@@ -61,7 +61,7 @@ export function DiagnosticsPanel() {
           type="button"
           onClick={() => void load()}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-lg border border-sage-dark/40 px-3 py-2 text-xs text-sage-light hover:border-gold hover:text-gold disabled:opacity-60"
+          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-sage-dark/40 px-3 py-2 text-xs text-sage-light hover:border-gold hover:text-gold disabled:opacity-60"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
           Re-run
@@ -87,17 +87,17 @@ export function DiagnosticsPanel() {
                 key={check.id}
                 className="rounded-xl border border-sage-dark/30 bg-forest/50 px-4 py-3"
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:gap-3">
                   <div className="min-w-0">
                     <p className="flex items-center gap-2 font-heading text-sm font-semibold text-white">
-                      <Activity className="h-4 w-4 text-gold" />
+                      <Activity className="h-4 w-4 shrink-0 text-gold" />
                       {check.label}
                     </p>
                     <a
                       href={check.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 block truncate text-xs text-sage-dark hover:text-gold"
+                      className="mt-1 block break-all text-xs text-sage-dark hover:text-gold"
                     >
                       {check.url}
                     </a>

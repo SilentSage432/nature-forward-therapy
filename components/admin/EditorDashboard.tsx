@@ -140,14 +140,14 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
 
       <SupportCard />
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <Link
               key={card.title}
               href={card.href}
-              className="card-hover rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6 transition hover:border-gold/40"
+              className="card-hover rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-5 transition hover:border-gold/40 sm:p-6 md:col-span-1 lg:col-span-2"
             >
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl">

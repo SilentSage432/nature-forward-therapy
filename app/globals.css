@@ -181,6 +181,31 @@
     animation: supportDrawerIn 0.28s ease-out forwards;
   }
 
+  /* Thin custom scrollbars for admin tables / drawers on small screens */
+  .admin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.45) rgba(22, 34, 33, 0.6);
+  }
+
+  .admin-scroll::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  .admin-scroll::-webkit-scrollbar-track {
+    background: rgba(22, 34, 33, 0.55);
+    border-radius: 999px;
+  }
+
+  .admin-scroll::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.45);
+    border-radius: 999px;
+  }
+
+  .admin-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.7);
+  }
+
   .focus-pill {
     border: 1px solid rgba(196, 139, 113, 0.45);
     background: rgba(196, 139, 113, 0.14);

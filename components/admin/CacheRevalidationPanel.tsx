@@ -78,7 +78,7 @@ export function CacheRevalidationPanel() {
           type="button"
           disabled={pending}
           onClick={() => void revalidate()}
-          className="btn-gold mt-4 inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+          className="btn-gold mt-4 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60 sm:w-auto"
         >
           <Zap className={`h-4 w-4 ${pending ? "animate-pulse" : ""}`} />
           ⚡ Flush Global Route Cache
@@ -95,17 +95,17 @@ export function CacheRevalidationPanel() {
         <p className="mt-2 text-sm text-sage-light">
           Example: `/articles/navigating-transitions` or `/bookshelf`.
         </p>
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
           <input
             value={path}
             onChange={(e) => setPath(e.target.value)}
             placeholder="/articles/slug"
-            className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-sm text-body-text outline-none focus:border-gold"
+            className="min-h-[44px] w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-sm text-body-text outline-none focus:border-gold"
           />
           <button
             type="submit"
             disabled={pending || path.trim().length === 0}
-            className="btn-outline inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold disabled:opacity-60"
+            className="btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold disabled:opacity-60"
           >
             <RefreshCw className={`h-4 w-4 ${pending ? "animate-spin" : ""}`} />
             Revalidate Specific Route
@@ -124,7 +124,7 @@ export function CacheRevalidationPanel() {
           href={previewHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-outline mt-4 inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
+          className="btn-outline mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
         >
           <ExternalLink className="h-4 w-4" />
           Open Preview (`?nocache=…`)

@@ -154,7 +154,7 @@ export function SupportDesk() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2 text-sm text-sage-light">
           <MessageCircle className="h-4 w-4 text-gold" aria-hidden="true" />
           {openCount > 0 ? (
@@ -170,7 +170,7 @@ export function SupportDesk() {
           type="button"
           onClick={() => void markResolved()}
           disabled={resolving || openCount === 0}
-          className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/35 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 transition hover:border-emerald-300/50 hover:bg-emerald-400/15 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-emerald-400/35 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 transition hover:border-emerald-300/50 hover:bg-emerald-400/15 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
         >
           <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
           {resolving ? "Resolving…" : "Mark Topic Resolved"}

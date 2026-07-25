@@ -164,7 +164,7 @@ export function EmergencyControlsPanel() {
           When enabled, public visitors see a nature-themed holding card.
           Developers can still browse the live site with a banner reminder.
         </p>
-        <label className="mt-4 flex items-center gap-3 text-sm text-sage-light">
+        <label className="mt-4 flex min-h-[44px] items-center gap-3 text-sm text-sage-light">
           <input
             type="checkbox"
             checked={maintenance.enabled === true}
@@ -177,7 +177,7 @@ export function EmergencyControlsPanel() {
                   maintenance.message.trim() || DEFAULT_MAINTENANCE_MESSAGE,
               });
             }}
-            className="h-4 w-4 accent-gold"
+            className="h-5 w-5 accent-gold"
           />
           Master switch — maintenance mode{" "}
           {maintenance.enabled ? "ON" : "OFF"}
@@ -192,10 +192,10 @@ export function EmergencyControlsPanel() {
             onChange={(e) =>
               setMaintenance({ ...maintenance, message: e.target.value })
             }
-            className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-sm text-body-text outline-none focus:border-gold"
+            className="min-h-[88px] w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-sm text-body-text outline-none focus:border-gold"
           />
         </label>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <button
             type="button"
             disabled={pending}
@@ -206,7 +206,7 @@ export function EmergencyControlsPanel() {
                   maintenance.message.trim() || DEFAULT_MAINTENANCE_MESSAGE,
               })
             }
-            className="btn-gold rounded-lg px-5 py-2.5 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+            className="btn-gold inline-flex min-h-[44px] items-center justify-center rounded-lg px-5 py-2.5 font-heading text-sm font-semibold text-forest disabled:opacity-60"
           >
             {pending ? "Saving…" : "Save maintenance message"}
           </button>
@@ -215,7 +215,7 @@ export function EmergencyControlsPanel() {
               type="button"
               disabled={pending}
               onClick={() => void forceOff()}
-              className="rounded-lg border border-amber-300/40 bg-amber-400/10 px-5 py-2.5 text-sm font-medium text-amber-100 transition hover:bg-amber-400/20 disabled:opacity-60"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-amber-300/40 bg-amber-400/10 px-5 py-2.5 text-sm font-medium text-amber-100 transition hover:bg-amber-400/20 disabled:opacity-60"
             >
               Force OFF now
             </button>
@@ -238,7 +238,7 @@ export function EmergencyControlsPanel() {
           type="button"
           disabled={flushPending}
           onClick={() => void flushSessions()}
-          className="mt-4 rounded-lg border border-red-300/40 bg-red-400/10 px-5 py-2.5 text-sm font-medium text-red-100 transition hover:bg-red-400/20 disabled:opacity-60"
+          className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-lg border border-red-300/40 bg-red-400/10 px-5 py-2.5 text-sm font-medium text-red-100 transition hover:bg-red-400/20 disabled:opacity-60"
         >
           {flushPending ? "Flushing…" : "Invalidate all active sessions"}
         </button>

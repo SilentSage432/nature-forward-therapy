@@ -128,7 +128,7 @@ export function UsersManager() {
   }
 
   const fieldClass =
-    "w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold";
+    "min-h-[44px] w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold";
 
   return (
     <div className="space-y-8">
@@ -136,8 +136,8 @@ export function UsersManager() {
         <h2 className="font-heading text-xl font-semibold text-gold">
           Registered users
         </h2>
-        <div className="overflow-x-auto rounded-xl border border-sage-dark/30">
-          <table className="min-w-full text-left text-sm">
+        <div className="admin-scroll overflow-x-auto rounded-xl border border-sage-dark/30">
+          <table className="min-w-[40rem] w-full text-left text-sm">
             <thead className="bg-forest/80 text-xs tracking-wide text-sage-light uppercase">
               <tr>
                 <th className="px-4 py-3 font-semibold">Email</th>
@@ -178,7 +178,7 @@ export function UsersManager() {
                           type="button"
                           disabled={magicPending === user.id}
                           onClick={() => void generateMagicLink(user)}
-                          className="rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-400/15 disabled:opacity-60"
+                          className="inline-flex min-h-[44px] items-center rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-400/15 disabled:opacity-60"
                         >
                           {magicPending === user.id
                             ? "Generating…"
@@ -202,14 +202,14 @@ export function UsersManager() {
                             if (result.ok) await loadUsers();
                           });
                         }}
-                        className="rounded-lg border border-sage-dark/40 px-3 py-1.5 text-xs text-sage-light hover:border-gold hover:text-gold disabled:opacity-60"
+                        className="inline-flex min-h-[44px] items-center rounded-lg border border-sage-dark/40 px-3 py-1.5 text-xs text-sage-light hover:border-gold hover:text-gold disabled:opacity-60"
                       >
                         {user.mustChangePassword ? "Clear force" : "Force change"}
                       </button>
                       <button
                         type="button"
                         onClick={() => setResetUser(user)}
-                        className="rounded-lg border border-sage-dark/40 px-3 py-1.5 text-xs text-sage-light hover:border-gold hover:text-gold"
+                        className="inline-flex min-h-[44px] items-center rounded-lg border border-sage-dark/40 px-3 py-1.5 text-xs text-sage-light hover:border-gold hover:text-gold"
                       >
                         Reset Password
                       </button>
@@ -273,15 +273,15 @@ export function UsersManager() {
         <button
           type="submit"
           disabled={pending}
-          className="btn-gold rounded-lg px-6 py-3 font-heading font-semibold text-forest disabled:opacity-60"
+          className="btn-gold inline-flex min-h-[44px] items-center rounded-lg px-6 py-3 font-heading font-semibold text-forest disabled:opacity-60"
         >
           {pending ? "Creating…" : "Create user"}
         </button>
       </form>
 
       {resetUser ? (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-forest/80 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-gold/30 bg-forest-soft p-6 shadow-2xl">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-forest/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-full rounded-2xl border border-gold/30 bg-forest-soft p-4 shadow-2xl sm:max-w-lg sm:p-6">
             <h3 className="font-heading text-xl font-bold text-white">
               Reset password
             </h3>
@@ -313,18 +313,18 @@ export function UsersManager() {
                 />
                 Force password change on next login
               </label>
-              <div className="flex gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <button
                   type="submit"
                   disabled={resetPending}
-                  className="btn-gold rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+                  className="btn-gold inline-flex min-h-[44px] items-center justify-center rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
                 >
                   {resetPending ? "Saving…" : "Apply reset"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setResetUser(null)}
-                  className="rounded-lg border border-sage-dark/40 px-5 py-3 text-sm text-sage-light hover:border-gold hover:text-gold"
+                  className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-sage-dark/40 px-5 py-3 text-sm text-sage-light hover:border-gold hover:text-gold"
                 >
                   Cancel
                 </button>

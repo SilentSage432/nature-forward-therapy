@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AuthLoadingScreen } from "@/components/admin/AuthLoadingScreen";
 import { ForcePasswordModal } from "@/components/admin/ForcePasswordModal";
@@ -17,17 +17,17 @@ type AdminShellProps = {
 
 export function AdminShell({ developer, email, children }: AdminShellProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session, status } = useSession();
   const { previewEditor, setPreviewEditor } = useEditorPreview();
   const [signingOut, setSigningOut] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const showForcePassword =
     status === "authenticated" &&
     session?.user?.role === "EDITOR" &&
     session.user.mustChangePassword === true;
 
-  // Leaving admin sub-routes while previewing: keep preview only on /admin home content.
-  // Preview state lives in context so SupportChatHost can see it across the shell.
   useEffect(() => {
     if (status === "unauthenticated" && !signingOut) {
       router.replace("/login");
@@ -40,9 +40,25 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
     }
   }, [developer, previewEditor, setPreviewEditor]);
 
+  // Close mobile drawer on route changes.
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while the mobile drawer is open.
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [mobileNavOpen]);
+
   async function handleSignOut() {
     setSigningOut(true);
     setPreviewEditor(false);
+    setMobileNavOpen(false);
     await signOut({ callbackUrl: "/", redirect: true });
   }
 
@@ -58,66 +74,76 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
     return <AuthLoadingScreen label="Redirecting…" />;
   }
 
+  const showDeveloperNav = developer && !previewEditor;
+
   return (
-    <div className="min-h-screen bg-forest text-body-text">
+    <div className="min-h-screen overflow-x-hidden bg-forest text-body-text">
       {showForcePassword ? <ForcePasswordModal /> : null}
       {previewEditor ? (
-        <div className="border-b border-gold/35 bg-gold/10 px-6 py-2.5">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+        <div className="border-b border-gold/35 bg-gold/10 px-4 py-2.5 sm:px-6">
+          <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
             <p className="text-sm font-medium text-gold">
               Preview Editor View — Tech Desk chat is available
             </p>
             <button
               type="button"
               onClick={() => setPreviewEditor(false)}
-              className="rounded-lg border border-gold/40 bg-forest/40 px-3 py-1.5 text-xs font-semibold text-gold transition hover:bg-forest/70"
+              className="inline-flex min-h-[44px] items-center rounded-lg border border-gold/40 bg-forest/40 px-3 py-1.5 text-xs font-semibold text-gold transition hover:bg-forest/70"
             >
               Exit Preview
             </button>
           </div>
         </div>
       ) : null}
-      <header className="border-b border-sage-dark/40 bg-forest-soft/80">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-          <div>
-            <p className="font-heading text-lg font-semibold text-gold">
-              {developer
-                ? "Nature-Forward Control Plane"
-                : "Nature-Forward Practice Portal"}
-            </p>
-            <p className="mt-1 text-xs text-stone-400">
-              Signed in as{" "}
-              <span className="text-amber-200/80">{email}</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href={developer ? "/" : "https://flockoffox.org"}
-              {...(developer
-                ? {}
-                : { target: "_blank", rel: "noopener noreferrer" })}
-              className="rounded-lg border border-sage-dark/40 px-3 py-2 text-sm text-sage-light hover:border-gold hover:text-gold"
-            >
-              {developer ? "View site" : "Live site ↗"}
-            </Link>
-            <button
-              type="button"
-              onClick={() => void handleSignOut()}
-              className="rounded-lg border border-gold/30 bg-gold/10 px-3 py-2 text-sm font-medium text-amber-200/90 transition hover:border-gold hover:bg-gold/20 hover:text-gold"
-            >
-              Sign Out
-            </button>
-          </div>
+
+      <AdminHeader
+        developer={developer}
+        email={email}
+        mobileNavOpen={mobileNavOpen}
+        onToggleMobileNav={() => setMobileNavOpen((open) => !open)}
+        onSignOut={() => void handleSignOut()}
+      />
+
+      {/* Mobile slide-over navigation */}
+      <div
+        className={`fixed inset-0 z-50 lg:hidden ${
+          mobileNavOpen ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        aria-hidden={!mobileNavOpen}
+      >
+        <button
+          type="button"
+          className={`absolute inset-0 bg-forest/70 transition-opacity duration-300 ${
+            mobileNavOpen ? "opacity-100" : "opacity-0"
+          }`}
+          aria-label="Close navigation menu"
+          tabIndex={mobileNavOpen ? 0 : -1}
+          onClick={() => setMobileNavOpen(false)}
+        />
+        <div
+          className={`absolute inset-y-0 left-0 flex w-[min(100%,20rem)] max-w-full transform transition-transform duration-300 ease-out ${
+            mobileNavOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <AdminSidebar
+            id="admin-mobile-nav"
+            isDeveloper={showDeveloperNav}
+            onNavigateComplete={() => setMobileNavOpen(false)}
+            className="admin-scroll h-full w-full overflow-y-auto rounded-none border-y-0 border-l-0 border-r border-sage-dark/40 bg-forest-soft/98 p-4 shadow-2xl"
+          />
         </div>
-      </header>
+      </div>
 
       <div
-        className={`mx-auto grid max-w-6xl gap-8 px-6 py-8 md:grid-cols-[240px_1fr] ${
+        className={`mx-auto grid max-w-6xl gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-[240px_1fr] ${
           showForcePassword ? "pointer-events-none select-none opacity-40" : ""
         }`}
         aria-hidden={showForcePassword}
       >
-        <AdminSidebar isDeveloper={developer && !previewEditor} />
+        <AdminSidebar
+          isDeveloper={showDeveloperNav}
+          className="hidden lg:block"
+        />
         <main className="min-w-0">{children}</main>
       </div>
     </div>

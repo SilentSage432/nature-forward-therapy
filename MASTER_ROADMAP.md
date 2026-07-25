@@ -23,6 +23,7 @@
 - [x] Developer command center sidebar + backup / activity / SEO ops surfaces
 - [x] Developer Operational Suite (audit, maintenance, magic links, cache console, diagnostics)
 - [x] Public site scroll/render performance (GPU glows, lighter glass, image sizes/quality)
+- [x] Admin / Developer portal mobile responsiveness (drawer nav, stacked grids, touch targets)
 
 ## Near-term
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

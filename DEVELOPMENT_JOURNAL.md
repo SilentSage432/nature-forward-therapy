@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-07-24 — Admin portal mobile responsiveness
+
+Refactored the admin/developer shell for small screens: hamburger + slide-over nav drawer below `lg`, stacked dashboard grids, `overflow-x-auto` + `.admin-scroll` on tables/feeds, and 44px touch targets on key controls. Support chat, force-password, and Cover Studio modals fit mobile viewports (`max-w-full` / `sm:max-w-lg`).
+
 ## 2026-07-24 — Diagnostics probe browser headers + CF 403
 
 External link probes send browser-like `User-Agent` / `Accept` / `Accept-Language` headers. Status `200` / `301` / `302`, and Cloudflare/WAF `403` responses, count as reachable so Headway bot gates do not false-alarm the diagnostics dashboard.

@@ -307,14 +307,14 @@ export function ImageEditorModal({
       : undefined;
 
   return (
-    <div className="fixed inset-0 z-[90] flex items-stretch justify-center bg-forest/90 p-3 backdrop-blur-sm sm:p-6">
+    <div className="fixed inset-0 z-[90] flex items-stretch justify-center bg-forest/90 p-2 backdrop-blur-sm sm:p-4 md:p-6">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="image-studio-title"
-        className="flex max-h-[calc(100vh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-gold/30 bg-forest-soft shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+        className="flex max-h-[calc(100dvh-1rem)] w-full max-w-full flex-col overflow-hidden rounded-2xl border border-gold/30 bg-forest-soft shadow-2xl sm:max-h-[calc(100dvh-2rem)] sm:max-w-6xl md:max-h-[calc(100vh-3rem)]"
       >
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-sage-dark/40 px-4 py-3 sm:px-6">
+        <header className="flex flex-col items-start justify-between gap-3 border-b border-sage-dark/40 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
             <p className="text-xs font-semibold tracking-wide text-gold uppercase">
               Cover Studio
@@ -329,18 +329,18 @@ export function ImageEditorModal({
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-sage-dark/40 text-sage-light transition hover:border-gold hover:text-gold"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-sage-dark/40 text-sage-light transition hover:border-gold hover:text-gold"
             aria-label="Close studio"
           >
             <X className="h-5 w-5" />
           </button>
         </header>
 
-        <div className="flex gap-2 border-b border-sage-dark/30 px-4 py-2 sm:px-6">
+        <div className="admin-scroll flex gap-2 overflow-x-auto border-b border-sage-dark/30 px-4 py-2 sm:px-6">
           <button
             type="button"
             onClick={() => setTab("edit")}
-            className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
+            className={`inline-flex min-h-[44px] shrink-0 items-center rounded-lg px-3 py-2 text-sm font-medium transition ${
               tab === "edit"
                 ? "bg-gold/15 text-gold"
                 : "text-sage-light hover:text-gold"
@@ -351,7 +351,7 @@ export function ImageEditorModal({
           <button
             type="button"
             onClick={() => setTab("ai")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
+            className={`inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
               tab === "ai"
                 ? "bg-gold/15 text-gold"
                 : "text-sage-light hover:text-gold"

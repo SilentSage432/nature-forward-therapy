@@ -37,7 +37,7 @@ export function DeveloperPortalHome({
           <button
             type="button"
             onClick={() => setPreviewEditor(false)}
-            className="rounded-lg border border-gold/40 bg-forest/40 px-4 py-2 text-sm font-semibold text-gold transition hover:bg-forest/70"
+            className="inline-flex min-h-[44px] items-center rounded-lg border border-gold/40 bg-forest/40 px-4 py-2 text-sm font-semibold text-gold transition hover:bg-forest/70"
           >
             Exit Preview
           </button>
@@ -53,7 +53,7 @@ export function DeveloperPortalHome({
         <button
           type="button"
           onClick={() => setPreviewEditor(true)}
-          className="rounded-lg border border-sage-dark/40 bg-forest-soft/70 px-4 py-2 text-sm text-sage-light transition hover:border-gold hover:text-gold"
+          className="inline-flex min-h-[44px] items-center rounded-lg border border-sage-dark/40 bg-forest-soft/70 px-4 py-2 text-sm text-sage-light transition hover:border-gold hover:text-gold"
         >
           👁️ Preview Editor View
         </button>

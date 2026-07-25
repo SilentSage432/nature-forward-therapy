@@ -124,18 +124,18 @@ export function AuditActivityPanel() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search action, email, entity…"
-            className="w-full rounded-lg border border-sage-dark/40 bg-forest py-2.5 pr-3 pl-9 text-sm text-body-text outline-none focus:border-gold"
+            className="min-h-[44px] w-full rounded-lg border border-sage-dark/40 bg-forest py-2.5 pr-3 pl-9 text-sm text-body-text outline-none focus:border-gold"
           />
         </label>
         <input
           value={entity}
           onChange={(e) => setEntity(e.target.value)}
           placeholder="Filter entity (BlogPost…)"
-          className="rounded-lg border border-sage-dark/40 bg-forest px-3 py-2.5 text-sm text-body-text outline-none focus:border-gold sm:w-48"
+          className="min-h-[44px] rounded-lg border border-sage-dark/40 bg-forest px-3 py-2.5 text-sm text-body-text outline-none focus:border-gold sm:w-48"
         />
         <button
           type="submit"
-          className="rounded-lg border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold hover:bg-gold/20"
+          className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold hover:bg-gold/20"
         >
           Filter
         </button>
@@ -151,45 +151,48 @@ export function AuditActivityPanel() {
           No audit entries yet. CMS edits will appear here automatically.
         </p>
       ) : (
-        <ul className="divide-y divide-sage-dark/25">
-          {logs.map((log) => {
-            const canRevert = Boolean(log.previousState) && log.action !== "ROLLBACK";
-            return (
-              <li
-                key={log.id}
-                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-start sm:justify-between"
-              >
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold tracking-wide text-gold uppercase">
-                    {log.action} · {log.entity}
-                  </p>
-                  <p className="mt-1 text-sm text-sage-light">
-                    {log.userEmail}
-                    {log.entityId ? (
-                      <span className="text-sage-dark"> · {log.entityId}</span>
-                    ) : null}
-                  </p>
-                  <p className="mt-1 text-xs text-sage-dark">
-                    {formatWhen(log.createdAt)}
-                  </p>
-                </div>
-                {canRevert ? (
-                  <button
-                    type="button"
-                    disabled={pendingId === log.id}
-                    onClick={() => void rollback(log.id)}
-                    className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-amber-400/35 bg-amber-400/10 px-3 py-2 text-xs font-medium text-amber-100 transition hover:bg-amber-400/15 disabled:opacity-60"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    {pendingId === log.id
-                      ? "Reverting…"
-                      : "⏪ Revert to This Snapshot"}
-                  </button>
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
+        <div className="admin-scroll overflow-x-auto rounded-xl border border-sage-dark/30">
+          <ul className="min-w-[20rem] divide-y divide-sage-dark/25 px-4">
+            {logs.map((log) => {
+              const canRevert =
+                Boolean(log.previousState) && log.action !== "ROLLBACK";
+              return (
+                <li
+                  key={log.id}
+                  className="flex flex-col gap-3 py-4 sm:flex-row sm:items-start sm:justify-between"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold tracking-wide text-gold uppercase">
+                      {log.action} · {log.entity}
+                    </p>
+                    <p className="mt-1 break-all text-sm text-sage-light">
+                      {log.userEmail}
+                      {log.entityId ? (
+                        <span className="text-sage-dark"> · {log.entityId}</span>
+                      ) : null}
+                    </p>
+                    <p className="mt-1 text-xs text-sage-dark">
+                      {formatWhen(log.createdAt)}
+                    </p>
+                  </div>
+                  {canRevert ? (
+                    <button
+                      type="button"
+                      disabled={pendingId === log.id}
+                      onClick={() => void rollback(log.id)}
+                      className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-lg border border-amber-400/35 bg-amber-400/10 px-3 py-2 text-xs font-medium text-amber-100 transition hover:bg-amber-400/15 disabled:opacity-60"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      {pendingId === log.id
+                        ? "Reverting…"
+                        : "⏪ Revert to This Snapshot"}
+                    </button>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
       <Toast
         message={toast}

@@ -79,15 +79,15 @@ export function ForcePasswordModal() {
   }
 
   const fieldClass =
-    "w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 pr-11 text-body-text outline-none focus:border-gold";
+    "min-h-[44px] w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 pr-11 text-body-text outline-none focus:border-gold";
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-forest/85 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-forest/85 p-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="force-password-title"
-        className="w-full max-w-md rounded-2xl border border-gold/30 bg-forest-soft p-6 shadow-2xl"
+        className="w-full max-w-full rounded-2xl border border-gold/30 bg-forest-soft p-4 shadow-2xl sm:max-w-lg sm:p-6"
       >
         <p className="mb-2 text-xs font-semibold tracking-wide text-gold uppercase">
           Security first
@@ -125,7 +125,7 @@ export function ForcePasswordModal() {
               <button
                 type="button"
                 onClick={() => setShowPassword((value) => !value)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-stone-400 transition-colors hover:text-amber-200"
+                className="absolute top-1/2 right-2 inline-flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center text-stone-400 transition-colors hover:text-amber-200"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -157,7 +157,7 @@ export function ForcePasswordModal() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword((value) => !value)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-stone-400 transition-colors hover:text-amber-200"
+                className="absolute top-1/2 right-2 inline-flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center text-stone-400 transition-colors hover:text-amber-200"
                 aria-label={
                   showConfirmPassword
                     ? "Hide confirm password"
@@ -185,7 +185,7 @@ export function ForcePasswordModal() {
           <button
             type="submit"
             disabled={pending}
-            className="btn-gold inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-heading font-semibold text-forest disabled:opacity-60"
+            className="btn-gold inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-heading font-semibold text-forest disabled:opacity-60"
           >
             {pending ? (
               <>

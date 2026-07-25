@@ -133,8 +133,8 @@ export function DeveloperDashboard({
         </p>
       </div>
 
-      <article className="rounded-2xl border border-gold/35 bg-gradient-to-br from-forest-soft/90 to-forest/80 p-6 shadow-[0_0_28px_rgba(212,175,55,0.08)]">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <article className="rounded-2xl border border-gold/35 bg-gradient-to-br from-forest-soft/90 to-forest/80 p-4 shadow-[0_0_28px_rgba(212,175,55,0.08)] sm:p-6">
+        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
             <h2 className="font-heading text-xl font-semibold text-gold">
               📥 Export Data Backup (JSON)
@@ -149,7 +149,7 @@ export function DeveloperDashboard({
             type="button"
             onClick={() => void exportBackup()}
             disabled={exportPending}
-            className="btn-gold inline-flex shrink-0 items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+            className="btn-gold inline-flex min-h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60 sm:w-auto"
           >
             <Download
               className={`h-4 w-4 ${exportPending ? "animate-pulse" : ""}`}
@@ -162,9 +162,9 @@ export function DeveloperDashboard({
         ) : null}
       </article>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
-          <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6">
+          <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
                 <Activity className="h-5 w-5" />
@@ -180,7 +180,7 @@ export function DeveloperDashboard({
             </div>
             <Link
               href="/admin/activity"
-              className="text-xs text-gold hover:underline"
+              className="inline-flex min-h-[44px] items-center text-xs text-gold hover:underline"
             >
               Full log →
             </Link>
@@ -207,7 +207,7 @@ export function DeveloperDashboard({
           )}
         </article>
 
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
               <ExternalLink className="h-5 w-5" />
@@ -227,7 +227,7 @@ export function DeveloperDashboard({
                 key={link.id}
                 className="rounded-lg border border-sage-dark/20 bg-forest/40 px-3 py-3"
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:gap-3">
                   <div className="min-w-0">
                     <p className="font-heading text-sm font-semibold text-body-text">
                       {link.label}
@@ -236,7 +236,7 @@ export function DeveloperDashboard({
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 block truncate text-xs text-sage-dark hover:text-gold"
+                      className="mt-1 block break-all text-xs text-sage-dark hover:text-gold"
                     >
                       {link.url}
                     </a>
@@ -263,8 +263,8 @@ export function DeveloperDashboard({
         </article>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6 md:col-span-1 lg:col-span-2">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
               <Database className="h-5 w-5" />
@@ -276,7 +276,7 @@ export function DeveloperDashboard({
               <p className="text-xs text-sage-light">{health.database.provider}</p>
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <Metric label="Status" value={health.database.status} />
             <Metric
               label="Response time"
@@ -288,14 +288,14 @@ export function DeveloperDashboard({
             />
             <Metric label="Prisma mode" value={health.database.connectionMode} />
             <p
-              className={`text-sm font-semibold sm:col-span-2 ${statusColor(health.database.status)}`}
+              className={`text-sm font-semibold md:col-span-2 lg:col-span-1 ${statusColor(health.database.status)}`}
             >
               Postgres ping: {health.database.status}
             </p>
           </div>
         </article>
 
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6 md:col-span-1 lg:col-span-2">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
               <Server className="h-5 w-5" />
@@ -307,7 +307,7 @@ export function DeveloperDashboard({
               <p className="text-xs text-sage-light">{health.server.runtime}</p>
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <Metric label="Environment" value={health.server.environment} />
             <Metric label="NODE_ENV" value={health.server.nodeEnv} />
             <Metric label="Active routes" value={health.server.routeCount} />
@@ -318,7 +318,7 @@ export function DeveloperDashboard({
           </div>
         </article>
 
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6 md:col-span-1 lg:col-span-2">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
               <Activity className="h-5 w-5" />
@@ -330,7 +330,7 @@ export function DeveloperDashboard({
               <p className="text-xs text-sage-light">Live Prisma record counts</p>
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <Metric label="Specialties" value={health.content.specialties} />
             <Metric label="Focus tags" value={health.content.focusTags} />
             <Metric label="Insurances" value={health.content.insurances} />
@@ -342,7 +342,7 @@ export function DeveloperDashboard({
           </div>
         </article>
 
-        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
+        <article className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-4 sm:p-6 md:col-span-1 lg:col-span-2">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
               <Shield className="h-5 w-5" />
@@ -354,13 +354,13 @@ export function DeveloperDashboard({
               <p className="text-xs text-sage-light">Auth.js credentials + RBAC</p>
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <Metric label="Total users" value={health.security.totalUsers} />
             <Metric label="Developers" value={health.security.developers} />
             <Metric label="Editors" value={health.security.editors} />
             <Metric label="Auth status" value={health.security.authStatus} />
             <p
-              className={`text-sm font-semibold sm:col-span-2 ${statusColor(health.security.authStatus)}`}
+              className={`text-sm font-semibold md:col-span-2 lg:col-span-4 ${statusColor(health.security.authStatus)}`}
             >
               Authentication: {health.security.authStatus}
             </p>
@@ -368,26 +368,26 @@ export function DeveloperDashboard({
         </article>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <button
           type="button"
           onClick={() => void revalidateCache()}
           disabled={pending}
-          className="btn-gold inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
+          className="btn-gold inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
         >
           <RefreshCw className={`h-4 w-4 ${pending ? "animate-spin" : ""}`} />
           {pending ? "Revalidating…" : "Revalidate Public Cache"}
         </button>
         <Link
           href="/admin/users"
-          className="btn-outline inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
+          className="btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
         >
           <Users className="h-4 w-4" />
           Manage System Users
         </Link>
         <Link
           href="/admin/backup"
-          className="btn-outline inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
+          className="btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold"
         >
           <Download className="h-4 w-4" />
           Site Backups

@@ -1,7 +1,7 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Developer Operational Suite includes audit logs + rollback, maintenance mode, magic login links, cache revalidation console, and link diagnostics. Diagnostics HTTP probes use browser-like headers and treat Cloudflare challenge `403`s as reachable. In-app Dev Support Desk and Preview Editor View Tech Desk remain live. Public visitors see a holding card when maintenance is enabled; DEVELOPERs still browse. Public pages use GPU-accelerated glow orbs, light glass (solid dark fills over heavy backdrop-blur), passive navbar scroll, and optimized Next images (`quality={80}`).
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Developer Operational Suite includes audit logs + rollback, maintenance mode, magic login links, cache revalidation console, and link diagnostics. Diagnostics HTTP probes use browser-like headers and treat Cloudflare challenge `403`s as reachable. Admin/developer portal is mobile-responsive (hamburger drawer `<lg`, stacked grids, scrollable tables, 44px touch targets). In-app Dev Support Desk and Preview Editor View Tech Desk remain live. Public visitors see a holding card when maintenance is enabled; DEVELOPERs still browse. Public pages use GPU-accelerated glow orbs, light glass (solid dark fills over heavy backdrop-blur), passive navbar scroll, and optimized Next images (`quality={80}`).
 
 ## How to run
 ```bash
@@ -30,6 +30,7 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | Concern | Owner |
 | --- | --- |
 | Public presentation | `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
+| Admin shell / mobile nav | `AdminShell`, `AdminHeader`, `AdminSidebar` |
 | Design tokens | `app/globals.css` `@theme` |
 | Content reads | `lib/content.ts`, `lib/articles.ts`, `lib/bookshelf.ts` |
 | Auth / sessions | `lib/auth.ts`, `proxy.ts` |

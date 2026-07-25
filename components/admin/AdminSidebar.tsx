@@ -128,7 +128,7 @@ function NavLink({
         event.preventDefault();
         onNavigate(item.href);
       }}
-      className={`flex items-center gap-3 rounded-lg border-l-2 px-3 py-2.5 text-sm transition-colors ${
+      className={`flex min-h-[44px] items-center gap-3 rounded-lg border-l-2 px-3 py-2.5 text-sm transition-colors ${
         active
           ? "border-gold bg-forest-soft text-gold"
           : "border-transparent text-sage-light hover:bg-forest-soft/80 hover:text-gold"
@@ -152,9 +152,18 @@ function NavLink({
 
 type AdminSidebarProps = {
   isDeveloper: boolean;
+  /** Called after a nav push so mobile drawers can close. */
+  onNavigateComplete?: () => void;
+  className?: string;
+  id?: string;
 };
 
-export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
+export function AdminSidebar({
+  isDeveloper,
+  onNavigateComplete,
+  className = "",
+  id,
+}: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -175,7 +184,7 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
   useEffect(() => {
     if (!isDeveloper) return;
     void refreshOpenCount();
-    const id = window.setInterval(() => {
+    const timer = window.setInterval(() => {
       void refreshOpenCount();
     }, 8000);
 
@@ -190,12 +199,13 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
 
     window.addEventListener(SUPPORT_DESK_UPDATED_EVENT, onSupportUpdated);
     return () => {
-      window.clearInterval(id);
+      window.clearInterval(timer);
       window.removeEventListener(SUPPORT_DESK_UPDATED_EVENT, onSupportUpdated);
     };
   }, [isDeveloper, refreshOpenCount, pathname]);
 
   function onNavigate(href: string) {
+    onNavigateComplete?.();
     startTransition(() => {
       router.push(href);
     });
@@ -213,7 +223,10 @@ export function AdminSidebar({ isDeveloper }: AdminSidebarProps) {
     : editorSections;
 
   return (
-    <aside className="space-y-6 rounded-2xl border border-sage-dark/30 bg-forest-soft/40 p-4">
+    <aside
+      id={id}
+      className={`space-y-6 rounded-2xl border border-sage-dark/30 bg-forest-soft/40 p-4 ${className}`}
+    >
       {pending ? (
         <p className="px-1 text-xs text-gold/80" aria-live="polite">
           Loading…
