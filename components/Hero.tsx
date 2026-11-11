@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { AtmosphereGlow } from "@/components/AtmosphereGlow";
 import { BotanicalLine } from "@/components/BotanicalLine";
+import { isDefaultHeroBackground } from "@/lib/hero-background";
 import type { SiteContent } from "@/lib/types";
 
 type HeroProps = {
@@ -10,14 +11,19 @@ type HeroProps = {
 
 export function Hero({ profile }: HeroProps) {
   const displayName = `${profile.name}, ${profile.credentials}`;
-  const heroStyle = {
-    "--hero-image": `url('${profile.heroBackgroundUrl}')`,
-  } as CSSProperties;
+  const useOptimizedDefault = isDefaultHeroBackground(profile.heroBackgroundUrl);
+  const heroStyle = useOptimizedDefault
+    ? undefined
+    : ({
+        "--hero-image": `url('${profile.heroBackgroundUrl}')`,
+      } as CSSProperties);
 
   return (
     <section
       id="hero"
-      className="hero-bg relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-14 sm:px-6 sm:pt-24 sm:pb-16 md:pt-28"
+      className={`hero-bg relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-14 sm:px-6 sm:pt-24 sm:pb-16 md:pt-28 ${
+        useOptimizedDefault ? "hero-bg--optimized" : "hero-bg--custom"
+      }`}
       style={heroStyle}
     >
       <AtmosphereGlow variant="warm" />

@@ -67,8 +67,7 @@ export const FALLBACK_CONTENT: SiteContent = {
     headwayUrl:
       "https://care.headway.co/providers/nicole-garcia-5?utm_source=pem&utm_medium=direct_link&utm_campaign=191873",
     psychologyTodayUrl: "https://share.google/fnqjdCLYmiedRj42E",
-    heroBackgroundUrl:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80",
+    heroBackgroundUrl: "/images/hero/forest-1280.webp",
     aboutImageUrl:
       "https://images.unsplash.com/photo-1511497584788-876760111969?w=800&q=80",
     specialtiesImageUrl:

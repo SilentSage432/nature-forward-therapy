@@ -91,6 +91,14 @@
   }
 
   .hero-bg {
+    background-size: cover;
+    background-position: center;
+    /* Keep scroll attachment — fixed backgrounds cause expensive paint on scroll. */
+    background-attachment: scroll;
+  }
+
+  /* Shared darkening overlay keeps text readable over forest photography. */
+  .hero-bg--custom {
     background-image:
       linear-gradient(
         165deg,
@@ -99,15 +107,60 @@
         rgba(22, 34, 33, 0.9) 100%
       ),
       var(--hero-image);
-    background-size: cover;
-    background-position: center;
-    background-attachment: scroll;
   }
 
-  @media (min-width: 768px) {
-    .hero-bg {
-      /* Keep scroll attachment — fixed backgrounds cause expensive paint on scroll. */
-      background-attachment: scroll;
+  /*
+   * Default forest hero: responsive local AVIF/WebP/JPEG.
+   * Browser picks one format via image-set; media queries pick one width.
+   * Do not preload every variant. image-set is inlined (not via custom props)
+   * for broader engine support.
+   */
+  .hero-bg--optimized {
+    background-image:
+      linear-gradient(
+        165deg,
+        rgba(22, 34, 33, 0.88) 0%,
+        rgba(45, 58, 53, 0.75) 50%,
+        rgba(22, 34, 33, 0.9) 100%
+      ),
+      image-set(
+        url("/images/hero/forest-1280.avif") type("image/avif"),
+        url("/images/hero/forest-1280.webp") type("image/webp"),
+        url("/images/hero/forest-1280.jpg") type("image/jpeg")
+      );
+  }
+
+  @media (max-width: 767px) {
+    .hero-bg--optimized {
+      background-image:
+        linear-gradient(
+          165deg,
+          rgba(22, 34, 33, 0.88) 0%,
+          rgba(45, 58, 53, 0.75) 50%,
+          rgba(22, 34, 33, 0.9) 100%
+        ),
+        image-set(
+          url("/images/hero/forest-768.avif") type("image/avif"),
+          url("/images/hero/forest-768.webp") type("image/webp"),
+          url("/images/hero/forest-768.jpg") type("image/jpeg")
+        );
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .hero-bg--optimized {
+      background-image:
+        linear-gradient(
+          165deg,
+          rgba(22, 34, 33, 0.88) 0%,
+          rgba(45, 58, 53, 0.75) 50%,
+          rgba(22, 34, 33, 0.9) 100%
+        ),
+        image-set(
+          url("/images/hero/forest-1920.avif") type("image/avif"),
+          url("/images/hero/forest-1920.webp") type("image/webp"),
+          url("/images/hero/forest-1920.jpg") type("image/jpeg")
+        );
     }
   }
 
@@ -266,6 +319,23 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Headless/browser reduced-motion would otherwise leave .delay-* stuck at opacity: 0. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .delay-1,
+  .delay-2,
+  .delay-3,
+  .delay-4 {
+    opacity: 1 !important;
   }
 }
 

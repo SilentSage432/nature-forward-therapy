@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-10 — Visual asset optimization (NFT-PERF-004)
+
+Local-only visual performance work (not committed/deployed). Replaced the Unsplash CSS hero (`~730KB` JPEG at `w=1920`) with local responsive AVIF/WebP/JPEG variants (`forest-768/1280/1920`) selected via CSS `image-set` + viewport media queries. Legacy CMS Unsplash hero URLs still map to the optimized default via `lib/hero-background.ts`. Replaced 417KB favicon/icon/logo PNGs with sized derivatives (`favicon.ico` ~1.2KB, `favicon.png` ~3KB, `apple-touch-icon.png` 180px, nav `fof-logo-mark.png` 64px). Headshot remains `next/image` priority. Added `prefers-reduced-motion` so delayed hero animations do not stay at `opacity: 0`. Local cold mobile hero transfer dropped from ~730KB → ~50KB AVIF; cold mobile total image transfer ~2.0MB (prod) → ~134KB (local). Public ISR retained; login remains dynamic. No production deploy.
+
+## 2026-11-10 — Performance release (NFT-PERF-003)
+
+Committed and pushed `a6a5af6` (`perf: cache public pages and reduce render overhead`) to `main`. Vercel production deployment `dpl_DnRRAdad8LRZ9sW4a8YYzRh1vzzQ` Ready and aliased to `www.flockoffox.org`. Local acceptance (isolated `nft_perf_002` + browser EDITOR profile save) passed before release. Production smoke: `/`, `/articles`, `/bookshelf`, `/login` 200; `/admin` 307→login; contact location + Headway/Psychology Today CTAs present; maintenance not stuck on. Homepage multi-request TTFB ~0.13–0.23s with `x-vercel-cache: HIT`, `x-nextjs-prerender: 1`. No `prisma db push`.
+
 ## 2026-11-10 — Public rendering optimization (NFT-PERF-002)
 
 Removed root `force-dynamic` / `noStore` / `headers()` / layout `auth()` so public pages can ISR (`revalidate = 60`). Maintenance enforcement moved to Node `proxy.ts` with `getMaintenanceModeCached()` + rewrite to `/maintenance`; DEVELOPER preview uses a short-lived cookie + client banner. Public CMS reads use `React.cache` + tagged `unstable_cache`; mutations/APIs call `revalidatePublicSurfaces()` with `revalidateTag(tag, { expire: 0 })`. Articles/bookshelf category filters moved client-side so hubs stay static. Local production build shows `○`/`●` for public routes and `ƒ` for admin/login. Local `next start` responses report `x-nextjs-cache: HIT|STALE` with `s-maxage=60`. Verified against isolated Postgres `nft_perf_002` only — no production DB writes/deploy.

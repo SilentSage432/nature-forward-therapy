@@ -39,11 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     icons: {
       icon: [
-        { url: "/icon.png", type: "image/png" },
-        { url: "/favicon.png", type: "image/png" },
-        { url: "/favicon.ico" },
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+        { url: "/icon.png", type: "image/png", sizes: "192x192" },
       ],
-      apple: [{ url: "/icon.png" }],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     },
     openGraph: {
       title: content.site.siteTitle,
@@ -52,9 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Flock of Fox, LLC",
       images: [
         {
-          url: "/images/fof-logo.png",
-          width: 596,
-          height: 957,
+          url: "/images/brand/fof-logo-og.jpg",
+          width: 512,
+          height: 822,
           alt: "Flock of Fox, LLC",
         },
       ],
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary",
       title: content.site.siteTitle,
       description: content.site.siteDescription,
-      images: ["/images/fof-logo.png"],
+      images: ["/images/brand/fof-logo-og.jpg"],
     },
   };
 }

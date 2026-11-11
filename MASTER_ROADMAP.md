@@ -24,13 +24,15 @@
 - [x] Developer Operational Suite (audit, maintenance, magic links, cache console, diagnostics)
 - [x] Public site scroll/render performance (GPU glows, lighter glass, image sizes/quality)
 - [x] Admin / Developer portal mobile responsiveness (drawer nav, stacked grids, touch targets)
-- [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push + deploy pending**
-- [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **validated locally; production deploy + field measurement pending**
+- [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push still pending**
+- [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **NFT-PERF-003 released to production (`a6a5af6`); TTFB/cache HIT measured**
+- [x] Visual asset optimization (local responsive hero + sized logo/favicon) — **NFT-PERF-004 validated locally; not deployed**
 
 ## Near-term
-- [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail`, then deploy contact-management app code
-- [ ] Deploy public caching tranche and re-measure production TTFB / cold-start rate (NFT-PERF follow-up)
-- [ ] Hero/image weight follow-up (Unsplash CSS background + oversized favicon/logo)
+- [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail` (contact columns; separate from caching release)
+- [ ] Deploy NFT-PERF-004 visual assets and re-measure production mobile image weight / FCP
+- [ ] Optional follow-up: cold-start / edge geography re-measure after traffic settles
+- [ ] Optional: localize remaining below-fold Unsplash section images (About/Specialties/Contact)
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
 - [ ] Deploy target (Vercel or container) with persistent Postgres
 - [ ] Optional image upload for headshot (covers now use studio data URLs)

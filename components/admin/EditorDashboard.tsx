@@ -85,10 +85,11 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
           </div>
           <div className="flex items-center gap-3">
             <Image
-              src="/images/fof-logo.png"
+              src="/images/fof-logo-mark.png"
               alt="Flock of Fox emblem"
-              width={40}
-              height={40}
+              width={64}
+              height={64}
+              sizes="40px"
               className="h-10 w-10 rounded-full border border-gold/35 object-cover"
             />
             <h1 className="font-heading text-3xl font-bold text-white">

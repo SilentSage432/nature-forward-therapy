@@ -1,13 +1,19 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) after NFT-PERF-002. Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite (audit/rollback, maintenance, magic links, cache console, diagnostics) remains. Contact-management code is present locally; production schema push + deploy still pending.
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). **NFT-PERF-004 visual asset optimization is validated locally and not deployed.** Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite (audit/rollback, maintenance, magic links, cache console, diagnostics) remains. Contact-management code is in the app tree; production Prisma `db push` for `phone`/`fax`/`publicEmail` is still a separate pending step.
 
-**Public caching (local-validated, not production-measured yet):**
-- `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR
-- `/login`, `/admin/*` → dynamic
+**Public caching (production-measured 2026-11-10):**
+- `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
+- `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)
 - CMS writes → `revalidatePublicSurfaces()` + path revalidation
 - Maintenance toggle → `revalidateMaintenanceSurfaces()` (immediate tag expire)
+- Acceptance helpers: `scripts/nft-perf-002-verify.mjs`, `scripts/nft-perf-003-acceptance.mjs`
+
+**Visual assets (NFT-PERF-004 local):**
+- Hero: `public/images/hero/forest-{768,1280,1920}.{avif,webp,jpg}` via `.hero-bg--optimized` + `lib/hero-background.ts`
+- Nav/footer mark: `/images/fof-logo-mark.png`; icons: `/favicon.ico`, `/favicon.png`, `/icon.png`, `/apple-touch-icon.png`
+- OG/Twitter: `/images/brand/fof-logo-og.jpg`
 
 ## How to run
 ```bash

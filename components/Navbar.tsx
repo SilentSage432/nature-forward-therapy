@@ -88,10 +88,10 @@ export function Navbar({ banner = null }: NavbarProps) {
             className="flex min-w-0 items-center gap-2 text-sm font-medium text-sage-light transition-colors hover:text-gold"
           >
             <Image
-              src="/images/fof-logo.png"
+              src="/images/fof-logo-mark.png"
               alt="Flock of Fox, LLC"
-              width={32}
-              height={32}
+              width={64}
+              height={64}
               quality={80}
               sizes="32px"
               className="h-8 w-8 shrink-0 rounded-full border border-gold/30 object-cover"
