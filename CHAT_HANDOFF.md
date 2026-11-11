@@ -1,9 +1,13 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Developer Operational Suite includes audit logs + rollback, maintenance mode, magic login links, cache revalidation console, and link diagnostics. Diagnostics HTTP probes use browser-like headers and treat Cloudflare challenge `403`s as reachable. Admin/developer portal is mobile-responsive (hamburger drawer `<lg`, stacked grids, scrollable tables, 44px touch targets). In-app Dev Support Desk and Preview Editor View Tech Desk remain live. Public visitors see a holding card when maintenance is enabled; DEVELOPERs still browse. Public pages use GPU-accelerated glow orbs, light glass (solid dark fills over heavy backdrop-blur), passive navbar scroll, and optimized Next images (`quality={80}`).
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) after NFT-PERF-002. Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite (audit/rollback, maintenance, magic links, cache console, diagnostics) remains. Contact-management code is present locally; production schema push + deploy still pending.
 
-**Contact management (local code, pending DB deploy):** Practice Profile admin edits `location`, optional `phone` / `fax` / `publicEmail`. Contact section renders all four when present; Footer renders fax only. Public email is display/`mailto` only — no SMTP or mailbox hosting. Schema columns must be pushed to Postgres before production deploy of this code.
+**Public caching (local-validated, not production-measured yet):**
+- `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR
+- `/login`, `/admin/*` → dynamic
+- CMS writes → `revalidatePublicSurfaces()` + path revalidation
+- Maintenance toggle → `revalidateMaintenanceSurfaces()` (immediate tag expire)
 
 ## How to run
 ```bash
@@ -20,6 +24,8 @@ Admin: `http://localhost:3000/admin`
 Developer support desk: `http://localhost:3000/admin/support`  
 Cache console: `http://localhost:3000/admin/cache`
 
+Local ISR verification helper: `scripts/nft-perf-002-verify.mjs` (uses isolated DB env vars; do not point at production for writes).
+
 ### Seeded accounts (from `.env` / `.env.example`)
 | Role | Email | Password | Force password |
 | --- | --- | --- | --- |
@@ -32,6 +38,8 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | Concern | Owner |
 | --- | --- |
 | Public presentation | `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
+| Public ISR + invalidation | `lib/public-cache.ts`, `lib/public-cache-shared.ts`, CMS actions/APIs |
+| Maintenance rewrite | `proxy.ts`, `getMaintenanceModeCached`, `/maintenance` |
 | Admin shell / mobile nav | `AdminShell`, `AdminHeader`, `AdminSidebar` |
 | Design tokens | `app/globals.css` `@theme` |
 | Content reads | `lib/content.ts`, `lib/articles.ts`, `lib/bookshelf.ts` |
@@ -66,6 +74,6 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 - Force-password modal: authenticated EDITOR + mustChangePassword only; Sign Out → `/` via client `signOut`.
 - Optional `DISCORD_SUPPORT_WEBHOOK_URL` posts EDITOR support messages to Discord (failures never block the DB save).
 - JSON backups via `/api/admin/backup` never include password hashes.
-- Maintenance mode blocks public visitors; DEVELOPER sessions remain able to browse and see an amber ACTIVE banner on all pages.
-- Root layout is `force-dynamic`; maintenance toggles revalidate public layouts so the holding card appears immediately.
+- Maintenance mode: anonymous/EDITOR public traffic rewritten to `/maintenance`; DEVELOPER JWT bypasses and may see client banner cookie.
 - Magic links are single-use and expire in 15 minutes (`MagicToken`).
+- Do not reintroduce root `force-dynamic` / layout `auth()` for public pages without revisiting the caching contract.

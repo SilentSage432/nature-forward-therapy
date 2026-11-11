@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { isDeveloper } from "@/lib/rbac";
+import { revalidateMaintenanceSurfaces } from "@/lib/public-cache";
 import {
   DEFAULT_MAINTENANCE_MESSAGE,
   setMaintenanceMode,
@@ -13,15 +13,6 @@ function parseEnabled(value: unknown): boolean {
   if (typeof value === "boolean") return value;
   if (typeof value === "string") return value === "true";
   return false;
-}
-
-function revalidateMaintenanceSurfaces() {
-  revalidatePath("/", "layout");
-  revalidatePath("/admin/settings");
-  revalidatePath("/admin", "layout");
-  revalidatePath("/articles", "layout");
-  revalidatePath("/bookshelf", "layout");
-  revalidatePath("/maintenance", "page");
 }
 
 export async function GET(request: Request) {
@@ -93,9 +84,7 @@ export async function POST(request: Request) {
 
   const maintenance = await setMaintenanceMode(enabled, message);
 
-  // Bust root layout + settings immediately so toggle-off is visible.
-  revalidatePath("/", "layout");
-  revalidatePath("/admin/settings");
+  // Bust maintenance tag + public surfaces immediately so toggle is visible.
   revalidateMaintenanceSurfaces();
 
   return NextResponse.json(

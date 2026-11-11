@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import {
+  CACHE_TAGS,
+  revalidatePublicSurfaces,
+} from "@/lib/public-cache";
 import { isDeveloper } from "@/lib/rbac";
 
 const bodySchema = z.object({
@@ -47,12 +51,14 @@ export async function POST(request: Request) {
       });
     }
 
+    revalidatePublicSurfaces();
     const paths = DEFAULT_PATHS.map((p) => safeRevalidate(p));
     return NextResponse.json({
       ok: true,
       message:
-        "Public cache flushed for /, /articles, /bookshelf, and /admin (page + layout).",
+        "Public cache flushed for /, /articles, /bookshelf, and /admin (page + layout + data tags).",
       paths,
+      tags: Object.values(CACHE_TAGS),
       revalidatedAt: new Date().toISOString(),
     });
   } catch (error) {

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { normalizeRequiredLocation } from "@/lib/profile-contact";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import {
   DEVELOPER_PROFILE_FIELDS,
   EDITOR_PROFILE_FIELDS,
@@ -72,6 +74,9 @@ export async function PUT(request: Request) {
     where: { id: profile.id },
     data,
   });
+
+  revalidatePublicSurfaces();
+  revalidatePath("/admin/profile");
 
   return NextResponse.json(updated);
 }

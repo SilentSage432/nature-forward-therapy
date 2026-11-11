@@ -1,20 +1,13 @@
-import { Suspense } from "react";
-import { ArticleCard } from "@/components/articles/ArticleCard";
-import { ArticleFilters } from "@/components/articles/ArticleFilters";
+import { ArticlesCatalog } from "@/components/articles/ArticlesCatalog";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import {
-  ARTICLE_CATEGORIES,
   getActiveAnnouncement,
   getPublishedArticles,
 } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
-
-type ArticlesPageProps = {
-  searchParams: Promise<{ category?: string }>;
-};
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return {
@@ -24,18 +17,10 @@ export async function generateMetadata() {
   };
 }
 
-export default async function ArticlesPage({ searchParams }: ArticlesPageProps) {
-  const params = await searchParams;
-  const requested = params.category?.trim() ?? "All";
-  const category =
-    requested === "All" ||
-    (ARTICLE_CATEGORIES as readonly string[]).includes(requested)
-      ? requested
-      : "All";
-
+export default async function ArticlesPage() {
   const [content, articles, banner] = await Promise.all([
     getSiteContent(),
-    getPublishedArticles(category === "All" ? null : category),
+    getPublishedArticles(),
     getActiveAnnouncement(),
   ]);
 
@@ -56,28 +41,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
           </p>
         </header>
 
-        <div className="mx-auto mb-10 max-w-4xl">
-          <Suspense
-            fallback={
-              <div className="h-10 animate-pulse rounded-full bg-stone-900/40" />
-            }
-          >
-            <ArticleFilters active={category} />
-          </Suspense>
-        </div>
-
-        {articles.length === 0 ? (
-          <p className="mx-auto max-w-xl text-center text-sage-light">
-            No essays in this topic yet. Check back soon, or browse all
-            reflections.
-          </p>
-        ) : (
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        )}
+        <ArticlesCatalog articles={articles} />
       </main>
       <Footer profile={content.profile} />
     </>

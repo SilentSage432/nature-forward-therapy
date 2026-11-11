@@ -1,6 +1,10 @@
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_cache, unstable_noStore as noStore } from "next/cache";
 import { connection } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  CACHE_TAGS,
+  MAINTENANCE_REVALIDATE_SECONDS,
+} from "@/lib/public-cache-shared";
 import {
   DEFAULT_MAINTENANCE_MESSAGE,
   SETTING_KEYS,
@@ -25,32 +29,7 @@ function parseEnabledFlag(value: unknown): boolean {
   return false;
 }
 
-export async function getSystemSetting(key: string): Promise<string | null> {
-  noStore();
-  await connection();
-  const row = await prisma.systemSetting.findUnique({ where: { key } });
-  return row?.value ?? null;
-}
-
-export async function setSystemSetting(
-  key: string,
-  value: string,
-): Promise<void> {
-  noStore();
-  await connection();
-  await prisma.systemSetting.upsert({
-    where: { key },
-    create: { key, value },
-    update: { value },
-  });
-}
-
-export async function getMaintenanceMode(): Promise<MaintenanceState> {
-  // Always bypass Next.js Data Cache / RSC memoization for this control plane flag.
-  noStore();
-  await connection();
-
-  const raw = await getSystemSetting(SETTING_KEYS.MAINTENANCE_MODE);
+function parseMaintenanceRaw(raw: string | null | undefined): MaintenanceState {
   if (!raw) {
     return { enabled: false, message: DEFAULT_MAINTENANCE_MESSAGE };
   }
@@ -76,6 +55,53 @@ export async function getMaintenanceMode(): Promise<MaintenanceState> {
   }
 }
 
+export async function getSystemSetting(key: string): Promise<string | null> {
+  noStore();
+  await connection();
+  const row = await prisma.systemSetting.findUnique({ where: { key } });
+  return row?.value ?? null;
+}
+
+export async function setSystemSetting(
+  key: string,
+  value: string,
+): Promise<void> {
+  noStore();
+  await connection();
+  await prisma.systemSetting.upsert({
+    where: { key },
+    create: { key, value },
+    update: { value },
+  });
+}
+
+async function readMaintenanceModeFromDb(): Promise<MaintenanceState> {
+  const row = await prisma.systemSetting.findUnique({
+    where: { key: SETTING_KEYS.MAINTENANCE_MODE },
+  });
+  return parseMaintenanceRaw(row?.value);
+}
+
+/**
+ * Cross-request cached maintenance flag for proxy / public enforcement.
+ * Invalidated via revalidateTag(CACHE_TAGS.maintenance) on toggle.
+ */
+export const getMaintenanceModeCached = unstable_cache(
+  readMaintenanceModeFromDb,
+  ["maintenance-mode"],
+  {
+    revalidate: MAINTENANCE_REVALIDATE_SECONDS,
+    tags: [CACHE_TAGS.maintenance],
+  },
+);
+
+/** Uncached read for admin control plane UIs that need immediate accuracy. */
+export async function getMaintenanceMode(): Promise<MaintenanceState> {
+  noStore();
+  await connection();
+  return readMaintenanceModeFromDb();
+}
+
 export async function setMaintenanceMode(
   enabled: boolean,
   message?: string,
@@ -83,7 +109,7 @@ export async function setMaintenanceMode(
   noStore();
   await connection();
 
-  const current = await getMaintenanceMode();
+  const current = await readMaintenanceModeFromDb();
   const next: MaintenanceState = {
     // Preserve explicit false — never coerce via truthiness alone.
     enabled: enabled === true,

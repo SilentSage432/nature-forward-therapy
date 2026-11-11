@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isDeveloper } from "@/lib/rbac";
 
 export async function GET() {
@@ -48,6 +50,10 @@ export async function PUT(request: Request) {
           : settings.siteDescription,
     },
   });
+
+  revalidatePublicSurfaces();
+  revalidatePath("/admin/seo");
+  revalidatePath("/admin/settings");
 
   return NextResponse.json(updated);
 }

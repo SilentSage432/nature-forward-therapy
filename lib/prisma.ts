@@ -10,6 +10,5 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Always reuse across hot module boundaries / warm serverless isolates.
+globalForPrisma.prisma = prisma;

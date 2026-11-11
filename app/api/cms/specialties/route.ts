@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 
 type SpecialtyInput = {
@@ -74,6 +76,13 @@ export async function PUT(request: Request) {
     prisma.specialty.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.focusTag.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
+
+  revalidatePublicSurfaces({
+    includeHome: true,
+    includeArticles: false,
+    includeBookshelf: false,
+  });
+  revalidatePath("/admin/specialties");
 
   return NextResponse.json({
     specialties: nextSpecialties,

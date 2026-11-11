@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { BOOKSHELF_TYPES } from "@/lib/bookshelf";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 
 export type ActionResult = {
@@ -26,8 +27,11 @@ const itemSchema = z.object({
 });
 
 function revalidateBookshelfSurfaces() {
-  revalidatePath("/");
-  revalidatePath("/bookshelf");
+  revalidatePublicSurfaces({
+    includeHome: true,
+    includeArticles: false,
+    includeBookshelf: true,
+  });
   revalidatePath("/admin/bookshelf");
 }
 

@@ -1,10 +1,5 @@
-import { unstable_noStore as noStore } from "next/cache";
-import { auth } from "@/lib/auth";
 import {
   DEFAULT_MAINTENANCE_MESSAGE,
-  getMaintenanceMode,
-  isMaintenanceExemptPath,
-  isPublicContentPath,
 } from "@/lib/system-settings";
 
 export async function MaintenanceHolding({
@@ -39,70 +34,18 @@ export async function MaintenanceHolding({
   );
 }
 
-function DeveloperMaintenanceBanner() {
-  return (
-    <div
-      className="border-b border-amber-400/45 bg-amber-400/15 px-4 py-2.5 text-center text-xs font-semibold text-amber-100"
-      role="status"
-    >
-      🚨 Emergency Maintenance Mode is currently ACTIVE on the public site.
-    </div>
-  );
-}
-
 /**
- * Enforces MAINTENANCE_MODE on public content for everyone except DEVELOPER.
- * Editors / anonymous visitors see the holding card on public routes.
- * Developers always bypass and see a site-wide amber warning banner.
+ * @deprecated Maintenance enforcement moved to proxy.ts so public HTML can be
+ * ISR-cached. Kept as a named export alias for older imports.
  */
 export async function PublicMaintenanceGate({
   children,
-  pathname,
 }: {
   children: React.ReactNode;
-  pathname: string;
+  pathname?: string;
 }) {
-  noStore();
-
-  const maintenance = await getMaintenanceMode();
-  const session = await auth();
-  const isDeveloper = session?.user?.role === "DEVELOPER";
-
-  if (!maintenance.enabled) {
-    return children;
-  }
-
-  const exempt = isMaintenanceExemptPath(pathname);
-  const publicContent = isPublicContentPath(pathname);
-
-  // Authenticated non-developers on unknown paths (missing x-pathname):
-  // do not trap them on a holding card — they may be inside /admin.
-  const unknownPath = !pathname;
-  if (unknownPath && session?.user && !isDeveloper) {
-    return children;
-  }
-
-  if (isDeveloper) {
-    return (
-      <>
-        <DeveloperMaintenanceBanner />
-        {children}
-      </>
-    );
-  }
-
-  // Admin / login / API stay available for EDITORS during maintenance.
-  if (exempt) {
-    return children;
-  }
-
-  // Public content (and anonymous unknown paths) → holding card.
-  if (publicContent || (unknownPath && !session?.user)) {
-    return <MaintenanceHolding message={maintenance.message} />;
-  }
-
   return children;
 }
 
-/** @deprecated Prefer PublicMaintenanceGate — kept for /maintenance page imports. */
+/** @deprecated Prefer MaintenanceHolding — kept for compatibility. */
 export { PublicMaintenanceGate as MaintenanceGate };

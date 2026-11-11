@@ -1,5 +1,12 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { AnnouncementBanner, BlogPost } from "@prisma/client";
+import {
+  articleTag,
+  CACHE_TAGS,
+  PUBLIC_REVALIDATE_SECONDS,
+} from "@/lib/public-cache-shared";
 
 export const ARTICLE_CATEGORIES = [
   "Life Transitions",
@@ -60,15 +67,10 @@ export function formatPublishedDate(date: Date | null | undefined): string {
   }).format(date);
 }
 
-export async function getPublishedArticles(
-  category?: string | null,
-): Promise<PublicArticle[]> {
+async function loadPublishedArticles(): Promise<PublicArticle[]> {
   try {
     return await prisma.blogPost.findMany({
-      where: {
-        published: true,
-        ...(category && category !== "All" ? { category } : {}),
-      },
+      where: { published: true },
       orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
       select: {
         id: true,
@@ -87,7 +89,21 @@ export async function getPublishedArticles(
   }
 }
 
-export async function getPublishedArticleBySlug(
+const getCachedPublishedArticles = unstable_cache(
+  loadPublishedArticles,
+  ["published-articles"],
+  {
+    revalidate: PUBLIC_REVALIDATE_SECONDS,
+    tags: [CACHE_TAGS.articles],
+  },
+);
+
+/** All published essays (filter client-side so the hub page can stay ISR). */
+export const getPublishedArticles = cache(async (): Promise<PublicArticle[]> => {
+  return getCachedPublishedArticles();
+});
+
+async function loadPublishedArticleBySlug(
   slug: string,
 ): Promise<PublicArticle | null> {
   try {
@@ -110,6 +126,19 @@ export async function getPublishedArticleBySlug(
   }
 }
 
+export const getPublishedArticleBySlug = cache(
+  async (slug: string): Promise<PublicArticle | null> => {
+    return unstable_cache(
+      () => loadPublishedArticleBySlug(slug),
+      ["published-article", slug],
+      {
+        revalidate: PUBLIC_REVALIDATE_SECONDS,
+        tags: [CACHE_TAGS.articles, articleTag(slug)],
+      },
+    )();
+  },
+);
+
 export async function getAllArticlesForAdmin(): Promise<BlogPost[]> {
   return prisma.blogPost.findMany({
     orderBy: [{ updatedAt: "desc" }],
@@ -120,7 +149,7 @@ export async function getArticleById(id: string): Promise<BlogPost | null> {
   return prisma.blogPost.findUnique({ where: { id } });
 }
 
-export async function getActiveAnnouncement(): Promise<AnnouncementBannerData | null> {
+async function loadActiveAnnouncement(): Promise<AnnouncementBannerData | null> {
   try {
     const banner = await prisma.announcementBanner.findFirst({
       where: { isActive: true },
@@ -142,6 +171,21 @@ export async function getActiveAnnouncement(): Promise<AnnouncementBannerData | 
     return null;
   }
 }
+
+const getCachedActiveAnnouncement = unstable_cache(
+  loadActiveAnnouncement,
+  ["active-announcement"],
+  {
+    revalidate: PUBLIC_REVALIDATE_SECONDS,
+    tags: [CACHE_TAGS.announcements],
+  },
+);
+
+export const getActiveAnnouncement = cache(
+  async (): Promise<AnnouncementBannerData | null> => {
+    return getCachedActiveAnnouncement();
+  },
+);
 
 export async function getAnnouncementForAdmin(): Promise<AnnouncementBanner | null> {
   return prisma.announcementBanner.findFirst({

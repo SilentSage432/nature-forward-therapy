@@ -10,16 +10,22 @@ import {
   formatPublishedDate,
   getActiveAnnouncement,
   getPublishedArticleBySlug,
+  getPublishedArticles,
 } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
 
 const SITE_URL = process.env.NEXTAUTH_URL ?? "https://flockoffox.org";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateStaticParams() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({ slug: article.slug }));
+}
 
 export async function generateMetadata({ params }: ArticlePageProps) {
   const { slug } = await params;

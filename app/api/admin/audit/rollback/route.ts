@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { rollbackAuditLog } from "@/lib/audit";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isDeveloper } from "@/lib/rbac";
 
 const bodySchema = z.object({
@@ -36,9 +37,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: result.message }, { status: 400 });
   }
 
-  revalidatePath("/");
-  revalidatePath("/articles");
-  revalidatePath("/bookshelf");
+  revalidatePublicSurfaces();
   revalidatePath("/admin");
   revalidatePath("/admin/activity");
 

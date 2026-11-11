@@ -7,6 +7,8 @@ import { Specialties } from "@/components/Specialties";
 import { getActiveAnnouncement } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [content, banner] = await Promise.all([
     getSiteContent(),

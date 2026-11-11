@@ -25,9 +25,12 @@
 - [x] Public site scroll/render performance (GPU glows, lighter glass, image sizes/quality)
 - [x] Admin / Developer portal mobile responsiveness (drawer nav, stacked grids, touch targets)
 - [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push + deploy pending**
+- [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **validated locally; production deploy + field measurement pending**
 
 ## Near-term
 - [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail`, then deploy contact-management app code
+- [ ] Deploy public caching tranche and re-measure production TTFB / cold-start rate (NFT-PERF follow-up)
+- [ ] Hero/image weight follow-up (Unsplash CSS background + oversized favicon/logo)
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
 - [ ] Deploy target (Vercel or container) with persistent Postgres
 - [ ] Optional image upload for headshot (covers now use studio data URLs)

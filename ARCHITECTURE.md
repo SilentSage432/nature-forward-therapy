@@ -9,13 +9,25 @@
 ## Request flow
 ```
 Browser
-  ├─ /                 → getSiteContent() + getActiveAnnouncement() → sections
-  ├─ /articles         → getPublishedArticles() → Publication Hub
-  ├─ /articles/[slug]  → getPublishedArticleBySlug() → reading room
-  ├─ /login            → credentials sign-in
-  ├─ /admin/*          → proxy auth + RBAC → editor UI → actions /api/cms/*
+  ├─ proxy.ts
+  │    ├─ /admin/*     → Auth.js + RBAC (dynamic)
+  │    └─ public paths → maintenance rewrite (cached flag) or pass-through
+  ├─ /                 → ISR (60s) getSiteContent + announcement
+  ├─ /articles         → ISR (60s) published essays (client category filter)
+  ├─ /articles/[slug]  → ISR/SSG (60s) reading room
+  ├─ /bookshelf        → ISR (60s) curated resources (client category filter)
+  ├─ /maintenance      → ISR (30s) holding card (proxy rewrite target)
+  ├─ /login            → force-dynamic credentials sign-in
+  ├─ /admin/*          → force-dynamic editor UI → actions /api/cms/*
   └─ /api/auth/*       → Auth.js handlers
 ```
+
+## Public caching contract
+- Public HTML is ISR (`revalidate = 60`), not `force-dynamic`.
+- Shared CMS reads use `React.cache` + `unstable_cache` tags in `lib/public-cache-shared.ts`.
+- CMS mutations call `revalidatePublicSurfaces()` (`revalidateTag(..., { expire: 0 })` + `revalidatePath`).
+- Maintenance enforcement lives in `proxy.ts` via `getMaintenanceModeCached()` so public RSC trees stay shareable.
+- DEVELOPER maintenance preview uses a short-lived non-HttpOnly cookie + `DeveloperMaintenanceBanner` (banner only; auth bypass is JWT-checked in proxy).
 
 ## CMS collections
 1. **PractitionerProfile** — identity, location, optional phone/fax/publicEmail, bio, imagery URLs, booking links  
@@ -39,6 +51,8 @@ Browser
 | `lib/actions/bookshelf.ts` | Bookshelf create/update/delete/toggle |
 | `lib/actions/announcements.ts` | Banner upsert |
 | `lib/content.ts` | Landing-page site content composition |
+| `lib/public-cache.ts` / `lib/public-cache-shared.ts` | ISR tags + invalidation helpers (server-only vs shared constants) |
+| `proxy.ts` | Admin auth gate + public maintenance rewrite |
 | Presentation (`components/*`, `app/articles/**`, `app/bookshelf/**`) | Render only |
 
 ## RBAC

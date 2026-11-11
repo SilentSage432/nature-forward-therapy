@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 import { INSURANCE_OPTIONS, PAYMENT_OPTIONS } from "@/lib/cms-options";
 import type { ActionResult } from "@/lib/actions/profile";
@@ -76,7 +77,11 @@ export async function updateInsurancesAndPayments(
     },
   });
 
-  revalidatePath("/");
+  revalidatePublicSurfaces({
+    includeHome: true,
+    includeArticles: false,
+    includeBookshelf: false,
+  });
   revalidatePath("/admin");
   revalidatePath("/admin/details");
   revalidatePath("/admin/practice");

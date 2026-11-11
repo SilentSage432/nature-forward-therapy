@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-10 — Public rendering optimization (NFT-PERF-002)
+
+Removed root `force-dynamic` / `noStore` / `headers()` / layout `auth()` so public pages can ISR (`revalidate = 60`). Maintenance enforcement moved to Node `proxy.ts` with `getMaintenanceModeCached()` + rewrite to `/maintenance`; DEVELOPER preview uses a short-lived cookie + client banner. Public CMS reads use `React.cache` + tagged `unstable_cache`; mutations/APIs call `revalidatePublicSurfaces()` with `revalidateTag(tag, { expire: 0 })`. Articles/bookshelf category filters moved client-side so hubs stay static. Local production build shows `○`/`●` for public routes and `ƒ` for admin/login. Local `next start` responses report `x-nextjs-cache: HIT|STALE` with `s-maxage=60`. Verified against isolated Postgres `nft_perf_002` only — no production DB writes/deploy.
+
 ## 2026-11-10 — Owner-managed practice contact fields
 
 Extended `PractitionerProfile` with nullable `phone`, `fax`, and `publicEmail`. Active Practice Profile admin form (`ProfileForm` + `updateProfile`) now edits location plus these optional contact fields with Zod normalization (empty → null). Public Contact section shows location/phone/fax/email when set; Footer shows fax when set. Headway/Psychology Today CTAs unchanged. Legacy `/api/cms/profile` deliberately excludes the new contact fields so they cannot bypass server-action validation. Audit rollback restores nullables. **Not production-deployed yet** — additive `prisma db push` against production Postgres is still required before the app that reads these columns can go live. Local schema edited only; no production DB write in this change set.

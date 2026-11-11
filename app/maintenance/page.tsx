@@ -1,10 +1,9 @@
 import { MaintenanceHolding } from "@/components/PublicMaintenanceGate";
-import { getMaintenanceMode } from "@/lib/system-settings";
+import { getMaintenanceModeCached } from "@/lib/system-settings";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 30;
 
 export default async function MaintenancePage() {
-  const maintenance = await getMaintenanceMode();
+  const maintenance = await getMaintenanceModeCached();
   return <MaintenanceHolding message={maintenance.message} />;
 }

@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { slugify } from "@/lib/articles";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 
 export type ActionResult = {
@@ -25,12 +26,13 @@ const articleSchema = z.object({
 });
 
 function revalidateArticleSurfaces(slug?: string) {
-  revalidatePath("/");
-  revalidatePath("/articles");
+  revalidatePublicSurfaces({
+    articleSlug: slug,
+    includeHome: true,
+    includeArticles: true,
+    includeBookshelf: false,
+  });
   revalidatePath("/admin/articles");
-  if (slug) {
-    revalidatePath(`/articles/${slug}`);
-  }
 }
 
 export async function createArticle(formData: FormData): Promise<ActionResult> {
@@ -149,7 +151,12 @@ export async function updateArticle(
 
   revalidateArticleSurfaces(post.slug);
   if (existing.slug !== post.slug) {
-    revalidatePath(`/articles/${existing.slug}`);
+    revalidatePublicSurfaces({
+      articleSlug: existing.slug,
+      includeHome: false,
+      includeArticles: false,
+      includeBookshelf: false,
+    });
   }
 
   return { ok: true, message: "Essay updated.", id: post.id };

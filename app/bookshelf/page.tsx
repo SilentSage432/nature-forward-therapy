@@ -1,20 +1,11 @@
-import { Suspense } from "react";
-import { BookshelfCard } from "@/components/bookshelf/BookshelfCard";
-import { BookshelfFilters } from "@/components/bookshelf/BookshelfFilters";
+import { BookshelfCatalog } from "@/components/bookshelf/BookshelfCatalog";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { getActiveAnnouncement } from "@/lib/articles";
-import {
-  BOOKSHELF_CATEGORIES,
-  getPublishedBookshelfItems,
-} from "@/lib/bookshelf";
+import { getPublishedBookshelfItems } from "@/lib/bookshelf";
 import { getSiteContent } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
-
-type BookshelfPageProps = {
-  searchParams: Promise<{ category?: string }>;
-};
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return {
@@ -24,20 +15,10 @@ export async function generateMetadata() {
   };
 }
 
-export default async function BookshelfPage({
-  searchParams,
-}: BookshelfPageProps) {
-  const params = await searchParams;
-  const requested = params.category?.trim() ?? "All";
-  const category =
-    requested === "All" ||
-    (BOOKSHELF_CATEGORIES as readonly string[]).includes(requested)
-      ? requested
-      : "All";
-
+export default async function BookshelfPage() {
   const [content, items, banner] = await Promise.all([
     getSiteContent(),
-    getPublishedBookshelfItems(category === "All" ? null : category),
+    getPublishedBookshelfItems(),
     getActiveAnnouncement(),
   ]);
 
@@ -59,28 +40,7 @@ export default async function BookshelfPage({
           </p>
         </header>
 
-        <div className="mx-auto mb-10 max-w-4xl">
-          <Suspense
-            fallback={
-              <div className="h-10 animate-pulse rounded-full bg-stone-900/40" />
-            }
-          >
-            <BookshelfFilters active={category} />
-          </Suspense>
-        </div>
-
-        {items.length === 0 ? (
-          <p className="mx-auto max-w-xl text-center text-sage-light">
-            No resources in this topic yet. Browse all recommendations, or check
-            back soon.
-          </p>
-        ) : (
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <BookshelfCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
+        <BookshelfCatalog items={items} />
       </main>
       <Footer profile={content.profile} />
     </>

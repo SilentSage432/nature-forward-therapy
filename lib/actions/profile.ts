@@ -11,6 +11,7 @@ import {
   optionalPublicEmailSchema,
 } from "@/lib/profile-contact";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 
 const profileSchema = z.object({
@@ -89,7 +90,11 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
     newState: updated,
   });
 
-  revalidatePath("/");
+  revalidatePublicSurfaces({
+    includeHome: true,
+    includeArticles: true,
+    includeBookshelf: true,
+  });
   revalidatePath("/admin");
   revalidatePath("/admin/profile");
 

@@ -1,4 +1,10 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import {
+  CACHE_TAGS,
+  PUBLIC_REVALIDATE_SECONDS,
+} from "@/lib/public-cache-shared";
 import { FALLBACK_CONTENT, type ProcessStep, type SiteContent } from "@/lib/types";
 import type { Prisma } from "@prisma/client";
 
@@ -18,7 +24,7 @@ function asProcessSteps(value: Prisma.JsonValue | null | undefined): ProcessStep
   });
 }
 
-export async function getSiteContent(): Promise<SiteContent> {
+async function loadSiteContent(): Promise<SiteContent> {
   try {
     const [profile, specialties, focusTags, insurances, practice, site] =
       await Promise.all([
@@ -84,3 +90,13 @@ export async function getSiteContent(): Promise<SiteContent> {
     return FALLBACK_CONTENT;
   }
 }
+
+const getCachedSiteContent = unstable_cache(loadSiteContent, ["site-content"], {
+  revalidate: PUBLIC_REVALIDATE_SECONDS,
+  tags: [CACHE_TAGS.siteContent],
+});
+
+/** Request-scoped memoization + cross-request data cache for public CMS content. */
+export const getSiteContent = cache(async (): Promise<SiteContent> => {
+  return getCachedSiteContent();
+});

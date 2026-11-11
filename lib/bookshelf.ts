@@ -1,5 +1,11 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { BookshelfItem } from "@prisma/client";
+import {
+  CACHE_TAGS,
+  PUBLIC_REVALIDATE_SECONDS,
+} from "@/lib/public-cache-shared";
 
 export const BOOKSHELF_TYPES = [
   "Book",
@@ -29,15 +35,10 @@ export type PublicBookshelfItem = Pick<
   | "externalUrl"
 >;
 
-export async function getPublishedBookshelfItems(
-  category?: string | null,
-): Promise<PublicBookshelfItem[]> {
+async function loadPublishedBookshelfItems(): Promise<PublicBookshelfItem[]> {
   try {
     return await prisma.bookshelfItem.findMany({
-      where: {
-        published: true,
-        ...(category && category !== "All" ? { category } : {}),
-      },
+      where: { published: true },
       orderBy: [{ createdAt: "asc" }],
       select: {
         id: true,
@@ -54,6 +55,22 @@ export async function getPublishedBookshelfItems(
     return [];
   }
 }
+
+const getCachedPublishedBookshelfItems = unstable_cache(
+  loadPublishedBookshelfItems,
+  ["published-bookshelf"],
+  {
+    revalidate: PUBLIC_REVALIDATE_SECONDS,
+    tags: [CACHE_TAGS.bookshelf],
+  },
+);
+
+/** All published shelf items (filter client-side so the page can stay ISR). */
+export const getPublishedBookshelfItems = cache(
+  async (): Promise<PublicBookshelfItem[]> => {
+    return getCachedPublishedBookshelfItems();
+  },
+);
 
 export async function getAllBookshelfItemsForAdmin(): Promise<BookshelfItem[]> {
   return prisma.bookshelfItem.findMany({

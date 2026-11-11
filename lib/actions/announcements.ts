@@ -10,6 +10,7 @@ import {
   BANNER_THEMES,
 } from "@/lib/announcement-banner";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 
 export type ActionResult = {
@@ -92,9 +93,7 @@ export async function upsertAnnouncementBanner(
     });
   }
 
-  revalidatePath("/");
-  revalidatePath("/articles");
-  revalidatePath("/bookshelf");
+  revalidatePublicSurfaces();
   revalidatePath("/admin/announcements");
 
   return { ok: true, message: "Announcement banner saved." };

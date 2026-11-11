@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { isEditor } from "@/lib/rbac";
 import type { ProcessStep } from "@/lib/types";
 
@@ -98,6 +100,14 @@ export async function PUT(request: Request) {
   const nextInsurances = await prisma.insurance.findMany({
     orderBy: { sortOrder: "asc" },
   });
+
+  revalidatePublicSurfaces({
+    includeHome: true,
+    includeArticles: false,
+    includeBookshelf: false,
+  });
+  revalidatePath("/admin/practice");
+  revalidatePath("/admin/details");
 
   return NextResponse.json({
     id: updated.id,
