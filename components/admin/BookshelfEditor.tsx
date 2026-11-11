@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState, useTransition } from "react";
-import { ImagePlus } from "lucide-react";
+import { ArrowLeft, ImagePlus } from "lucide-react";
 import {
   createBookshelfItem,
   updateBookshelfItem,
@@ -84,9 +84,10 @@ export function BookshelfEditor({ item = null }: BookshelfEditorProps) {
         <div>
           <Link
             href="/admin/bookshelf"
-            className="text-sm text-sage-light transition hover:text-gold"
+            className="inline-flex items-center gap-1.5 text-sm text-sage-light transition hover:text-gold"
           >
-            ← Back to Bookshelf
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            Back to Bookshelf
           </Link>
           <h1 className="mt-2 font-heading text-3xl font-bold text-white">
             {item ? "Edit Resource" : "Add Resource"}

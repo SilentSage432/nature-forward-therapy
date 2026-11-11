@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-10 — Unified vector icon system (NFT-DESIGN-001)
+
+Replaced hardcoded UI emoji/Unicode control glyphs with Lucide React SVGs across public and admin surfaces. Established presentation-only specialty mapping in `lib/specialty-icons.tsx` so CMS `Specialty.icon` emoji keys remain stored unchanged while the public site renders Leaf/Mountain/Sprout. Banner theme picker, support chat prompts, admin action labels, article/bookshelf CTAs, and status chrome now use named Lucide imports. Authored article/profile/DB content untouched; no Prisma operations. Local-only — not committed or deployed.
+
 ## 2026-11-10 — Visual asset optimization (NFT-PERF-004)
 
 Local-only visual performance work (not committed/deployed). Replaced the Unsplash CSS hero (`~730KB` JPEG at `w=1920`) with local responsive AVIF/WebP/JPEG variants (`forest-768/1280/1920`) selected via CSS `image-set` + viewport media queries. Legacy CMS Unsplash hero URLs still map to the optimized default via `lib/hero-background.ts`. Replaced 417KB favicon/icon/logo PNGs with sized derivatives (`favicon.ico` ~1.2KB, `favicon.png` ~3KB, `apple-touch-icon.png` 180px, nav `fof-logo-mark.png` 64px). Headshot remains `next/image` priority. Added `prefers-reduced-motion` so delayed hero animations do not stay at `opacity: 0`. Local cold mobile hero transfer dropped from ~730KB → ~50KB AVIF; cold mobile total image transfer ~2.0MB (prod) → ~134KB (local). Public ISR retained; login remains dynamic. No production deploy.

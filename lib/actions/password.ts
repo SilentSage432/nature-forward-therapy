@@ -39,7 +39,7 @@ export async function changeOwnPassword(formData: FormData): Promise<ActionResul
   });
 
   revalidatePath("/admin");
-  return { ok: true, message: "Changes saved successfully! 🌿" };
+  return { ok: true, message: "Changes saved successfully." };
 }
 
 export async function toggleMustChangePassword(

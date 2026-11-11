@@ -86,5 +86,5 @@ export async function updateInsurancesAndPayments(
   revalidatePath("/admin/details");
   revalidatePath("/admin/practice");
 
-  return { ok: true, message: "Changes saved successfully! 🌿" };
+  return { ok: true, message: "Changes saved successfully." };
 }

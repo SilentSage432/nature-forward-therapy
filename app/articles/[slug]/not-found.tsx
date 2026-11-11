@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function ArticleNotFound() {
   return (
@@ -11,9 +12,10 @@ export default function ArticleNotFound() {
       </p>
       <Link
         href="/articles"
-        className="mt-6 text-sm font-medium text-gold hover:underline"
+        className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-gold hover:underline"
       >
-        ← Back to Reflections
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+        Back to Reflections
       </Link>
     </main>
   );

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   estimateReadMinutes,
   formatPublishedDate,
@@ -60,9 +61,10 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </p>
         <Link
           href={`/articles/${article.slug}`}
-          className="mt-1 inline-flex items-center text-sm font-medium text-gold transition hover:text-amber-200"
+          className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-gold transition hover:text-amber-200"
         >
-          Read Essay →
+          Read Essay
+          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>
     </article>

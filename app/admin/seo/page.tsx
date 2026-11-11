@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getSiteContent } from "@/lib/content";
 import { isDeveloper } from "@/lib/rbac";
@@ -46,9 +47,10 @@ export default async function AdminSeoPage() {
         </dl>
         <Link
           href="/admin/settings"
-          className="mt-5 inline-block text-sm text-gold hover:underline"
+          className="mt-5 inline-flex items-center gap-1 text-sm text-gold hover:underline"
         >
-          Edit in System Settings →
+          Edit in System Settings
+          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>
 

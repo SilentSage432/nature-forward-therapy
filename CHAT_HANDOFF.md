@@ -15,6 +15,11 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 - Nav/footer mark: `/images/fof-logo-mark.png`; icons: `/favicon.ico`, `/favicon.png`, `/icon.png`, `/apple-touch-icon.png`
 - OG/Twitter: `/images/brand/fof-logo-og.jpg`
 
+**Icon system (NFT-DESIGN-001 local):**
+- Library: `lucide-react` (already present; named imports only)
+- Specialty CMS emoji keys → Lucide via `lib/specialty-icons.tsx` (presentation only; DB unchanged)
+- UI emoji removed from public specialties chrome, article/bookshelf CTAs, admin dashboards/actions
+
 ## How to run
 ```bash
 npm install

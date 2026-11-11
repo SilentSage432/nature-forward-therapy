@@ -185,7 +185,7 @@ export function AuditActivityPanel() {
                       <RotateCcw className="h-3.5 w-3.5" />
                       {pendingId === log.id
                         ? "Reverting…"
-                        : "⏪ Revert to This Snapshot"}
+                        : "Revert to This Snapshot"}
                     </button>
                   ) : null}
                 </li>

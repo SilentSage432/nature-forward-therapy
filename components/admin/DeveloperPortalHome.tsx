@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye } from "lucide-react";
 import { DeveloperDashboard } from "@/components/admin/DeveloperDashboard";
 import { EditorDashboard } from "@/components/admin/EditorDashboard";
 import { useEditorPreview } from "@/components/admin/EditorPreviewContext";
@@ -55,7 +56,8 @@ export function DeveloperPortalHome({
           onClick={() => setPreviewEditor(true)}
           className="inline-flex min-h-[44px] items-center rounded-lg border border-sage-dark/40 bg-forest-soft/70 px-4 py-2 text-sm text-sage-light transition hover:border-gold hover:text-gold"
         >
-          👁️ Preview Editor View
+          <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
+          Preview Editor View
         </button>
       </div>
       <DeveloperDashboard

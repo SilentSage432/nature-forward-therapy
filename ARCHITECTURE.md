@@ -77,9 +77,14 @@ Browser
 - AI generation: `POST /api/cms/generate-cover` → Gemini image model (requires `GEMINI_API_KEY`)
 
 ## Announcement banner
-- Style tokens: `lib/announcement-banner.ts` (theme / alignment / font helpers)
+- Style tokens: `lib/announcement-banner.ts` (theme / alignment / font helpers + Lucide theme icons)
 - CMS: `components/admin/AnnouncementBannerEditor.tsx` (live preview + controls)
 - Public: `components/AnnouncementBanner.tsx` — dismissible only when `isDismissible`
+
+## Icon system
+- Library: `lucide-react` (named imports; no icon CDN / font)
+- Specialty presentation: `lib/specialty-icons.tsx` maps stored CMS emoji keys → Lucide glyphs without migrating DB values
+- Unknown specialty icon strings render as authored text; known defaults are Leaf / Mountain / Sprout
 
 ## Design tokens
 Canonical hex values live in `app/globals.css` `@theme` and are documented in `AUDIT_CATALOG.md`.

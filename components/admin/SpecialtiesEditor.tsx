@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { SpecialtyGlyph, SPECIALTY_ICON_OPTIONS } from "@/lib/specialty-icons";
 
 type Specialty = {
   id: string;
@@ -109,54 +110,104 @@ export function SpecialtiesEditor() {
         <h2 className="font-heading text-xl font-semibold text-gold">
           Specialty Cards
         </h2>
-        {specialties.map((specialty, index) => (
-          <div
-            key={specialty.id}
-            className="space-y-3 rounded-xl border border-sage-dark/30 p-4"
-          >
-            <div className="grid gap-3 sm:grid-cols-2">
-              <input
-                value={specialty.title}
-                onChange={(e) => {
-                  const next = [...specialties];
-                  next[index] = { ...specialty, title: e.target.value };
-                  setSpecialties(next);
-                }}
-                placeholder="Title"
-                className="rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
-              />
-              <input
-                value={specialty.icon}
-                onChange={(e) => {
-                  const next = [...specialties];
-                  next[index] = { ...specialty, icon: e.target.value };
-                  setSpecialties(next);
-                }}
-                placeholder="Icon / emoji"
-                className="rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
-              />
-            </div>
-            <textarea
-              value={specialty.description}
-              onChange={(e) => {
-                const next = [...specialties];
-                next[index] = { ...specialty, description: e.target.value };
-                setSpecialties(next);
-              }}
-              rows={3}
-              className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
-            />
-            <button
-              type="button"
-              onClick={() =>
-                setSpecialties(specialties.filter((s) => s.id !== specialty.id))
-              }
-              className="rounded-lg border border-sage-dark/40 px-3 py-2 text-sm text-sage-light hover:border-gold"
+        <p className="text-sm text-sage-light">
+          Icons are chosen from the site vocabulary. Stored CMS values are
+          unchanged category keys; the public site renders matching Lucide
+          glyphs.
+        </p>
+        {specialties.map((specialty, index) => {
+          const knownOption = SPECIALTY_ICON_OPTIONS.some(
+            (option) => option.emoji === specialty.icon,
+          );
+          return (
+            <div
+              key={specialty.id}
+              className="space-y-3 rounded-xl border border-sage-dark/30 p-4"
             >
-              Remove card
-            </button>
-          </div>
-        ))}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input
+                  value={specialty.title}
+                  onChange={(e) => {
+                    const next = [...specialties];
+                    next[index] = { ...specialty, title: e.target.value };
+                    setSpecialties(next);
+                  }}
+                  placeholder="Title"
+                  className="rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
+                />
+                <div>
+                  <p className="mb-2 text-xs font-medium tracking-wide text-sage-dark uppercase">
+                    Card icon
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {SPECIALTY_ICON_OPTIONS.map((option) => {
+                      const active = specialty.icon === option.emoji;
+                      const OptionIcon = option.Icon;
+                      return (
+                        <button
+                          key={option.emoji}
+                          type="button"
+                          onClick={() => {
+                            const next = [...specialties];
+                            next[index] = {
+                              ...specialty,
+                              icon: option.emoji,
+                            };
+                            setSpecialties(next);
+                          }}
+                          className={`inline-flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 text-sm transition ${
+                            active
+                              ? "border-gold/60 bg-gold/10 text-gold"
+                              : "border-sage-dark/40 text-sage-light hover:border-gold/40 hover:text-gold"
+                          }`}
+                          aria-pressed={active}
+                          title={`${option.label} — ${option.description}`}
+                        >
+                          <OptionIcon
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                            strokeWidth={1.75}
+                          />
+                          <span>{option.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {!knownOption && specialty.icon ? (
+                    <p className="mt-2 flex items-center gap-2 text-xs text-amber-200/90">
+                      <span className="inline-flex text-gold" aria-hidden="true">
+                        <SpecialtyGlyph
+                          icon={specialty.icon}
+                          className="h-4 w-4"
+                        />
+                      </span>
+                      Custom stored value preserved: {specialty.icon}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+              <textarea
+                value={specialty.description}
+                onChange={(e) => {
+                  const next = [...specialties];
+                  next[index] = { ...specialty, description: e.target.value };
+                  setSpecialties(next);
+                }}
+                rows={3}
+                className="w-full rounded-lg border border-sage-dark/40 bg-forest px-4 py-3 text-body-text outline-none focus:border-gold"
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  setSpecialties(specialties.filter((s) => s.id !== specialty.id))
+                }
+                className="rounded-lg border border-sage-dark/40 px-3 py-2 text-sm text-sage-light hover:border-gold"
+              >
+                Remove card
+              </button>
+            </div>
+          );
+        })}
         <button
           type="button"
           onClick={() =>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import {
   deleteBookshelfItem,
@@ -81,9 +81,10 @@ export function BookshelfManager({ items }: BookshelfManagerProps) {
           <p className="text-sage-light">No bookshelf items yet.</p>
           <Link
             href="/admin/bookshelf/new"
-            className="mt-4 inline-block text-sm font-medium text-gold hover:underline"
+            className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-gold hover:underline"
           >
-            Add your first recommendation →
+            Add your first recommendation
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       ) : (

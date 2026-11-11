@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Activity,
+  ArrowRight,
   Database,
   Download,
   ExternalLink,
@@ -137,7 +138,7 @@ export function DeveloperDashboard({
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
             <h2 className="font-heading text-xl font-semibold text-gold">
-              📥 Export Data Backup (JSON)
+              Export Data Backup (JSON)
             </h2>
             <p className="mt-2 max-w-xl text-sm text-sage-light">
               Download a full CMS snapshot — profiles, essays, bookshelf,
@@ -180,9 +181,10 @@ export function DeveloperDashboard({
             </div>
             <Link
               href="/admin/activity"
-              className="inline-flex min-h-[44px] items-center text-xs text-gold hover:underline"
+              className="inline-flex min-h-[44px] items-center gap-1 text-xs text-gold hover:underline"
             >
-              Full log →
+              Full log
+              <ArrowRight className="h-3 w-3" aria-hidden="true" />
             </Link>
           </div>
           {activity.length === 0 ? (

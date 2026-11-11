@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Eye, Pencil, Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { deleteArticle } from "@/lib/actions/articles";
 import { formatPublishedDate } from "@/lib/articles";
@@ -63,9 +63,10 @@ export function ArticlesManager({ articles }: ArticlesManagerProps) {
           <p className="text-sage-light">No essays yet.</p>
           <Link
             href="/admin/articles/new"
-            className="mt-4 inline-block text-sm font-medium text-gold hover:underline"
+            className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-gold hover:underline"
           >
-            Write your first essay →
+            Write your first essay
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       ) : (

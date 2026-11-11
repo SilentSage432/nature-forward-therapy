@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { ArticleBody } from "@/components/articles/ArticleBody";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Footer } from "@/components/Footer";
@@ -70,9 +71,10 @@ export default async function ArticleReadingPage({ params }: ArticlePageProps) {
         <article className="mx-auto max-w-3xl">
           <Link
             href="/articles"
-            className="mb-8 inline-flex text-sm font-medium text-sage-light transition hover:text-gold"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-sage-light transition hover:text-gold"
           >
-            ← Back to Reflections
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            Back to Reflections
           </Link>
 
           <div className="mb-6 flex flex-wrap items-center gap-3 text-xs tracking-wide text-sage-dark uppercase">

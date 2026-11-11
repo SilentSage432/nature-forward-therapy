@@ -50,7 +50,7 @@ export function BackupExportPanel() {
         className="btn-gold inline-flex items-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60"
       >
         <Download className={`h-4 w-4 ${pending ? "animate-pulse" : ""}`} />
-        {pending ? "Preparing export…" : "📥 Export Data Backup (JSON)"}
+        {pending ? "Preparing export…" : "Export Data Backup (JSON)"}
       </button>
       {message ? <p className="text-sm text-gold">{message}</p> : null}
     </div>

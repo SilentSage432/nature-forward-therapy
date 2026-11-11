@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ExternalLink, Menu, X } from "lucide-react";
 
 type AdminHeaderProps = {
   developer: boolean;
@@ -55,12 +55,15 @@ export function AdminHeader({
             {...(developer
               ? {}
               : { target: "_blank", rel: "noopener noreferrer" })}
-            className="inline-flex min-h-[44px] items-center rounded-lg border border-sage-dark/40 px-3 py-2 text-sm text-sage-light hover:border-gold hover:text-gold"
+            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-sage-dark/40 px-3 py-2 text-sm text-sage-light hover:border-gold hover:text-gold"
           >
-            <span className="sm:hidden">{developer ? "Site" : "Live ↗"}</span>
+            <span className="sm:hidden">{developer ? "Site" : "Live"}</span>
             <span className="hidden sm:inline">
-              {developer ? "View site" : "Live site ↗"}
+              {developer ? "View site" : "Live site"}
             </span>
+            {!developer ? (
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            ) : null}
           </Link>
           <button
             type="button"

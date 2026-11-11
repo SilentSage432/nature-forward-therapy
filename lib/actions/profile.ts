@@ -98,5 +98,5 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
   revalidatePath("/admin");
   revalidatePath("/admin/profile");
 
-  return { ok: true, message: "Changes saved successfully! 🌿" };
+  return { ok: true, message: "Changes saved successfully." };
 }

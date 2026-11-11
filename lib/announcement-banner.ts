@@ -1,3 +1,5 @@
+import { Leaf, Sparkles, SunMedium, Trees, type LucideIcon } from "lucide-react";
+
 export const BANNER_THEMES = ["amber", "sage", "clay", "forest"] as const;
 export const BANNER_ALIGNMENTS = ["center", "left"] as const;
 export const BANNER_FONT_STYLES = ["sans", "serif"] as const;
@@ -9,35 +11,35 @@ export type BannerFontStyle = (typeof BANNER_FONT_STYLES)[number];
 export const BANNER_THEME_OPTIONS: Array<{
   id: BannerTheme;
   label: string;
-  emoji: string;
+  Icon: LucideIcon;
   description: string;
   swatchClass: string;
 }> = [
   {
     id: "amber",
     label: "Warm Amber & Gold",
-    emoji: "🌟",
+    Icon: Sparkles,
     description: "Amber gradient, deep forest text",
     swatchClass: "bg-gradient-to-r from-amber-200 via-gold to-amber-300",
   },
   {
     id: "sage",
     label: "Sage Foliage",
-    emoji: "🌿",
+    Icon: Leaf,
     description: "Soft sage green, dark forest text",
     swatchClass: "bg-gradient-to-r from-sage-light via-sage to-sage-dark",
   },
   {
     id: "clay",
     label: "Warm Clay",
-    emoji: "🏺",
+    Icon: SunMedium,
     description: "Terracotta clay, cream parchment text",
     swatchClass: "bg-gradient-to-r from-clay via-[#b8795f] to-clay",
   },
   {
     id: "forest",
     label: "Deep Forest & Gold",
-    emoji: "🌲",
+    Icon: Trees,
     description: "Rich forest background, gold text",
     swatchClass: "bg-gradient-to-r from-forest via-forest-soft to-forest",
   },

@@ -81,7 +81,7 @@ export async function POST(request: Request) {
           username: "Nicole - Support Chat",
           embeds: [
             {
-              title: "💬 New In-App Support Message",
+              title: "New In-App Support Message",
               description: "Message from Nicole on flockoffox.org",
               color: 13919335,
               fields: [

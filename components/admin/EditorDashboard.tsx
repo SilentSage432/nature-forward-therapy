@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowRight,
   BookOpen,
   Briefcase,
+  Check,
   ExternalLink,
   Leaf,
   Mail,
@@ -12,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { SiteContent } from "@/lib/types";
+import { SpecialtyGlyph } from "@/lib/specialty-icons";
 import { SupportCard } from "@/components/admin/SupportCard";
 
 type EditorDashboardProps = {
@@ -23,49 +26,42 @@ const cards = [
   {
     href: "/admin/profile",
     icon: Leaf,
-    emoji: "🌿",
     title: "Practice Profile & Bio",
     description: "Credentials, Headway & Psychology Today links",
   },
   {
     href: "/admin/details",
     icon: Briefcase,
-    emoji: "💼",
     title: "Insurances & Payment",
     description: "Checklist of accepted plans and payment methods",
   },
   {
     href: "/admin/specialties",
     icon: Sparkles,
-    emoji: "✨",
     title: "Specialties & Focus Areas",
     description: "Primary cards and focus chips on your public site",
   },
   {
     href: "/admin/practice",
     icon: MapPin,
-    emoji: "📍",
     title: "Practice Details & The Path",
     description: "Location, onboarding steps, and therapy modalities",
   },
   {
     href: "/admin/articles",
     icon: PenLine,
-    emoji: "✍️",
     title: "Articles & Essays",
     description: "Draft and publish reflections for the Publication Hub",
   },
   {
     href: "/admin/bookshelf",
     icon: BookOpen,
-    emoji: "📚",
     title: "Curated Bookshelf",
     description: "Books, podcasts, and tools you recommend to clients",
   },
   {
     href: "/admin/announcements",
     icon: Megaphone,
-    emoji: "📣",
     title: "Announcement Banner",
     description: "Optional site-wide notice above the main navigation",
   },
@@ -93,7 +89,7 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
               className="h-10 w-10 rounded-full border border-gold/35 object-cover"
             />
             <h1 className="font-heading text-3xl font-bold text-white">
-              Welcome back, {firstName}! 🦊
+              Welcome back, {firstName}!
             </h1>
           </div>
           <p className="mt-2 max-w-xl text-sage-light">
@@ -108,7 +104,7 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
           className="btn-gold inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest"
         >
           View Live Site
-          <ExternalLink className="h-4 w-4" />
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
 
@@ -116,7 +112,7 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold">
-              <Mail className="h-5 w-5" />
+              <Mail className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
               <h2 className="font-heading text-lg font-semibold text-gold">
@@ -134,7 +130,7 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
             className="btn-gold inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest"
           >
             Open Webmail
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </div>
@@ -150,11 +146,8 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
               href={card.href}
               className="card-hover rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-5 transition hover:border-gold/40 sm:p-6 md:col-span-1 lg:col-span-2"
             >
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl">
-                  <span aria-hidden="true">{card.emoji}</span>
-                </div>
-                <Icon className="h-5 w-5 text-gold" aria-hidden="true" />
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-gold">
+                <Icon className="h-5 w-5" aria-hidden="true" strokeWidth={1.75} />
               </div>
               <h2 className="font-heading text-lg font-semibold text-gold">
                 {card.title}
@@ -180,10 +173,13 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
               </span>
             ))}
           </div>
-          <ul className="mt-4 space-y-1 text-sm text-sage-light">
+          <ul className="mt-4 space-y-2 text-sm text-sage-light">
             {specialtyPreview.map((specialty) => (
-              <li key={specialty.id}>
-                {specialty.icon} {specialty.title}
+              <li key={specialty.id} className="flex items-center gap-2">
+                <span className="inline-flex text-gold" aria-hidden="true">
+                  <SpecialtyGlyph icon={specialty.icon} className="h-4 w-4" />
+                </span>
+                <span>{specialty.title}</span>
               </li>
             ))}
           </ul>
@@ -195,18 +191,21 @@ export function EditorDashboard({ firstName, content }: EditorDashboardProps) {
           <ul className="space-y-2 text-sm text-sage-light">
             {insurancePreview.map((name) => (
               <li key={name} className="flex items-start gap-2">
-                <span className="text-gold" aria-hidden="true">
-                  ✓
-                </span>
+                <Check
+                  className="mt-0.5 h-4 w-4 shrink-0 text-gold"
+                  aria-hidden="true"
+                  strokeWidth={2}
+                />
                 <span>{name}</span>
               </li>
             ))}
           </ul>
           <Link
             href="/admin/details"
-            className="mt-4 inline-block text-sm text-gold hover:underline"
+            className="mt-4 inline-flex items-center gap-1 text-sm text-gold hover:underline"
           >
-            Manage full checklist →
+            Manage full checklist
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

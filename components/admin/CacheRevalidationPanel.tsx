@@ -81,7 +81,7 @@ export function CacheRevalidationPanel() {
           className="btn-gold mt-4 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg px-5 py-3 font-heading text-sm font-semibold text-forest disabled:opacity-60 sm:w-auto"
         >
           <Zap className={`h-4 w-4 ${pending ? "animate-pulse" : ""}`} />
-          ⚡ Flush Global Route Cache
+          Flush Global Route Cache
         </button>
       </div>
 

@@ -1,7 +1,15 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { Send, X } from "lucide-react";
+import {
+  Bug,
+  CircleHelp,
+  Lightbulb,
+  MessageCircle,
+  Send,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 
 type SupportMessage = {
@@ -14,11 +22,14 @@ type SupportMessage = {
   createdAt: string;
 };
 
-const QUICK_PROMPTS = [
-  { emoji: "🐞", label: "Report a small bug" },
-  { emoji: "💡", label: "Suggest a feature idea" },
-  { emoji: "❓", label: "Help with an essay / image" },
-] as const;
+const QUICK_PROMPTS: Array<{
+  Icon: LucideIcon;
+  label: string;
+}> = [
+  { Icon: Bug, label: "Report a small bug" },
+  { Icon: Lightbulb, label: "Suggest a feature idea" },
+  { Icon: CircleHelp, label: "Help with an essay / image" },
+];
 
 const POLL_MS = 4000;
 
@@ -38,20 +49,24 @@ function formatTime(iso: string): string {
 function QuickPromptChips({
   onSelect,
 }: {
-  onSelect: (emoji: string, label: string) => void;
+  onSelect: (label: string) => void;
 }) {
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      {QUICK_PROMPTS.map((prompt) => (
-        <button
-          key={prompt.label}
-          type="button"
-          onClick={() => onSelect(prompt.emoji, prompt.label)}
-          className="inline-flex min-h-[44px] items-center rounded-full border border-emerald-500/35 bg-emerald-900/70 px-3 py-1.5 text-xs text-stone-200 transition hover:border-emerald-400/50 hover:text-white"
-        >
-          {prompt.emoji} {prompt.label}
-        </button>
-      ))}
+      {QUICK_PROMPTS.map((prompt) => {
+        const Icon = prompt.Icon;
+        return (
+          <button
+            key={prompt.label}
+            type="button"
+            onClick={() => onSelect(prompt.label)}
+            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-emerald-500/35 bg-emerald-900/70 px-3 py-1.5 text-xs text-stone-200 transition hover:border-emerald-400/50 hover:text-white"
+          >
+            <Icon className="h-3.5 w-3.5" aria-hidden="true" strokeWidth={1.75} />
+            {prompt.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -130,8 +145,8 @@ export function SupportChatDrawer() {
     void sendMessage(draft);
   }
 
-  function applyQuickPrompt(emoji: string, label: string) {
-    setDraft(`${emoji} ${label}: `);
+  function applyQuickPrompt(label: string) {
+    setDraft(`${label}: `);
   }
 
   const showGreeting = !loading && messages.length === 0;
@@ -145,7 +160,8 @@ export function SupportChatDrawer() {
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        💬 Need Help / Chat with Dev
+        <MessageCircle className="h-4 w-4" aria-hidden="true" />
+        Need Help / Chat with Dev
       </button>
 
       {open ? (

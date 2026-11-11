@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState, useTransition } from "react";
 import { useActionState } from "react";
+import { KeyRound } from "lucide-react";
 import {
   resetUserPassword,
   toggleMustChangePassword,
@@ -178,11 +179,12 @@ export function UsersManager() {
                           type="button"
                           disabled={magicPending === user.id}
                           onClick={() => void generateMagicLink(user)}
-                          className="inline-flex min-h-[44px] items-center rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-400/15 disabled:opacity-60"
+                          className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-1.5 text-xs text-emerald-200 hover:bg-emerald-400/15 disabled:opacity-60"
                         >
+                          <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
                           {magicPending === user.id
                             ? "Generating…"
-                            : "🔑 Generate 15-Min Magic Login Link"}
+                            : "Generate 15-Min Magic Login Link"}
                         </button>
                       ) : null}
                       <button

@@ -36,7 +36,7 @@ export function SupportCard() {
           </div>
           <div>
             <h2 className="font-heading text-lg font-semibold text-gold">
-              Contact Developer &amp; Support 🛠️
+              Contact Developer &amp; Support
             </h2>
             <p className="mt-1 text-sm text-sage-light">
               Need a design tweak, new section, or technical help? Send a note

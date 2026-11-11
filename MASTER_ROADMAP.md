@@ -27,6 +27,7 @@
 - [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push still pending**
 - [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **NFT-PERF-003 released to production (`a6a5af6`); TTFB/cache HIT measured**
 - [x] Visual asset optimization (local responsive hero + sized logo/favicon) — **NFT-PERF-004 validated locally; not deployed**
+- [x] Unified Lucide SVG icon system replacing UI emoji (NFT-DESIGN-001) — **validated locally; not deployed**
 
 ## Near-term
 - [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail` (contact columns; separate from caching release)

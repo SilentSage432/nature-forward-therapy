@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState, useTransition } from "react";
-import { X } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 import { upsertAnnouncementBanner } from "@/lib/actions/announcements";
 import {
   BANNER_THEME_OPTIONS,
@@ -328,6 +328,7 @@ export function AnnouncementBannerEditor({
           <div className="grid gap-3 sm:grid-cols-2">
             {BANNER_THEME_OPTIONS.map((option) => {
               const active = theme === option.id;
+              const ThemeIcon = option.Icon;
               return (
                 <button
                   key={option.id}
@@ -343,8 +344,13 @@ export function AnnouncementBannerEditor({
                     className={`mb-3 block h-8 rounded-lg border border-black/10 ${option.swatchClass}`}
                     aria-hidden="true"
                   />
-                  <span className="block text-sm font-semibold text-parchment">
-                    {option.emoji} {option.label}
+                  <span className="flex items-center gap-2 text-sm font-semibold text-parchment">
+                    <ThemeIcon
+                      className="h-4 w-4 shrink-0 text-gold"
+                      aria-hidden="true"
+                      strokeWidth={1.75}
+                    />
+                    {option.label}
                   </span>
                   <span className="mt-1 block text-xs text-sage-dark">
                     {option.description}
@@ -376,9 +382,10 @@ export function AnnouncementBannerEditor({
           <Link
             href="/"
             target="_blank"
-            className="text-sm text-sage-light transition hover:text-gold"
+            className="inline-flex items-center gap-1.5 text-sm text-sage-light transition hover:text-gold"
           >
-            View live site ↗
+            View live site
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

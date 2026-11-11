@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import type { PublicBookshelfItem } from "@/lib/bookshelf";
 
 type BookshelfCardProps = {
@@ -67,9 +68,10 @@ export function BookshelfCard({ item }: BookshelfCardProps) {
             href={item.externalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-auto inline-flex items-center justify-center gap-1 rounded-lg border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold transition hover:border-gold hover:bg-gold/20"
+            className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold transition hover:border-gold hover:bg-gold/20"
           >
-            Explore Resource ↗
+            Explore Resource
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
         ) : (
           <span className="mt-auto inline-flex items-center justify-center rounded-lg border border-stone-700 px-4 py-2.5 text-sm text-sage-dark">

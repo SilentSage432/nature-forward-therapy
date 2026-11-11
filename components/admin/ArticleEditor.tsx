@@ -9,7 +9,13 @@ import {
   useState,
   useTransition,
 } from "react";
-import { ImagePlus } from "lucide-react";
+import {
+  ArrowLeft,
+  ImagePlus,
+  Palette,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import { ImageEditorModal } from "@/components/admin/ImageEditorModal";
 import { createArticle, updateArticle } from "@/lib/actions/articles";
 import { ARTICLE_CATEGORIES, slugify } from "@/lib/articles";
@@ -183,9 +189,10 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
           <div>
             <Link
               href="/admin/articles"
-              className="text-sm text-sage-light transition hover:text-gold"
+              className="inline-flex items-center gap-1.5 text-sm text-sage-light transition hover:text-gold"
             >
-              ← Back to Articles
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+              Back to Articles
             </Link>
             <h1 className="mt-2 font-heading text-3xl font-bold text-white">
               {article ? "Edit Essay" : "Write New Essay"}
@@ -373,22 +380,25 @@ export function ArticleEditor({ article = null }: ArticleEditorProps) {
                     : "Upload or paste an image first"
                 }
               >
-                🎨 Open Photo Editor &amp; Studio
+                <Palette className="h-4 w-4" aria-hidden="true" />
+                Open Photo Editor &amp; Studio
               </button>
               <button
                 type="button"
                 onClick={() => setStudioOpen(true)}
                 className="inline-flex items-center gap-2 rounded-lg border border-gold/35 bg-gold/10 px-4 py-3 text-sm font-medium text-gold transition hover:bg-gold/20"
               >
-                ✨ AI Botanical Cover
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
+                AI Botanical Cover
               </button>
               {coverImage ? (
                 <button
                   type="button"
                   onClick={clearCoverImage}
-                  className="rounded-lg border border-red-500/30 px-3 py-1.5 text-sm text-red-400 transition-colors hover:bg-red-500/10"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/30 px-3 py-1.5 text-sm text-red-400 transition-colors hover:bg-red-500/10"
                 >
-                  🗑️ Remove Image
+                  <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  Remove Image
                 </button>
               ) : null}
             </div>

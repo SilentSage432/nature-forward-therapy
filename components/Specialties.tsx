@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { Compass, CreditCard, Pin, Sparkles } from "lucide-react";
 import { AtmosphereGlow } from "@/components/AtmosphereGlow";
 import { BotanicalLine } from "@/components/BotanicalLine";
+import { SpecialtyGlyph } from "@/lib/specialty-icons";
 import type { SiteContent } from "@/lib/types";
 
 type SpecialtiesProps = {
@@ -49,10 +51,10 @@ export function Specialties({
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-gold"
                   aria-hidden="true"
                 >
-                  ✨
+                  <Sparkles className="h-5 w-5" strokeWidth={1.75} />
                 </div>
                 <div>
                   <h3 className="font-heading text-xl font-bold text-white">
@@ -81,10 +83,10 @@ export function Specialties({
           {specialties.map((specialty) => (
             <article key={specialty.id} className={`${frostedCardClass} text-center`}>
               <div
-                className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-clay/25 bg-sage-dark/40 text-2xl"
+                className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-clay/25 bg-sage-dark/40 text-gold"
                 aria-hidden="true"
               >
-                {specialty.icon}
+                <SpecialtyGlyph icon={specialty.icon} className="h-7 w-7" />
               </div>
               <h3 className="mb-3 font-heading text-xl font-bold text-gold">
                 {specialty.title}
@@ -100,10 +102,10 @@ export function Specialties({
           <article className={frostedCardClass}>
             <div className="mb-5 flex items-center gap-3">
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-gold"
                 aria-hidden="true"
               >
-                📌
+                <Pin className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <h3 className="font-heading text-xl font-bold text-white">
                 Top Specialties &amp; Expertise
@@ -131,10 +133,10 @@ export function Specialties({
           <article className={frostedCardClass}>
             <div className="mb-5 flex items-center gap-3">
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-gold"
                 aria-hidden="true"
               >
-                💳
+                <CreditCard className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <h3 className="font-heading text-xl font-bold text-white">
                 Payment &amp; Insurance
@@ -183,10 +185,10 @@ export function Specialties({
           <article className={frostedCardClass}>
             <div className="mb-5 flex items-center gap-3">
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-xl"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-dark/40 text-gold"
                 aria-hidden="true"
               >
-                🧭
+                <Compass className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <h3 className="font-heading text-xl font-bold text-white">
                 Treatment Preferences
