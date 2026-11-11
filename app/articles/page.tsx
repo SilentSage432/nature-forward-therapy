@@ -1,6 +1,7 @@
 import { ArticlesCatalog } from "@/components/articles/ArticlesCatalog";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { SiteTheme } from "@/components/site/SiteTheme";
 import {
   getActiveAnnouncement,
   getPublishedArticles,
@@ -25,7 +26,7 @@ export default async function ArticlesPage() {
   ]);
 
   return (
-    <>
+    <SiteTheme>
       <Navbar banner={banner} />
       <main className="px-5 pt-28 pb-16 sm:px-6">
         <header className="mx-auto max-w-3xl pb-10 text-center">
@@ -44,6 +45,6 @@ export default async function ArticlesPage() {
         <ArticlesCatalog articles={articles} />
       </main>
       <Footer profile={content.profile} />
-    </>
+    </SiteTheme>
   );
 }

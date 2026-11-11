@@ -11,7 +11,7 @@ export function BookshelfCard({ item }: BookshelfCardProps) {
   const isDataUrl = Boolean(cover?.startsWith("data:"));
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-amber-900/30 bg-stone-950/90 shadow-[inset_0_1px_0_rgba(212,175,55,0.08)] transition hover:border-amber-500/40">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-site-border-mobile-nav bg-site-surface-elevated-solid shadow-[inset_0_1px_0_rgba(212,175,55,0.08)] transition hover:border-site-border-hover">
       <div className="relative aspect-[3/4] overflow-hidden bg-forest">
         {cover ? (
           isDataUrl ? (
@@ -34,13 +34,13 @@ export function BookshelfCard({ item }: BookshelfCardProps) {
             />
           )
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-amber-900/30 via-forest-soft to-stone-950 px-4 text-center">
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-[rgba(120,53,15,0.3)] via-forest-soft to-[#0c0a09] px-4 text-center">
             <p className="font-serif text-lg text-parchment/80 italic">
               {item.title}
             </p>
           </div>
         )}
-        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-stone-950/90 px-3 py-1 text-xs font-semibold tracking-wide text-gold">
+        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-site-surface-elevated-solid px-3 py-1 text-xs font-semibold tracking-wide text-gold">
           {item.type}
         </span>
       </div>
@@ -74,7 +74,7 @@ export function BookshelfCard({ item }: BookshelfCardProps) {
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
         ) : (
-          <span className="mt-auto inline-flex items-center justify-center rounded-lg border border-stone-700 px-4 py-2.5 text-sm text-sage-dark">
+          <span className="mt-auto inline-flex items-center justify-center rounded-lg border border-site-border-muted px-4 py-2.5 text-sm text-sage-dark">
             Coming soon
           </span>
         )}

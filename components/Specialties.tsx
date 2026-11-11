@@ -18,7 +18,7 @@ function splitList<T>(items: T[]): [T[], T[]] {
 }
 
 const frostedCardClass =
-  "card-hover frosted-leaf-card border border-sage-dark/40 bg-stone-950/85 p-8 hover:shadow-[0_0_25px_rgba(212,175,55,0.12)]";
+  "card-hover frosted-leaf-card border border-sage-dark/40 bg-site-surface-elevated-strong p-8 hover:shadow-[0_0_25px_var(--site-card-glow)]";
 
 export function Specialties({
   profile,

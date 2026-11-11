@@ -1,7 +1,9 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). **NFT-PERF-004 visual asset optimization is validated locally and not deployed.** Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite (audit/rollback, maintenance, magic links, cache console, diagnostics) remains. Contact-management code is in the app tree; production Prisma `db push` for `phone`/`fax`/`publicEmail` is still a separate pending step.
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). **NFT-PERF-004 responsive hero/brand assets and NFT-DESIGN-001 Lucide icon system are deployed** (baseline `134a497`). Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite remains. Contact columns (`phone`/`fax`/`publicEmail`) were applied in production via targeted additive SQL (do not re-run `db push` for that change).
+
+**NFT-STUDIO-003 (local, uncommitted):** Shared `HomePresentation` + semantic `--site-*` theme tokens + `[data-site-theme]` public boundary. No Studio UI, no SiteDesign DB, no Media Library.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
@@ -10,15 +12,19 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 - Maintenance toggle → `revalidateMaintenanceSurfaces()` (immediate tag expire)
 - Acceptance helpers: `scripts/nft-perf-002-verify.mjs`, `scripts/nft-perf-003-acceptance.mjs`
 
-**Visual assets (NFT-PERF-004 local):**
+**Visual assets (NFT-PERF-004):**
 - Hero: `public/images/hero/forest-{768,1280,1920}.{avif,webp,jpg}` via `.hero-bg--optimized` + `lib/hero-background.ts`
 - Nav/footer mark: `/images/fof-logo-mark.png`; icons: `/favicon.ico`, `/favicon.png`, `/icon.png`, `/apple-touch-icon.png`
 - OG/Twitter: `/images/brand/fof-logo-og.jpg`
 
-**Icon system (NFT-DESIGN-001 local):**
-- Library: `lucide-react` (already present; named imports only)
+**Icon system (NFT-DESIGN-001):**
+- Library: `lucide-react` (named imports only)
 - Specialty CMS emoji keys → Lucide via `lib/specialty-icons.tsx` (presentation only; DB unchanged)
-- UI emoji removed from public specialties chrome, article/bookshelf CTAs, admin dashboards/actions
+
+**Presentation foundation (NFT-STUDIO-003):**
+- Homepage composition: `components/site/HomePresentation.tsx` (used by `app/page.tsx`)
+- Public theme scope: `components/site/SiteTheme.tsx` → `data-site-theme="forest-gold"`
+- Semantic tokens: `app/globals.css` (`--site-*` on `:root` + theme scope)
 
 ## How to run
 ```bash
@@ -48,11 +54,12 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 ## Ownership map
 | Concern | Owner |
 | --- | --- |
-| Public presentation | `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
+| Public presentation | `components/site/HomePresentation.tsx`, `components/site/SiteTheme.tsx`, `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
+| Semantic public theme tokens | `app/globals.css` (`--site-*`, `[data-site-theme]`) |
 | Public ISR + invalidation | `lib/public-cache.ts`, `lib/public-cache-shared.ts`, CMS actions/APIs |
 | Maintenance rewrite | `proxy.ts`, `getMaintenanceModeCached`, `/maintenance` |
 | Admin shell / mobile nav | `AdminShell`, `AdminHeader`, `AdminSidebar` |
-| Design tokens | `app/globals.css` `@theme` |
+| Brand + semantic design tokens | `app/globals.css` `@theme` + `--site-*` semantic variables |
 | Content reads | `lib/content.ts`, `lib/articles.ts`, `lib/bookshelf.ts` |
 | Auth / sessions | `lib/auth.ts`, `proxy.ts` |
 | RBAC rules | `lib/rbac.ts` |

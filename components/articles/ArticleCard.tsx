@@ -18,7 +18,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   );
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-stone-800 bg-stone-950/85 transition hover:border-amber-500/40">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-site-border-subtle-strong bg-site-surface-elevated-strong transition hover:border-site-border-hover">
       <div className="relative aspect-[16/10] overflow-hidden bg-forest-soft">
         {article.coverImage ? (
           article.coverImage.startsWith("data:") ? (
@@ -41,9 +41,9 @@ export function ArticleCard({ article }: ArticleCardProps) {
             />
           )
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-forest-soft via-forest to-stone-900" />
+          <div className="absolute inset-0 bg-gradient-to-br from-forest-soft via-forest to-[#1c1917]" />
         )}
-        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-stone-950/90 px-3 py-1 text-xs font-semibold tracking-wide text-gold">
+        <span className="absolute top-3 left-3 rounded-full border border-gold/40 bg-site-surface-elevated-solid px-3 py-1 text-xs font-semibold tracking-wide text-gold">
           {article.category}
         </span>
       </div>
@@ -61,7 +61,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </p>
         <Link
           href={`/articles/${article.slug}`}
-          className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-gold transition hover:text-amber-200"
+          className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-gold transition hover:text-site-accent-soft"
         >
           Read Essay
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

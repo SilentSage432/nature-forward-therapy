@@ -21,41 +21,43 @@ export function Footer({ profile }: FooterProps) {
           sizes="32px"
           className="h-8 w-8 rounded-full border border-gold/30 object-cover"
         />
-        <span className="font-heading text-sm font-semibold text-amber-200/70">
+        <span className="font-heading text-sm font-semibold text-site-accent-soft/70">
           Flock of Fox, LLC
         </span>
       </div>
-      <p className="text-sm text-stone-400">
+      <p className="text-sm text-site-foreground-muted">
         {profile.name}, {profile.credentials} | {profile.location}
       </p>
       {profile.fax?.trim() ? (
-        <p className="mt-2 text-sm text-stone-400">Fax: {profile.fax.trim()}</p>
+        <p className="mt-2 text-sm text-site-foreground-muted">
+          Fax: {profile.fax.trim()}
+        </p>
       ) : null}
-      <p className="mt-3 text-xs text-stone-400">
+      <p className="mt-3 text-xs text-site-foreground-muted">
         © {year} Flock of Fox, LLC. All rights reserved.
       </p>
       <p className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
         <Link
           href="/articles"
-          className="text-amber-200/70 transition-colors hover:text-gold"
+          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
         >
           Essays
         </Link>
-        <span className="text-stone-600" aria-hidden="true">
+        <span className="text-site-foreground-faint" aria-hidden="true">
           ·
         </span>
         <Link
           href="/bookshelf"
-          className="text-amber-200/70 transition-colors hover:text-gold"
+          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
         >
           Bookshelf
         </Link>
-        <span className="text-stone-600" aria-hidden="true">
+        <span className="text-site-foreground-faint" aria-hidden="true">
           ·
         </span>
         <Link
           href="/login"
-          className="text-amber-200/70 transition-colors hover:text-gold"
+          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
         >
           Portal Login
         </Link>

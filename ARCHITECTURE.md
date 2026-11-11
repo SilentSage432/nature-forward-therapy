@@ -53,6 +53,8 @@ Browser
 | `lib/content.ts` | Landing-page site content composition |
 | `lib/public-cache.ts` / `lib/public-cache-shared.ts` | ISR tags + invalidation helpers (server-only vs shared constants) |
 | `proxy.ts` | Admin auth gate + public maintenance rewrite |
+| `components/site/HomePresentation.tsx` | Shared homepage composition (Navbar → sections → Footer) |
+| `components/site/SiteTheme.tsx` | Public `[data-site-theme]` boundary for semantic tokens |
 | Presentation (`components/*`, `app/articles/**`, `app/bookshelf/**`) | Render only |
 
 ## RBAC
@@ -87,4 +89,14 @@ Browser
 - Unknown specialty icon strings render as authored text; known defaults are Leaf / Mountain / Sprout
 
 ## Design tokens
-Canonical hex values live in `app/globals.css` `@theme` and are documented in `AUDIT_CATALOG.md`.
+Brand palette hex values live in `app/globals.css` `@theme` (forest/sage/gold/…) and are documented in `AUDIT_CATALOG.md`.
+
+### Semantic public theme (NFT-STUDIO-003)
+- Semantic CSS variables (`--site-surface-page`, `--site-accent`, `--site-foreground`, …) are defined on `:root` and `[data-site-theme="forest-gold"]` with **identical current values**.
+- Public marketing surfaces wrap with `SiteTheme` (`data-site-theme="forest-gold"`). Admin / login remain outside that wrapper and inherit stable `:root` defaults.
+- Shared chrome classes (`.btn-gold`, `.btn-outline`, `.nav-glass`, hero overlays, `.frosted-leaf-card`, …) read semantic variables so a future curated public theme can override without rewriting components.
+- **Not implemented yet:** Website Studio UI, SiteDesign persistence, draft/publish, Media Library, alternate presets.
+
+### Shared homepage presentation
+- `app/page.tsx` loads CMS data (`getSiteContent`, `getActiveAnnouncement`) and renders `HomePresentation`.
+- Section order and anchors (`hero`, `about`, `specialties`, `contact`) are fixed in `HomePresentation` for Studio reuse without a second renderer.

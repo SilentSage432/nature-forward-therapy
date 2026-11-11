@@ -24,18 +24,20 @@
 - [x] Developer Operational Suite (audit, maintenance, magic links, cache console, diagnostics)
 - [x] Public site scroll/render performance (GPU glows, lighter glass, image sizes/quality)
 - [x] Admin / Developer portal mobile responsiveness (drawer nav, stacked grids, touch targets)
-- [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push still pending**
+- [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **production columns applied via targeted additive SQL**
 - [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **NFT-PERF-003 released to production (`a6a5af6`); TTFB/cache HIT measured**
-- [x] Visual asset optimization (local responsive hero + sized logo/favicon) — **NFT-PERF-004 validated locally; not deployed**
-- [x] Unified Lucide SVG icon system replacing UI emoji (NFT-DESIGN-001) — **validated locally; not deployed**
+- [x] Visual asset optimization (responsive hero + sized logo/favicon) — **NFT-PERF-004 deployed**
+- [x] Unified Lucide SVG icon system replacing UI emoji (NFT-DESIGN-001) — **deployed at `134a497`**
+- [x] Shared homepage presentation + semantic public theme tokens (NFT-STUDIO-003) — **local implementation; not committed/deployed**
 
 ## Near-term
-- [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail` (contact columns; separate from caching release)
-- [ ] Deploy NFT-PERF-004 visual assets and re-measure production mobile image weight / FCP
+- [ ] Website Studio foundation: SiteDesign draft/publish persistence (NFT-STUDIO-002 Tranche 2)
+- [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
+- [ ] Theme presets over semantic tokens (NFT-STUDIO-002 Tranche 4)
+- [ ] Visual Website Studio editor over `HomePresentation` (NFT-STUDIO-002 Tranche 5)
 - [ ] Optional follow-up: cold-start / edge geography re-measure after traffic settles
 - [ ] Optional: localize remaining below-fold Unsplash section images (About/Specialties/Contact)
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
-- [ ] Deploy target (Vercel or container) with persistent Postgres
 - [ ] Optional image upload for headshot (covers now use studio data URLs)
 - [x] Replace deprecated Next.js middleware convention with `proxy`
 - [ ] Remove/archive duplicate Desktop folder `Nature-Forward-Therapy` if unused
@@ -43,6 +45,6 @@
 - [ ] Persist studio covers to object storage instead of DB data URLs at scale
 
 ## Later
-- [ ] Audit logging for CMS edits
 - [ ] Rich-text / markdown preview in article editor
 - [ ] Accessibility pass on admin forms and public CTAs
+- [ ] Design history UI + constrained section order (Studio advanced)

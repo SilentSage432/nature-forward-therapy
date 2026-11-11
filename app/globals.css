@@ -15,10 +15,75 @@
   --color-body-text: #e8eae6;
   --color-gold-glow: rgba(212, 175, 55, 0.35);
 
+  /*
+   * Semantic public theme utilities (Tailwind v4).
+   * Values resolve from CSS variables so [data-site-theme] can override
+   * without changing class names. :root defaults keep admin/login stable.
+   */
+  --color-site-surface-page: var(--site-surface-page);
+  --color-site-surface-elevated-strong: var(--site-surface-elevated-strong);
+  --color-site-surface-elevated-solid: var(--site-surface-elevated-solid);
+  --color-site-surface-mobile-nav: var(--site-surface-mobile-nav);
+  --color-site-foreground-muted: var(--site-foreground-muted);
+  --color-site-foreground-faint: var(--site-foreground-faint);
+  --color-site-accent-soft: var(--site-accent-soft);
+  --color-site-border-subtle-strong: var(--site-border-subtle-strong);
+  --color-site-border-muted: var(--site-border-muted);
+  --color-site-border-mobile-nav: var(--site-border-mobile-nav);
+  --color-site-border-hover: var(--site-border-hover);
+  --color-site-interactive-hover: var(--site-interactive-hover);
+  --color-site-card-glow: var(--site-card-glow);
+
   --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Semantic theme tokens.
+ * :root = stable system/admin defaults (current forest-gold identity).
+ * [data-site-theme] = explicit public presentation boundary for future
+ * curated presets / Studio preview. Values match today for visual parity.
+ */
+:root,
+[data-site-theme="forest-gold"] {
+  --site-surface-page: #162221;
+  --site-surface-page-mid: #1e2d2b;
+  --site-surface-page-soft: #2d3a35;
+  --site-surface-nav: rgba(12, 18, 17, 0.88);
+  --site-surface-section: #162221;
+  --site-surface-elevated: rgba(18, 24, 23, 0.88);
+  /* Exact former Tailwind stone-950 alpha fills used on public cards/nav. */
+  --site-surface-elevated-strong: rgba(12, 10, 9, 0.85);
+  --site-surface-elevated-solid: rgba(12, 10, 9, 0.9);
+  --site-surface-mobile-nav: rgba(12, 10, 9, 0.95);
+  --site-foreground: #e8eae6;
+  --site-foreground-heading: #ffffff;
+  --site-foreground-muted: #a8a29e;
+  --site-foreground-faint: #57534e;
+  --site-accent: #d4af37;
+  --site-accent-strong: #b8962e;
+  --site-accent-foreground: #162221;
+  --site-accent-secondary: #c48b71;
+  --site-accent-glow: rgba(212, 175, 55, 0.35);
+  /* Exact former Tailwind amber-200 used for soft gold public links. */
+  --site-accent-soft: #fde68a;
+  --site-border-subtle: rgba(212, 175, 55, 0.15);
+  /* Exact former Tailwind stone-800 used on public cards. */
+  --site-border-subtle-strong: #292524;
+  /* Exact former Tailwind stone-700 used on bookshelf "Coming soon". */
+  --site-border-muted: #44403c;
+  --site-border-mobile-nav: rgba(120, 53, 15, 0.3);
+  /* Exact former Tailwind amber-500/40 hover border. */
+  --site-border-hover: rgba(245, 158, 11, 0.4);
+  --site-interactive-hover: #d4af37;
+  --site-focus-ring: rgba(212, 175, 55, 0.55);
+  --site-hero-overlay-start: rgba(22, 34, 33, 0.88);
+  --site-hero-overlay-mid: rgba(45, 58, 53, 0.75);
+  --site-hero-overlay-end: rgba(22, 34, 33, 0.9);
+  --site-card-glow: rgba(212, 175, 55, 0.12);
+  --site-outline-hover-fill: rgba(196, 139, 113, 0.12);
 }
 
 @layer base {
@@ -30,13 +95,13 @@
     font-family: var(--font-body);
     background: linear-gradient(
       165deg,
-      #162221 0%,
-      #1e2d2b 35%,
-      #2d3a35 70%,
-      #1e2d2b 100%
+      var(--site-surface-page) 0%,
+      var(--site-surface-page-mid) 35%,
+      var(--site-surface-page-soft) 70%,
+      var(--site-surface-page-mid) 100%
     );
     background-attachment: fixed;
-    color: var(--color-body-text);
+    color: var(--site-foreground);
     min-height: 100vh;
   }
 
@@ -50,17 +115,21 @@
 
 @layer components {
   .nav-glass {
-    background: rgba(12, 18, 17, 0.88);
+    background: var(--site-surface-nav);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    border-bottom: 1px solid var(--site-border-subtle);
   }
 
   .btn-gold {
-    background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
-    color: #162221;
+    background: linear-gradient(
+      135deg,
+      var(--site-accent) 0%,
+      var(--site-accent-strong) 100%
+    );
+    color: var(--site-accent-foreground);
     box-shadow:
-      0 0 24px var(--color-gold-glow),
+      0 0 24px var(--site-accent-glow),
       0 4px 14px rgba(0, 0, 0, 0.25);
     transition:
       transform 0.2s,
@@ -75,8 +144,8 @@
   }
 
   .btn-outline {
-    border: 2px solid #d4af37;
-    color: #e8eae6;
+    border: 2px solid var(--site-accent);
+    color: var(--site-foreground);
     background: transparent;
     transition:
       background 0.2s,
@@ -85,9 +154,9 @@
   }
 
   .btn-outline:hover {
-    background: rgba(196, 139, 113, 0.12);
-    border-color: #c48b71;
-    color: #d4af37;
+    background: var(--site-outline-hover-fill);
+    border-color: var(--site-accent-secondary);
+    color: var(--site-accent);
   }
 
   .hero-bg {
@@ -102,9 +171,9 @@
     background-image:
       linear-gradient(
         165deg,
-        rgba(22, 34, 33, 0.88) 0%,
-        rgba(45, 58, 53, 0.75) 50%,
-        rgba(22, 34, 33, 0.9) 100%
+        var(--site-hero-overlay-start) 0%,
+        var(--site-hero-overlay-mid) 50%,
+        var(--site-hero-overlay-end) 100%
       ),
       var(--hero-image);
   }
@@ -119,9 +188,9 @@
     background-image:
       linear-gradient(
         165deg,
-        rgba(22, 34, 33, 0.88) 0%,
-        rgba(45, 58, 53, 0.75) 50%,
-        rgba(22, 34, 33, 0.9) 100%
+        var(--site-hero-overlay-start) 0%,
+        var(--site-hero-overlay-mid) 50%,
+        var(--site-hero-overlay-end) 100%
       ),
       image-set(
         url("/images/hero/forest-1280.avif") type("image/avif"),
@@ -135,9 +204,9 @@
       background-image:
         linear-gradient(
           165deg,
-          rgba(22, 34, 33, 0.88) 0%,
-          rgba(45, 58, 53, 0.75) 50%,
-          rgba(22, 34, 33, 0.9) 100%
+          var(--site-hero-overlay-start) 0%,
+          var(--site-hero-overlay-mid) 50%,
+          var(--site-hero-overlay-end) 100%
         ),
         image-set(
           url("/images/hero/forest-768.avif") type("image/avif"),
@@ -152,9 +221,9 @@
       background-image:
         linear-gradient(
           165deg,
-          rgba(22, 34, 33, 0.88) 0%,
-          rgba(45, 58, 53, 0.75) 50%,
-          rgba(22, 34, 33, 0.9) 100%
+          var(--site-hero-overlay-start) 0%,
+          var(--site-hero-overlay-mid) 50%,
+          var(--site-hero-overlay-end) 100%
         ),
         image-set(
           url("/images/hero/forest-1920.avif") type("image/avif"),
@@ -166,9 +235,9 @@
 
   .headshot-ring {
     box-shadow:
-      0 0 0 4px rgba(212, 175, 55, 0.55),
+      0 0 0 4px var(--site-focus-ring),
       0 0 0 8px rgba(196, 139, 113, 0.2),
-      0 0 28px var(--color-gold-glow);
+      0 0 28px var(--site-accent-glow);
   }
 
   .organic-portrait {
@@ -184,7 +253,7 @@
   }
 
   .frosted-leaf-card {
-    background: rgba(18, 24, 23, 0.88);
+    background: var(--site-surface-elevated);
     border: 1px solid rgba(90, 114, 102, 0.4);
     border-top-color: rgba(168, 195, 181, 0.28);
     border-left-color: rgba(196, 139, 113, 0.22);
@@ -203,7 +272,7 @@
     transform: translateY(-4px);
     box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.25),
-      0 0 25px rgba(212, 175, 55, 0.12),
+      0 0 25px var(--site-card-glow),
       0 0 0 1px rgba(196, 139, 113, 0.18);
   }
 
@@ -223,8 +292,8 @@
     background: linear-gradient(
       90deg,
       transparent,
-      var(--color-clay),
-      var(--color-gold),
+      var(--site-accent-secondary),
+      var(--site-accent),
       transparent
     );
     opacity: 0.65;
@@ -262,13 +331,13 @@
   .focus-pill {
     border: 1px solid rgba(196, 139, 113, 0.45);
     background: rgba(196, 139, 113, 0.14);
-    color: #c48b71;
+    color: var(--site-accent-secondary);
   }
 
   .focus-pill:hover {
     border-color: rgba(212, 175, 55, 0.45);
     background: rgba(212, 175, 55, 0.16);
-    color: #d4af37;
+    color: var(--site-accent);
   }
 }
 

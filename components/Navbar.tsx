@@ -143,7 +143,7 @@ export function Navbar({ banner = null }: NavbarProps) {
 
         <div
           id="mobile-nav-menu"
-          className={`overflow-hidden border-b border-amber-900/30 bg-stone-950/95 transition-[max-height,opacity] duration-300 ease-out md:hidden ${
+          className={`overflow-hidden border-b border-site-border-mobile-nav bg-site-surface-mobile-nav transition-[max-height,opacity] duration-300 ease-out md:hidden ${
             menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >

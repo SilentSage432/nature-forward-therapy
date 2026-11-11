@@ -15,7 +15,7 @@ export async function MaintenanceHolding({
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(ellipse at 18% 15%, rgba(125,155,138,0.4), transparent 52%), radial-gradient(ellipse at 82% 75%, rgba(212,175,55,0.2), transparent 48%), linear-gradient(165deg, #162221, #1e2d2b 55%, #2d3a35)",
+            "radial-gradient(ellipse at 18% 15%, rgba(125,155,138,0.4), transparent 52%), radial-gradient(ellipse at 82% 75%, rgba(212,175,55,0.2), transparent 48%), linear-gradient(165deg, var(--site-surface-page), var(--site-surface-page-mid) 55%, var(--site-surface-page-soft))",
         }}
       />
       <div className="relative z-10 w-full max-w-lg rounded-3xl border border-gold/25 bg-forest-soft/85 p-8 text-center shadow-2xl backdrop-blur-md">

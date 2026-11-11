@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-11 — Shared presentation & semantic theme foundation (NFT-STUDIO-003 / 003B)
+
+Extracted `components/site/HomePresentation.tsx` so `app/page.tsx` only loads CMS data and renders the shared composition (Navbar → Hero → About → Specialties → Contact → Footer). Introduced `SiteTheme` (`data-site-theme="forest-gold"`) on public marketing routes and semantic `--site-*` CSS variables in `app/globals.css` mapped to the current forest/sage/gold identity. Refactored theme-blocker chrome (body gradient, `.nav-glass`, `.btn-gold` / `.btn-outline`, hero overlays, frosted cards, public footer/nav stone/amber fills) to read semantic tokens while preserving hex/rgba values. Admin/login remain outside the public theme wrapper and keep `:root` defaults. NFT-STUDIO-003A acceptance: CONDITIONAL PASS. NFT-STUDIO-003B restored bookshelf “Coming soon” border to exact former `stone-700` via `--site-border-muted: #44403c`. No Prisma/schema, Studio UI, draft/publish, Media Library, or new presets. Typecheck + production build passed; full-repo eslint still reports pre-existing admin/script issues unrelated to this tranche.
+
 ## 2026-11-10 — Unified vector icon system (NFT-DESIGN-001)
 
 Replaced hardcoded UI emoji/Unicode control glyphs with Lucide React SVGs across public and admin surfaces. Established presentation-only specialty mapping in `lib/specialty-icons.tsx` so CMS `Specialty.icon` emoji keys remain stored unchanged while the public site renders Leaf/Mountain/Sprout. Banner theme picker, support chat prompts, admin action labels, article/bookshelf CTAs, and status chrome now use named Lucide imports. Authored article/profile/DB content untouched; no Prisma operations. Local-only — not committed or deployed.
