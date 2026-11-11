@@ -24,8 +24,10 @@
 - [x] Developer Operational Suite (audit, maintenance, magic links, cache console, diagnostics)
 - [x] Public site scroll/render performance (GPU glows, lighter glass, image sizes/quality)
 - [x] Admin / Developer portal mobile responsiveness (drawer nav, stacked grids, touch targets)
+- [x] Owner-managed contact fields (location + phone/fax/publicEmail) in Practice Profile — **local code complete; production schema push + deploy pending**
 
 ## Near-term
+- [ ] Apply additive production Prisma `db push` for `phone` / `fax` / `publicEmail`, then deploy contact-management app code
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production
 - [ ] Deploy target (Vercel or container) with persistent Postgres
 - [ ] Optional image upload for headshot (covers now use studio data URLs)

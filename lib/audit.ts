@@ -1,4 +1,6 @@
+import { resolveOptionalSnapshotContactField } from "@/lib/profile-contact";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 export type AuditActor = {
   id: string;
@@ -230,24 +232,35 @@ export async function rollbackAuditLog(
           return { ok: false, message: "Missing PractitionerProfile id." };
         }
         const data = stripMeta(snapshot);
+        const updateData: Prisma.PractitionerProfileUpdateInput = {
+          name: String(data.name ?? ""),
+          credentials: String(data.credentials ?? ""),
+          location: String(data.location ?? ""),
+          tagline: String(data.tagline ?? ""),
+          bio: String(data.bio ?? ""),
+          bioHighlight: String(data.bioHighlight ?? ""),
+          headshotPath: String(data.headshotPath ?? ""),
+          headwayUrl: String(data.headwayUrl ?? ""),
+          psychologyTodayUrl: String(data.psychologyTodayUrl ?? ""),
+          heroBackgroundUrl: String(data.heroBackgroundUrl ?? ""),
+          aboutImageUrl: String(data.aboutImageUrl ?? ""),
+          specialtiesImageUrl: String(data.specialtiesImageUrl ?? ""),
+          contactImageUrl: String(data.contactImageUrl ?? ""),
+          footerCredit: String(data.footerCredit ?? ""),
+        };
+
+        // Historical snapshots may omit contact fields. Absent ≠ null:
+        // only write phone/fax/publicEmail when the snapshot owns the key.
+        for (const key of ["phone", "fax", "publicEmail"] as const) {
+          const resolved = resolveOptionalSnapshotContactField(data, key);
+          if (resolved.present) {
+            updateData[key] = resolved.value;
+          }
+        }
+
         restored = await prisma.practitionerProfile.update({
           where: { id: entityId },
-          data: {
-            name: String(data.name ?? ""),
-            credentials: String(data.credentials ?? ""),
-            location: String(data.location ?? ""),
-            tagline: String(data.tagline ?? ""),
-            bio: String(data.bio ?? ""),
-            bioHighlight: String(data.bioHighlight ?? ""),
-            headshotPath: String(data.headshotPath ?? ""),
-            headwayUrl: String(data.headwayUrl ?? ""),
-            psychologyTodayUrl: String(data.psychologyTodayUrl ?? ""),
-            heroBackgroundUrl: String(data.heroBackgroundUrl ?? ""),
-            aboutImageUrl: String(data.aboutImageUrl ?? ""),
-            specialtiesImageUrl: String(data.specialtiesImageUrl ?? ""),
-            contactImageUrl: String(data.contactImageUrl ?? ""),
-            footerCredit: String(data.footerCredit ?? ""),
-          },
+          data: updateData,
         });
         break;
       }

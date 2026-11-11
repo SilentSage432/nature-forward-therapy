@@ -9,6 +9,9 @@ export type SiteContent = {
     name: string;
     credentials: string;
     location: string;
+    phone: string | null;
+    fax: string | null;
+    publicEmail: string | null;
     tagline: string;
     bio: string;
     bioHighlight: string;
@@ -53,6 +56,9 @@ export const FALLBACK_CONTENT: SiteContent = {
     name: "Nicole Garcia",
     credentials: "LCSW-C",
     location: "Towson, MD 21286",
+    phone: null,
+    fax: null,
+    publicEmail: null,
     tagline: "Compassionate care for life's transitions. Helping you find balance in a chaotic world.",
     bio: "Welcome. I provide a safe, non-judgmental space in Towson, MD, to help you navigate your mental health journey. My approach is person-centered, focusing on evidence-based strategies to foster growth and resilience.",
     bioHighlight:

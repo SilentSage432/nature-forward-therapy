@@ -23,8 +23,8 @@ export default async function AdminProfilePage() {
           Practice Profile
         </h1>
         <p className="mt-2 text-sage-light">
-          Update your public name, credentials, bio, and booking links. Changes
-          appear on the live site immediately.
+          Update your public name, credentials, bio, contact details, and
+          booking links. Changes appear on the live site immediately.
         </p>
       </div>
       <div className="rounded-2xl border border-sage-dark/30 bg-forest-soft/80 p-6">
@@ -34,6 +34,10 @@ export default async function AdminProfilePage() {
             credentials: profile.credentials,
             tagline: profile.tagline,
             bio: profile.bio,
+            location: profile.location,
+            phone: profile.phone ?? null,
+            fax: profile.fax ?? null,
+            publicEmail: profile.publicEmail ?? null,
             headwayUrl: profile.headwayUrl,
             psychologyTodayUrl: profile.psychologyTodayUrl,
           }}

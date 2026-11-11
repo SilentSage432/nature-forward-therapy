@@ -3,6 +3,8 @@
 ## Current state
 Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Developer Operational Suite includes audit logs + rollback, maintenance mode, magic login links, cache revalidation console, and link diagnostics. Diagnostics HTTP probes use browser-like headers and treat Cloudflare challenge `403`s as reachable. Admin/developer portal is mobile-responsive (hamburger drawer `<lg`, stacked grids, scrollable tables, 44px touch targets). In-app Dev Support Desk and Preview Editor View Tech Desk remain live. Public visitors see a holding card when maintenance is enabled; DEVELOPERs still browse. Public pages use GPU-accelerated glow orbs, light glass (solid dark fills over heavy backdrop-blur), passive navbar scroll, and optimized Next images (`quality={80}`).
 
+**Contact management (local code, pending DB deploy):** Practice Profile admin edits `location`, optional `phone` / `fax` / `publicEmail`. Contact section renders all four when present; Footer renders fax only. Public email is display/`mailto` only — no SMTP or mailbox hosting. Schema columns must be pushed to Postgres before production deploy of this code.
+
 ## How to run
 ```bash
 npm install
@@ -41,8 +43,17 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | Schema / seed | `prisma/schema.prisma`, `prisma/seed.ts` |
 
 ## Editor vs developer
-- **Editor:** profile, specialties, practice details, articles/essays, curated bookshelf, announcement banner, floating Tech Desk chat.
+- **Editor:** profile (including location + optional phone/fax/publicEmail), specialties, practice details, articles/essays, curated bookshelf, announcement banner, floating Tech Desk chat.
 - **Developer:** Command Center (overview + support desk), Management (activity/rollback, backups, users/magic links), Controls (cache, SEO, system settings/maintenance).
+
+## Contact fields ownership
+| Concern | Owner |
+| --- | --- |
+| Validation + save | `lib/profile-contact.ts`, `lib/actions/profile.ts` |
+| Admin UI | `components/admin/ProfileForm.tsx`, `/admin/profile` |
+| Public render | `components/Contact.tsx`, `components/Footer.tsx` (fax only) |
+| Content mapping | `lib/content.ts`, `lib/types.ts` |
+| Legacy API | Does **not** accept phone/fax/publicEmail (`EDITOR_PROFILE_FIELDS`) |
 
 ## Do not regress
 - Keep audit color hex values exact.

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { AtmosphereGlow } from "@/components/AtmosphereGlow";
 import { BotanicalLine } from "@/components/BotanicalLine";
+import { toTelHref } from "@/lib/profile-contact";
 import type { SiteContent } from "@/lib/types";
 
 type ContactProps = {
@@ -9,6 +10,12 @@ type ContactProps = {
 };
 
 export function Contact({ profile, processSteps }: ContactProps) {
+  const location = profile.location?.trim() || null;
+  const phone = profile.phone?.trim() || null;
+  const fax = profile.fax?.trim() || null;
+  const publicEmail = profile.publicEmail?.trim() || null;
+  const hasContactInfo = Boolean(location || phone || fax || publicEmail);
+
   return (
     <section
       id="contact"
@@ -59,6 +66,55 @@ export function Contact({ profile, processSteps }: ContactProps) {
                 className="h-56 w-full object-cover"
               />
             </div>
+
+            {hasContactInfo ? (
+              <div className="mb-8 space-y-3">
+                <h3 className="font-heading text-xl font-semibold text-gold">
+                  Contact Information
+                </h3>
+                <dl className="space-y-2 text-sm text-sage-light sm:text-base">
+                  {location ? (
+                    <div>
+                      <dt className="sr-only">Location</dt>
+                      <dd className="text-parchment/95">{location}</dd>
+                    </div>
+                  ) : null}
+                  {phone ? (
+                    <div className="flex flex-wrap gap-x-2 gap-y-1">
+                      <dt className="font-semibold text-sand">Phone</dt>
+                      <dd>
+                        <a
+                          href={toTelHref(phone)}
+                          className="text-gold transition-colors hover:text-amber-200"
+                        >
+                          {phone}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                  {fax ? (
+                    <div className="flex flex-wrap gap-x-2 gap-y-1">
+                      <dt className="font-semibold text-sand">Fax</dt>
+                      <dd className="text-parchment/95">{fax}</dd>
+                    </div>
+                  ) : null}
+                  {publicEmail ? (
+                    <div className="flex flex-wrap gap-x-2 gap-y-1">
+                      <dt className="font-semibold text-sand">Email</dt>
+                      <dd>
+                        <a
+                          href={`mailto:${publicEmail}`}
+                          className="break-all text-gold transition-colors hover:text-amber-200"
+                        >
+                          {publicEmail}
+                        </a>
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </div>
+            ) : null}
+
             <h3 className="mb-4 font-heading text-xl font-semibold text-gold">
               View Detailed Profiles
             </h3>

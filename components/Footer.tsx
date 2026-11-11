@@ -28,6 +28,9 @@ export function Footer({ profile }: FooterProps) {
       <p className="text-sm text-stone-400">
         {profile.name}, {profile.credentials} | {profile.location}
       </p>
+      {profile.fax?.trim() ? (
+        <p className="mt-2 text-sm text-stone-400">Fax: {profile.fax.trim()}</p>
+      ) : null}
       <p className="mt-3 text-xs text-stone-400">
         © {year} Flock of Fox, LLC. All rights reserved.
       </p>

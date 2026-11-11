@@ -31,6 +31,12 @@ model PractitionerProfile {
   name                String
   credentials         String
   location            String
+  /// Optional public practice phone (display + tel: link).
+  phone               String?
+  /// Optional public fax number (display only; no tel: link).
+  fax                 String?
+  /// Optional public contact email (display + mailto: only; not mailbox hosting).
+  publicEmail         String?
   tagline             String
   bio                 String
   bioHighlight        String

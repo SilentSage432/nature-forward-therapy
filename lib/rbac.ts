@@ -50,7 +50,13 @@ export function canAccessAdminPath(
   );
 }
 
-/** Fields editors may update on practitioner profile. */
+/**
+ * Fields editors may update via the legacy `/api/cms/profile` allowlist.
+ *
+ * Contact fields (`phone`, `fax`, `publicEmail`) are intentionally omitted.
+ * They are validated and persisted only through `updateProfile` in
+ * `lib/actions/profile.ts` so the legacy JSON PUT cannot bypass Zod rules.
+ */
 export const EDITOR_PROFILE_FIELDS = [
   "name",
   "credentials",

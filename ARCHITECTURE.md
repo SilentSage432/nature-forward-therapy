@@ -18,7 +18,8 @@ Browser
 ```
 
 ## CMS collections
-1. **PractitionerProfile** — identity, bio, imagery URLs, booking links  
+1. **PractitionerProfile** — identity, location, optional phone/fax/publicEmail, bio, imagery URLs, booking links  
+
 2. **Specialty** — card title/icon/description  
 3. **FocusTag** — gold pill labels  
 4. **Insurance** — accepted carriers  

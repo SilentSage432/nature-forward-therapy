@@ -1,5 +1,9 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-10 — Owner-managed practice contact fields
+
+Extended `PractitionerProfile` with nullable `phone`, `fax`, and `publicEmail`. Active Practice Profile admin form (`ProfileForm` + `updateProfile`) now edits location plus these optional contact fields with Zod normalization (empty → null). Public Contact section shows location/phone/fax/email when set; Footer shows fax when set. Headway/Psychology Today CTAs unchanged. Legacy `/api/cms/profile` deliberately excludes the new contact fields so they cannot bypass server-action validation. Audit rollback restores nullables. **Not production-deployed yet** — additive `prisma db push` against production Postgres is still required before the app that reads these columns can go live. Local schema edited only; no production DB write in this change set.
+
 ## 2026-07-24 — Admin portal mobile responsiveness
 
 Refactored the admin/developer shell for small screens: hamburger + slide-over nav drawer below `lg`, stacked dashboard grids, `overflow-x-auto` + `.admin-scroll` on tables/feeds, and 44px touch targets on key controls. Support chat, force-password, and Cover Studio modals fit mobile viewports (`max-w-full` / `sm:max-w-lg`).

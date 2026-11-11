@@ -4,6 +4,12 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
+import {
+  locationSchema,
+  optionalFaxSchema,
+  optionalPhoneSchema,
+  optionalPublicEmailSchema,
+} from "@/lib/profile-contact";
 import { prisma } from "@/lib/prisma";
 import { isEditor } from "@/lib/rbac";
 
@@ -12,6 +18,10 @@ const profileSchema = z.object({
   credentials: z.string().min(1).max(80),
   tagline: z.string().min(1).max(500),
   bio: z.string().min(1).max(5000),
+  location: locationSchema,
+  phone: optionalPhoneSchema,
+  fax: optionalFaxSchema,
+  publicEmail: optionalPublicEmailSchema,
   headwayUrl: z.string().url(),
   psychologyTodayUrl: z.string().url(),
 });
@@ -32,6 +42,10 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
     credentials: formData.get("credentials"),
     tagline: formData.get("tagline"),
     bio: formData.get("bio"),
+    location: formData.get("location"),
+    phone: formData.get("phone"),
+    fax: formData.get("fax"),
+    publicEmail: formData.get("publicEmail"),
     headwayUrl: formData.get("headwayUrl"),
     psychologyTodayUrl: formData.get("psychologyTodayUrl"),
   });
@@ -56,9 +70,19 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
     profile.headwayUrl !== updated.headwayUrl ||
     profile.psychologyTodayUrl !== updated.psychologyTodayUrl;
 
+  const contactChanged =
+    profile.location !== updated.location ||
+    profile.phone !== updated.phone ||
+    profile.fax !== updated.fax ||
+    profile.publicEmail !== updated.publicEmail;
+
   await writeAuditLog({
     actor: { id: session!.user!.id, email: session!.user!.email },
-    action: bookingChanged ? "UPDATE_BOOKING_LINK" : "UPDATE_PROFILE",
+    action: bookingChanged
+      ? "UPDATE_BOOKING_LINK"
+      : contactChanged
+        ? "UPDATE_CONTACT"
+        : "UPDATE_PROFILE",
     entity: "PractitionerProfile",
     entityId: updated.id,
     previousState: profile,
