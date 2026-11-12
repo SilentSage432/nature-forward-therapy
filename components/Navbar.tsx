@@ -85,7 +85,7 @@ export function Navbar({ banner = null }: NavbarProps) {
           <Link
             href="/"
             onClick={closeMenu}
-            className="flex min-w-0 items-center gap-2 text-sm font-medium text-sage-light transition-colors hover:text-gold"
+            className="site-fg-supporting flex min-w-0 items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--site-accent)]"
           >
             <Image
               src="/images/fof-logo-mark.png"
@@ -94,10 +94,10 @@ export function Navbar({ banner = null }: NavbarProps) {
               height={64}
               quality={80}
               sizes="32px"
-              className="h-8 w-8 shrink-0 rounded-full border border-gold/30 object-cover"
+              className="site-border-accent h-8 w-8 shrink-0 rounded-full border object-cover"
               priority
             />
-            <span className="font-heading truncate text-sm font-semibold tracking-wide text-gold/90">
+            <span className="site-accent font-heading truncate text-sm font-semibold tracking-wide opacity-90">
               Flock of Fox, LLC
             </span>
           </Link>
@@ -106,24 +106,30 @@ export function Navbar({ banner = null }: NavbarProps) {
             {links.map((link, index) => (
               <span key={link.href} className="contents">
                 {index > 0 ? (
-                  <span className="text-sage-dark/60" aria-hidden="true">
+                  <span
+                    className="text-[color-mix(in_srgb,var(--site-border-organic)_60%,transparent)]"
+                    aria-hidden="true"
+                  >
                     |
                   </span>
                 ) : null}
                 <Link
                   href={link.href}
-                  className="font-medium text-sage-light transition-colors hover:text-gold"
+                  className="site-fg-supporting font-medium transition-colors hover:text-[var(--site-accent)]"
                 >
                   {link.label}
                 </Link>
               </span>
             ))}
-            <span className="text-sage-dark/60" aria-hidden="true">
+            <span
+              className="text-[color-mix(in_srgb,var(--site-border-organic)_60%,transparent)]"
+              aria-hidden="true"
+            >
               |
             </span>
             <Link
               href="/login"
-              className="text-xs font-medium tracking-wide text-sage-dark/70 transition-colors hover:text-gold/90"
+              className="text-xs font-medium tracking-wide text-[color-mix(in_srgb,var(--site-border-organic)_70%,transparent)] transition-colors hover:text-[var(--site-accent)]"
             >
               Portal Login
             </Link>
@@ -131,7 +137,12 @@ export function Navbar({ banner = null }: NavbarProps) {
 
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gold/25 text-gold transition hover:border-gold/50 hover:bg-gold/10 md:hidden"
+            className="site-accent site-accent-muted-fill inline-flex h-11 w-11 items-center justify-center rounded-lg border border-transparent transition hover:border-[color-mix(in_srgb,var(--site-accent)_50%,transparent)] md:hidden"
+            style={{
+              borderColor:
+                "color-mix(in srgb, var(--site-accent) 25%, transparent)",
+              backgroundColor: "transparent",
+            }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-menu"
@@ -143,9 +154,13 @@ export function Navbar({ banner = null }: NavbarProps) {
 
         <div
           id="mobile-nav-menu"
-          className={`overflow-hidden border-b border-site-border-mobile-nav bg-site-surface-mobile-nav transition-[max-height,opacity] duration-300 ease-out md:hidden ${
+          className={`overflow-hidden border-b transition-[max-height,opacity] duration-300 ease-out md:hidden ${
             menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
+          style={{
+            borderBottomColor: "var(--site-border-mobile-nav)",
+            backgroundColor: "var(--site-surface-mobile-nav)",
+          }}
         >
           <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-4">
             {links.map((link) => (
@@ -153,14 +168,14 @@ export function Navbar({ banner = null }: NavbarProps) {
                 key={link.href}
                 href={link.href}
                 onClick={closeMenu}
-                className="rounded-xl px-4 py-3.5 text-lg font-medium text-parchment transition hover:bg-gold/10 hover:text-gold active:bg-gold/15"
+                className="site-fg-soft rounded-xl px-4 py-3.5 text-lg font-medium transition hover:bg-[var(--site-accent-muted)] hover:text-[var(--site-accent)]"
               >
                 {link.label}
               </Link>
             ))}
             <Link
               href="/login"
-              className="rounded-xl border border-gold/30 bg-gold/10 px-4 py-3.5 text-lg font-semibold text-gold transition hover:bg-gold/20 active:bg-gold/25"
+              className="site-accent site-accent-muted-fill site-border-accent rounded-xl border px-4 py-3.5 text-lg font-semibold transition hover:bg-[color-mix(in_srgb,var(--site-accent)_20%,transparent)]"
             >
               Portal Login
             </Link>

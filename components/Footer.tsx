@@ -10,7 +10,7 @@ export function Footer({ profile }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-sage-dark/40 bg-forest px-6 py-8 text-center">
+    <footer className="border-t px-6 py-8 text-center">
       <div className="mb-3 flex items-center justify-center gap-2">
         <Image
           src="/images/fof-logo-mark.png"
@@ -19,45 +19,43 @@ export function Footer({ profile }: FooterProps) {
           height={64}
           quality={80}
           sizes="32px"
-          className="h-8 w-8 rounded-full border border-gold/30 object-cover"
+          className="site-border-accent h-8 w-8 rounded-full border object-cover"
         />
-        <span className="font-heading text-sm font-semibold text-site-accent-soft/70">
+        <span className="site-accent-soft-muted font-heading text-sm font-semibold">
           Flock of Fox, LLC
         </span>
       </div>
-      <p className="text-sm text-site-foreground-muted">
+      <p className="site-fg-muted text-sm">
         {profile.name}, {profile.credentials} | {profile.location}
       </p>
       {profile.fax?.trim() ? (
-        <p className="mt-2 text-sm text-site-foreground-muted">
-          Fax: {profile.fax.trim()}
-        </p>
+        <p className="site-fg-muted mt-2 text-sm">Fax: {profile.fax.trim()}</p>
       ) : null}
-      <p className="mt-3 text-xs text-site-foreground-muted">
+      <p className="site-fg-muted mt-3 text-xs">
         © {year} Flock of Fox, LLC. All rights reserved.
       </p>
       <p className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
         <Link
           href="/articles"
-          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
+          className="site-accent-soft-muted transition-colors hover:text-[var(--site-interactive-hover)]"
         >
           Essays
         </Link>
-        <span className="text-site-foreground-faint" aria-hidden="true">
+        <span className="site-fg-faint" aria-hidden="true">
           ·
         </span>
         <Link
           href="/bookshelf"
-          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
+          className="site-accent-soft-muted transition-colors hover:text-[var(--site-interactive-hover)]"
         >
           Bookshelf
         </Link>
-        <span className="text-site-foreground-faint" aria-hidden="true">
+        <span className="site-fg-faint" aria-hidden="true">
           ·
         </span>
         <Link
           href="/login"
-          className="text-site-accent-soft/70 transition-colors hover:text-site-interactive-hover"
+          className="site-accent-soft-muted transition-colors hover:text-[var(--site-interactive-hover)]"
         >
           Portal Login
         </Link>

@@ -42,14 +42,14 @@ export function Hero({ profile }: HeroProps) {
             />
           </div>
         </div>
-        <h1 className="animate-slide-up delay-2 mb-3 font-heading leading-tight font-bold text-white sm:mb-3">
+        <h1 className="site-fg-heading animate-slide-up delay-2 mb-3 font-heading leading-tight font-bold sm:mb-3">
           {displayName}
         </h1>
-        <p className="animate-slide-up delay-3 mb-3 max-w-xl text-base leading-relaxed text-sage-light sm:mb-2 sm:text-lg md:text-xl">
+        <p className="site-fg-supporting animate-slide-up delay-3 mb-3 max-w-xl text-base leading-relaxed sm:mb-2 sm:text-lg md:text-xl">
           Clinical Social Work &amp; Therapy | {profile.location}
         </p>
         <BotanicalLine className="animate-fade-in delay-3 mx-auto my-3 w-24 sm:my-4 sm:w-32" />
-        <p className="editorial-serif animate-slide-up delay-4 mx-auto mb-8 max-w-2xl leading-snug text-parchment/95 sm:mb-10">
+        <p className="site-fg-soft editorial-serif animate-slide-up delay-4 mx-auto mb-8 max-w-2xl leading-snug opacity-95 sm:mb-10">
           {profile.tagline}
         </p>
         <div className="animate-slide-up delay-4 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">
@@ -57,7 +57,7 @@ export function Hero({ profile }: HeroProps) {
             href={profile.headwayUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-gold w-full rounded-lg px-8 py-4 text-center font-heading font-semibold text-forest sm:w-auto"
+            className="btn-gold site-accent-fg w-full rounded-lg px-8 py-4 text-center font-heading font-semibold sm:w-auto"
           >
             Book via Headway
           </a>

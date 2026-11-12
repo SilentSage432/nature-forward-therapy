@@ -20,6 +20,13 @@ export {
 } from "@/lib/site-design/schema";
 export { presentationFromDesign } from "@/lib/site-design/presentation";
 export {
+  FOREST_GOLD_TOKENS,
+  SITE_PALETTE_TOKENS,
+  SITE_FONT_STACKS,
+  resolvePaletteTokens,
+  resolveFontStack,
+} from "@/lib/site-design/visual-tokens";
+export {
   getPublishedPresentationConfig,
 } from "@/lib/site-design/published";
 export {

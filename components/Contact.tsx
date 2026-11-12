@@ -19,34 +19,34 @@ export function Contact({ profile, processSteps }: ContactProps) {
   return (
     <section
       id="contact"
-      className="relative scroll-mt-24 overflow-hidden bg-forest-soft/90 px-6 py-20 md:py-28"
+      className="relative scroll-mt-24 overflow-hidden px-6 py-20 md:py-28"
     >
       <AtmosphereGlow variant="warm" />
       <div className="relative z-10 mx-auto max-w-5xl">
-        <h2 className="mb-3 text-center font-heading font-bold text-white">
+        <h2 className="site-fg-heading mb-3 text-center font-heading font-bold">
           Take the Next Step
         </h2>
-        <p className="editorial-serif mb-6 text-center text-sage-light">
+        <p className="site-fg-supporting editorial-serif mb-6 text-center">
           Begin gently, with clarity and care.
         </p>
         <BotanicalLine className="mx-auto mb-14 w-24" />
         <div className="grid items-start gap-12 md:grid-cols-2 md:gap-16">
           <div>
-            <h3 className="mb-6 font-heading text-xl font-semibold text-gold">
+            <h3 className="site-accent mb-6 font-heading text-xl font-semibold">
               The Path
             </h3>
             <ol className="space-y-5">
               {processSteps.map((step, index) => (
                 <li
                   key={step.title}
-                  className="card-hover frosted-leaf-card flex gap-4 border border-sage-dark/40 bg-site-surface-elevated-strong p-4 hover:shadow-[0_0_25px_var(--site-card-glow)]"
+                  className="card-hover frosted-leaf-card site-border-organic site-surface-elevated-strong flex gap-4 border p-4 hover:shadow-[0_0_25px_var(--site-card-glow)]"
                 >
-                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-clay/30 bg-gold/20 font-heading font-bold text-gold">
+                  <span className="site-accent site-accent-muted-fill site-border-secondary flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border font-heading font-bold">
                     {index + 1}
                   </span>
                   <div>
-                    <strong className="text-sand">{step.title}</strong>
-                    <p className="editorial-serif mt-1 text-base text-sage-light/90">
+                    <strong className="site-fg-warm">{step.title}</strong>
+                    <p className="site-fg-supporting editorial-serif mt-1 text-base opacity-90">
                       {step.description}
                     </p>
                   </div>
@@ -55,7 +55,7 @@ export function Contact({ profile, processSteps }: ContactProps) {
             </ol>
           </div>
           <div>
-            <div className="organic-frame mb-8 overflow-hidden border border-sage-dark/30 shadow-2xl">
+            <div className="site-border-organic-soft organic-frame mb-8 overflow-hidden border shadow-2xl">
               <Image
                 src={profile.contactImageUrl}
                 alt="Sagebrush and calm landscape"
@@ -69,23 +69,23 @@ export function Contact({ profile, processSteps }: ContactProps) {
 
             {hasContactInfo ? (
               <div className="mb-8 space-y-3">
-                <h3 className="font-heading text-xl font-semibold text-gold">
+                <h3 className="site-accent font-heading text-xl font-semibold">
                   Contact Information
                 </h3>
-                <dl className="space-y-2 text-sm text-sage-light sm:text-base">
+                <dl className="site-fg-supporting space-y-2 text-sm sm:text-base">
                   {location ? (
                     <div>
                       <dt className="sr-only">Location</dt>
-                      <dd className="text-parchment/95">{location}</dd>
+                      <dd className="site-fg-soft opacity-95">{location}</dd>
                     </div>
                   ) : null}
                   {phone ? (
                     <div className="flex flex-wrap gap-x-2 gap-y-1">
-                      <dt className="font-semibold text-sand">Phone</dt>
+                      <dt className="site-fg-warm font-semibold">Phone</dt>
                       <dd>
                         <a
                           href={toTelHref(phone)}
-                          className="text-gold transition-colors hover:text-site-accent-soft"
+                          className="site-accent transition-colors hover:text-[var(--site-accent-soft)]"
                         >
                           {phone}
                         </a>
@@ -94,17 +94,17 @@ export function Contact({ profile, processSteps }: ContactProps) {
                   ) : null}
                   {fax ? (
                     <div className="flex flex-wrap gap-x-2 gap-y-1">
-                      <dt className="font-semibold text-sand">Fax</dt>
-                      <dd className="text-parchment/95">{fax}</dd>
+                      <dt className="site-fg-warm font-semibold">Fax</dt>
+                      <dd className="site-fg-soft opacity-95">{fax}</dd>
                     </div>
                   ) : null}
                   {publicEmail ? (
                     <div className="flex flex-wrap gap-x-2 gap-y-1">
-                      <dt className="font-semibold text-sand">Email</dt>
+                      <dt className="site-fg-warm font-semibold">Email</dt>
                       <dd>
                         <a
                           href={`mailto:${publicEmail}`}
-                          className="break-all text-gold transition-colors hover:text-site-accent-soft"
+                          className="site-accent break-all transition-colors hover:text-[var(--site-accent-soft)]"
                         >
                           {publicEmail}
                         </a>
@@ -115,7 +115,7 @@ export function Contact({ profile, processSteps }: ContactProps) {
               </div>
             ) : null}
 
-            <h3 className="mb-4 font-heading text-xl font-semibold text-gold">
+            <h3 className="site-accent mb-4 font-heading text-xl font-semibold">
               View Detailed Profiles
             </h3>
             <div className="flex flex-col gap-4">
@@ -131,7 +131,7 @@ export function Contact({ profile, processSteps }: ContactProps) {
                 href={profile.headwayUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold rounded-lg px-6 py-4 text-center font-heading font-semibold text-forest"
+                className="btn-gold site-accent-fg rounded-lg px-6 py-4 text-center font-heading font-semibold"
               >
                 Headway
               </a>

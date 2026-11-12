@@ -11,27 +11,27 @@ export function About({ profile }: AboutProps) {
   return (
     <section
       id="about"
-      className="curve-bottom relative scroll-mt-24 overflow-hidden bg-forest-soft/80 px-6 py-20 md:py-28"
+      className="curve-bottom relative scroll-mt-24 overflow-hidden px-6 py-20 md:py-28"
     >
       <AtmosphereGlow variant="cool" />
       <div className="relative z-10 mx-auto max-w-4xl">
-        <h2 className="mb-3 text-center font-heading font-bold text-white">
+        <h2 className="site-fg-heading mb-3 text-center font-heading font-bold">
           A Welcoming Space for Healing
         </h2>
-        <p className="editorial-serif mb-6 text-center text-sage-light">
+        <p className="site-fg-supporting editorial-serif mb-6 text-center">
           A grounded, non-judgmental space for growth and resilience.
         </p>
         <BotanicalLine className="mx-auto mb-10 w-24" />
-        <p className="editorial-serif mb-6 leading-relaxed text-parchment/90">
+        <p className="site-fg-soft editorial-serif mb-6 leading-relaxed opacity-90">
           {profile.bio}
         </p>
-        <p className="leading-relaxed text-sage-light/95">
-          <strong className="text-clay">
+        <p className="site-fg-supporting leading-relaxed opacity-95">
+          <strong className="site-accent-secondary">
             Licensed Clinical Social Worker ({profile.credentials})
           </strong>{" "}
           {profile.bioHighlight}
         </p>
-        <div className="organic-frame mx-auto mt-14 max-w-2xl overflow-hidden border border-sage-dark/30 shadow-2xl">
+        <div className="site-border-organic-soft organic-frame mx-auto mt-14 max-w-2xl overflow-hidden border shadow-2xl">
           <Image
             src={profile.aboutImageUrl}
             alt="Sunlight through trees – calm natural setting"

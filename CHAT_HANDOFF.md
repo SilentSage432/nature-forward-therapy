@@ -11,6 +11,8 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-006C / 006D / 006E:** 006C diagnosed preview freeze (READY then late iframe `onLoad` cleared readiness). 006D repaired handshake (per-document READY ids, `REQUEST_READY` recovery, stale-id retirement). 006E is the authorized gated code-only production release of that repair — no design Save/Publish and no schema migration.
 
+**NFT-STUDIO-006F (production):** Visual fidelity released — homepage presentation uses live semantic `--site-*` helpers under `SiteTheme`; typography inheritance fixed; Modern/Classic/Editorial stacks distinguishable via loaded Next fonts only. Public published design remains forest-gold canonical until a later authorized publish tranche.
+
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
 - `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)

@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-12 — Visual design fidelity production release (NFT-STUDIO-006F)
+
+Authorized gated code-only production release of NFT-STUDIO-006F visual fidelity. Homepage presentation uses live `--site-*` helpers under `SiteTheme`; typography inheritance corrected; Classic/Editorial/Modern differentiated via loaded Next fonts only. Forest-gold remains published/canonical. No Save Draft, Publish, Restore, migrations, or production DB writes. Quality gates: 87 site-design tests, typecheck, build, isolated browser acceptance, contrast sampling. WAVE deferred (tool unavailable).
+
+## 2026-11-12 — Visual design fidelity (NFT-STUDIO-006F)
+
+Local bounded fidelity pass so curated Studio palettes/typography actually restyle homepage presentation. Homepage Hero/About/Specialties/Contact/Navbar/Footer/AtmosphereGlow consume live `--site-*` helper classes (Tailwind `@theme` bridges can snapshot `:root` and were not sufficient for palette switching). Section surfaces bind under `[data-site-theme]` rules. Typography: SiteTheme re-applies `font-family: var(--font-body)`; Modern uses Inter headings (distinct from Classic Montserrat); Inter loads weight 700. Shared `HomePresentation`/`SiteTheme` path unchanged; admin chrome stays on fixed forest/gold. Mirrored token tables + tests in `lib/site-design/visual-tokens.ts`. Browser acceptance VERIFIED on iso DB `127.0.0.1:5433/nft_studio_006_22555` (forest-gold parity vs pre-change baseline; dusk/clay surface+accent movement; Classic/Editorial/Modern distinct; heading/body scales move). Quality gates: 87 site-design tests, typecheck, build. No new controls, no publish, no commit/push/deploy, no production writes.
+
 ## 2026-11-11 — Preview handshake production hotfix (NFT-STUDIO-006E)
 
 Authorized gated code-only release of NFT-STUDIO-006D handshake repair to `origin/main` + Vercel production. No production DB writes, Save Draft, design publish/restore, or schema migrations. Preflight: baseline `7b98005`, recovery checkpoint checksum verified, SiteDesign tables expected unchanged (draft/published revision 0). Quality gates: 76 site-design tests, typecheck, build, targeted eslint, isolated prod-mode browser acceptance on `nft_studio_006_22555`. Release scope limited to preview handshake + tests + docs.

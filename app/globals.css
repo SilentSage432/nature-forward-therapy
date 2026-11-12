@@ -21,18 +21,35 @@
    * without changing class names. :root defaults keep admin/login stable.
    */
   --color-site-surface-page: var(--site-surface-page);
+  --color-site-surface-page-mid: var(--site-surface-page-mid);
+  --color-site-surface-page-soft: var(--site-surface-page-soft);
+  --color-site-surface-section: var(--site-surface-section);
   --color-site-surface-elevated-strong: var(--site-surface-elevated-strong);
   --color-site-surface-elevated-solid: var(--site-surface-elevated-solid);
   --color-site-surface-mobile-nav: var(--site-surface-mobile-nav);
+  --color-site-foreground: var(--site-foreground);
+  --color-site-foreground-heading: var(--site-foreground-heading);
   --color-site-foreground-muted: var(--site-foreground-muted);
   --color-site-foreground-faint: var(--site-foreground-faint);
+  --color-site-foreground-supporting: var(--site-foreground-supporting);
+  --color-site-foreground-soft: var(--site-foreground-soft);
+  --color-site-foreground-warm: var(--site-foreground-warm);
+  --color-site-accent: var(--site-accent);
+  --color-site-accent-strong: var(--site-accent-strong);
+  --color-site-accent-foreground: var(--site-accent-foreground);
+  --color-site-accent-secondary: var(--site-accent-secondary);
   --color-site-accent-soft: var(--site-accent-soft);
+  --color-site-accent-muted: var(--site-accent-muted);
+  --color-site-accent-glow: var(--site-accent-glow);
+  --color-site-border-organic: var(--site-border-organic);
   --color-site-border-subtle-strong: var(--site-border-subtle-strong);
   --color-site-border-muted: var(--site-border-muted);
   --color-site-border-mobile-nav: var(--site-border-mobile-nav);
   --color-site-border-hover: var(--site-border-hover);
+  --color-site-icon-surface: var(--site-icon-surface);
   --color-site-interactive-hover: var(--site-interactive-hover);
   --color-site-card-glow: var(--site-card-glow);
+  --color-site-focus-ring: var(--site-focus-ring);
 
   --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -62,6 +79,10 @@
   --site-foreground-heading: #ffffff;
   --site-foreground-muted: #a8a29e;
   --site-foreground-faint: #57534e;
+  /* Exact former Tailwind sage-light / parchment / sand used on homepage copy. */
+  --site-foreground-supporting: #a8c3b5;
+  --site-foreground-soft: #f4f2ed;
+  --site-foreground-warm: #c4b8a8;
   --site-accent: #d4af37;
   --site-accent-strong: #b8962e;
   --site-accent-foreground: #162221;
@@ -69,6 +90,7 @@
   --site-accent-glow: rgba(212, 175, 55, 0.35);
   /* Exact former Tailwind amber-200 used for soft gold public links. */
   --site-accent-soft: #fde68a;
+  --site-accent-muted: rgba(212, 175, 55, 0.2);
   --site-border-subtle: rgba(212, 175, 55, 0.15);
   /* Exact former Tailwind stone-800 used on public cards. */
   --site-border-subtle-strong: #292524;
@@ -77,6 +99,9 @@
   --site-border-mobile-nav: rgba(120, 53, 15, 0.3);
   /* Exact former Tailwind amber-500/40 hover border. */
   --site-border-hover: rgba(245, 158, 11, 0.4);
+  /* Exact former Tailwind sage-dark used on organic borders / icon wells. */
+  --site-border-organic: #5a7266;
+  --site-icon-surface: rgba(90, 114, 102, 0.4);
   --site-interactive-hover: #d4af37;
   --site-focus-ring: rgba(212, 175, 55, 0.55);
   --site-hero-overlay-start: rgba(22, 34, 33, 0.88);
@@ -101,17 +126,23 @@
   --site-foreground-heading: #f5faf7;
   --site-foreground-muted: #9db0a7;
   --site-foreground-faint: #5d6f68;
+  --site-foreground-supporting: #9db0a7;
+  --site-foreground-soft: #eef6f1;
+  --site-foreground-warm: #c4a484;
   --site-accent: #9fbfad;
   --site-accent-strong: #7fa392;
   --site-accent-foreground: #121c1b;
   --site-accent-secondary: #c4a484;
   --site-accent-glow: rgba(159, 191, 173, 0.32);
   --site-accent-soft: #d5e6dc;
+  --site-accent-muted: rgba(159, 191, 173, 0.22);
   --site-border-subtle: rgba(159, 191, 173, 0.18);
   --site-border-subtle-strong: #243330;
   --site-border-muted: #3d4f48;
   --site-border-mobile-nav: rgba(127, 163, 146, 0.35);
   --site-border-hover: rgba(159, 191, 173, 0.45);
+  --site-border-organic: #3d4f48;
+  --site-icon-surface: rgba(61, 79, 72, 0.45);
   --site-interactive-hover: #9fbfad;
   --site-focus-ring: rgba(159, 191, 173, 0.55);
   --site-hero-overlay-start: rgba(18, 28, 27, 0.9);
@@ -136,17 +167,23 @@
   --site-foreground-heading: #fffaf3;
   --site-foreground-muted: #b7aa9a;
   --site-foreground-faint: #6d6358;
+  --site-foreground-supporting: #b7aa9a;
+  --site-foreground-soft: #f7efe4;
+  --site-foreground-warm: #d4c4b0;
   --site-accent: #d4a574;
   --site-accent-strong: #b88958;
   --site-accent-foreground: #1a201c;
   --site-accent-secondary: #c48b71;
   --site-accent-glow: rgba(212, 165, 116, 0.34);
   --site-accent-soft: #f0d7b8;
+  --site-accent-muted: rgba(212, 165, 116, 0.22);
   --site-border-subtle: rgba(212, 165, 116, 0.18);
   --site-border-subtle-strong: #314038;
   --site-border-muted: #4a433b;
   --site-border-mobile-nav: rgba(196, 139, 113, 0.35);
   --site-border-hover: rgba(212, 165, 116, 0.45);
+  --site-border-organic: #4a433b;
+  --site-icon-surface: rgba(74, 67, 59, 0.45);
   --site-interactive-hover: #d4a574;
   --site-focus-ring: rgba(212, 165, 116, 0.55);
   --site-hero-overlay-start: rgba(26, 32, 28, 0.9);
@@ -170,9 +207,21 @@
     serif;
 }
 
+/*
+ * Modern: Inter throughout (distinct from Classic Montserrat headings).
+ * Uses only already-loaded Next.js font assets — no new dependencies.
+ */
 [data-site-font="modern"] {
-  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-site-font="modern"] h1,
+[data-site-font="modern"] h2,
+[data-site-font="modern"] h3,
+[data-site-font="modern"] h4,
+[data-site-font="modern"] .font-heading {
+  letter-spacing: -0.02em;
 }
 
 /*
@@ -215,6 +264,56 @@
   --site-body-serif: clamp(1rem, 0.5vw + 0.85rem, 1.3rem);
 }
 
+/*
+ * Re-apply typography inside SiteTheme so children do not inherit body's
+ * computed :root font-family (which would ignore [data-site-font] vars).
+ *
+ * Section surfaces also bind here: Tailwind @theme bridges can snapshot
+ * :root values into utilities, so palette switches would not restyle
+ * bg-site-* classes. These scoped rules keep surfaces on live --site-* vars.
+ */
+[data-site-theme] {
+  font-family: var(--font-body);
+  font-size: var(--site-body-copy);
+  color: var(--site-foreground);
+}
+
+[data-site-theme] #about {
+  background-color: color-mix(
+    in srgb,
+    var(--site-surface-page-soft) 80%,
+    transparent
+  );
+}
+
+[data-site-theme] #specialties {
+  background-color: var(--site-surface-section);
+}
+
+[data-site-theme] #contact {
+  background-color: color-mix(
+    in srgb,
+    var(--site-surface-page-soft) 90%,
+    transparent
+  );
+}
+
+[data-site-theme] footer {
+  background-color: var(--site-surface-page);
+  border-top-color: color-mix(
+    in srgb,
+    var(--site-border-organic) 40%,
+    transparent
+  );
+}
+
+[data-site-theme] h1,
+[data-site-theme] h2,
+[data-site-theme] h3,
+[data-site-theme] h4 {
+  font-family: var(--font-heading);
+}
+
 [data-site-theme] #hero h1 {
   font-size: var(--site-heading-hero);
 }
@@ -236,6 +335,7 @@
 }
 
 [data-site-theme] .editorial-serif {
+  font-family: var(--font-serif);
   font-size: var(--site-body-serif);
 }
 
@@ -267,6 +367,82 @@
 }
 
 @layer components {
+  /*
+   * Live semantic utilities for public SiteTheme surfaces.
+   * Prefer these over bg-site-* / text-site-* Tailwind bridges on homepage
+   * components — those bridges can snapshot :root values at build time.
+   */
+  .site-fg-heading {
+    color: var(--site-foreground-heading);
+  }
+  .site-fg-supporting {
+    color: var(--site-foreground-supporting);
+  }
+  .site-fg-soft {
+    color: var(--site-foreground-soft);
+  }
+  .site-fg-warm {
+    color: var(--site-foreground-warm);
+  }
+  .site-accent {
+    color: var(--site-accent);
+  }
+  .site-accent-secondary {
+    color: var(--site-accent-secondary);
+  }
+  .site-accent-fg {
+    color: var(--site-accent-foreground);
+  }
+  .site-accent-soft {
+    color: var(--site-accent-soft);
+  }
+  .site-icon-well {
+    background-color: var(--site-icon-surface);
+    color: var(--site-accent);
+  }
+  .site-accent-muted-fill {
+    background-color: var(--site-accent-muted);
+  }
+  .site-border-organic {
+    border-color: color-mix(
+      in srgb,
+      var(--site-border-organic) 40%,
+      transparent
+    );
+  }
+  .site-border-organic-soft {
+    border-color: color-mix(
+      in srgb,
+      var(--site-border-organic) 30%,
+      transparent
+    );
+  }
+  .site-border-accent {
+    border-color: color-mix(in srgb, var(--site-accent) 30%, transparent);
+  }
+  .site-border-accent-strong {
+    border-color: color-mix(in srgb, var(--site-accent) 50%, transparent);
+  }
+  .site-border-secondary {
+    border-color: color-mix(
+      in srgb,
+      var(--site-accent-secondary) 25%,
+      transparent
+    );
+  }
+  .site-surface-elevated-strong {
+    background-color: var(--site-surface-elevated-strong);
+  }
+  .site-fg-muted {
+    color: var(--site-foreground-muted);
+  }
+  .site-fg-faint {
+    color: var(--site-foreground-faint);
+  }
+  .site-accent-soft-muted {
+    color: color-mix(in srgb, var(--site-accent-soft) 70%, transparent);
+  }
+
   .nav-glass {
     background: var(--site-surface-nav);
     backdrop-filter: blur(6px);
@@ -292,7 +468,7 @@
   .btn-gold:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 0 32px rgba(212, 175, 55, 0.5),
+      0 0 32px var(--site-accent-glow),
       0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
@@ -389,7 +565,7 @@
   .headshot-ring {
     box-shadow:
       0 0 0 4px var(--site-focus-ring),
-      0 0 0 8px rgba(196, 139, 113, 0.2),
+      0 0 0 8px color-mix(in srgb, var(--site-accent-secondary) 22%, transparent),
       0 0 28px var(--site-accent-glow);
   }
 
@@ -407,11 +583,20 @@
 
   .frosted-leaf-card {
     background: var(--site-surface-elevated);
-    border: 1px solid rgba(90, 114, 102, 0.4);
-    border-top-color: rgba(168, 195, 181, 0.28);
-    border-left-color: rgba(196, 139, 113, 0.22);
+    border: 1px solid color-mix(in srgb, var(--site-border-organic) 40%, transparent);
+    border-top-color: color-mix(
+      in srgb,
+      var(--site-foreground-supporting) 28%,
+      transparent
+    );
+    border-left-color: color-mix(
+      in srgb,
+      var(--site-accent-secondary) 22%,
+      transparent
+    );
     border-radius: 1rem;
-    box-shadow: inset 0 1px 0 rgba(244, 242, 237, 0.04);
+    box-shadow: inset 0 1px 0
+      color-mix(in srgb, var(--site-foreground-soft) 4%, transparent);
   }
 
   .card-hover {
@@ -426,7 +611,8 @@
     box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.25),
       0 0 25px var(--site-card-glow),
-      0 0 0 1px rgba(196, 139, 113, 0.18);
+      0 0 0 1px
+        color-mix(in srgb, var(--site-accent-secondary) 18%, transparent);
   }
 
   .editorial-serif {
@@ -482,14 +668,15 @@
   }
 
   .focus-pill {
-    border: 1px solid rgba(196, 139, 113, 0.45);
-    background: rgba(196, 139, 113, 0.14);
+    border: 1px solid
+      color-mix(in srgb, var(--site-accent-secondary) 45%, transparent);
+    background: color-mix(in srgb, var(--site-accent-secondary) 14%, transparent);
     color: var(--site-accent-secondary);
   }
 
   .focus-pill:hover {
-    border-color: rgba(212, 175, 55, 0.45);
-    background: rgba(212, 175, 55, 0.16);
+    border-color: color-mix(in srgb, var(--site-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--site-accent) 16%, transparent);
     color: var(--site-accent);
   }
 }
