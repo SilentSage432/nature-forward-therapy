@@ -13,6 +13,7 @@ import {
   MapPin,
   Megaphone,
   MessageCircle,
+  Palette,
   PenLine,
   RefreshCw,
   Search,
@@ -54,6 +55,7 @@ const editorSections: NavSection[] = [
         label: "Announcement Banner",
         icon: Megaphone,
       },
+      { href: "/admin/studio", label: "Website Studio", icon: Palette },
     ],
   },
 ];
@@ -69,6 +71,7 @@ const developerSections: NavSection[] = [
         label: "Client Support Desk",
         icon: MessageCircle,
       },
+      { href: "/admin/studio", label: "Website Studio", icon: Palette },
     ],
   },
   {

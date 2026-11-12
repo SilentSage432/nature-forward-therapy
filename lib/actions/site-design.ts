@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { isEditor } from "@/lib/rbac";
+import { resolveDesignActor } from "@/lib/site-design/actor";
 import { siteDesignSchema } from "@/lib/site-design/schema";
 import {
   listSiteDesignVersions,
@@ -24,35 +24,6 @@ function unauthorized<T>(): DesignOperationResult<T> {
     ok: false,
     code: "UNAUTHORIZED",
     message: "Sign in as an editor or developer to manage site design.",
-  };
-}
-
-type DesignSession = {
-  user?: {
-    id?: string | null;
-    email?: string | null;
-    role?: string | null;
-  } | null;
-} | null;
-
-/**
- * Pure authorization gate for SiteDesign mutations/reads.
- * Exported for isolated verification without Auth.js session plumbing.
- */
-export function resolveDesignActor(
-  session: DesignSession,
-): { id: string; email: string } | null {
-  const role = session?.user?.role;
-  if (
-    !isEditor(role as "EDITOR" | "DEVELOPER" | undefined | null) ||
-    !session?.user?.id ||
-    !session.user.email
-  ) {
-    return null;
-  }
-  return {
-    id: session.user.id,
-    email: session.user.email,
   };
 }
 

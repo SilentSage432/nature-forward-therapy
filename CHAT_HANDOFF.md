@@ -3,7 +3,13 @@
 ## Current state
 Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). NFT-PERF-004, NFT-DESIGN-001, and **NFT-STUDIO-003** are deployed (baseline `faff6cf`). Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite remains. Contact columns (`phone`/`fax`/`publicEmail`) were applied in production via targeted additive SQL (do not re-run `db push` for that change).
 
-**NFT-STUDIO-004 / 004A / 004D (production release):** SiteDesign V1 contract + `SiteDesignState`/`SiteDesignVersion` persistence + draft/publish/history/restore-to-draft service + published reader wired into `HomePresentation`. Additive production SQL applied (empty tables; no design publish). No Studio UI, no Media Library, no alternate presets.
+**NFT-STUDIO-004 / 004A / 004D (production):** SiteDesign V1 persistence + publish service + public published reader. Additive SQL applied (empty tables at release; no design publish).
+
+**NFT-STUDIO-005 (local, uncommitted):** Website Studio shell at `/admin/studio` (Overview/Design/Media/History) using `getSiteDesignWorkspaceAction`, status cards, and read-only live-facing `HomePresentation` preview. No draft editing, publish, media upload, or restore UI yet. Not deployed.
+
+**NFT-STUDIO-005A (local acceptance):** Isolated browser acceptance on disposable PG17 `nft_studio_005a_69653` (`127.0.0.1:5433`) via `.env.local` (overrides production `.env`). Auth.js credentials EDITOR/DEVELOPER verified; unauthenticated Studio → login; singleton `default` init idempotent; preview uses `inert` + `aria-hidden` + `pointer-events-none`. Playwright viewports 390/768/1280 usable.
+
+**NFT-STUDIO-005B (authorized production release):** Website Studio shell release to `origin/main` + Vercel production. No schema migration; no design publish. Canonical singleton may initialize on first authenticated Studio visit only.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)

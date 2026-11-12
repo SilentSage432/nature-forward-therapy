@@ -107,7 +107,8 @@ Brand palette hex values live in `app/globals.css` `@theme` (forest/sage/gold/�
 - **Ops:** `lib/site-design/service.ts` + `lib/actions/site-design.ts` — EDITOR/DEVELOPER; optimistic concurrency; restore → draft only; publish appends history and calls `revalidatePublicSurfaces()` (includes `CACHE_TAGS.siteDesign`). Hard publish transaction failures return `{ ok:false, code:"ERROR" }` (no success audit). Audit writes remain outside the publish transaction (best-effort; failures are logged).
 - **Public read:** `getPublishedPresentationConfig()` — published only, cached, falls back to canonical default on missing/invalid JSON **without mutating storage**.
 - **Isolation tests:** `SITE_DESIGN_TEST_DATABASE_URL` + `lib/site-design/test-db-guard.ts` / `npm run test:site-design:db` (loopback `nft_studio_004a_*` only).
-- **Not implemented yet:** Website Studio visual UI, Media Library, alternate theme presets, rendered section reorder/visibility. Production additive SQL applied in NFT-STUDIO-004D (empty tables until Studio init/publish).
+- **Website Studio shell (NFT-STUDIO-005/005B):** `/admin/studio` for EDITOR/DEVELOPER — Overview/Design/Media/History via `getSiteDesignWorkspaceAction`; read-only live-facing preview through `HomePresentation`. Preview subtree is `inert` + `aria-hidden` + `pointer-events-none` so mouse/touch/keyboard cannot activate public CTAs inside Studio. No draft-save/publish/media/restore UI yet. First authenticated Studio visit may initialize the canonical `default` singleton only.
+- **Not implemented yet:** Visual design editing, Media Library uploads, alternate theme presets, rendered section reorder/visibility, draft preview.
 
 ### Shared homepage presentation
 - `app/page.tsx` loads CMS data (`getSiteContent`, `getActiveAnnouncement`) plus `getPublishedPresentationConfig()` and renders `HomePresentation`.

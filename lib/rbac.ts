@@ -11,6 +11,7 @@ export const EDITOR_CONTENT_PATHS = [
   "/admin/articles",
   "/admin/bookshelf",
   "/admin/announcements",
+  "/admin/studio",
 ] as const;
 
 export const DEVELOPER_ONLY_PATHS = [

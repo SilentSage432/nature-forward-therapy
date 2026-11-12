@@ -1,5 +1,17 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-11 — Website Studio production release (NFT-STUDIO-005B)
+
+Authorized gated release of NFT-STUDIO-005/005A Website Studio shell to `origin/main` and Vercel production (`nature-forward-therapy` / `tyson-zauggs-projects`). Preflight confirmed Supabase `dbqprchzgfhthpxngemy` on PostgreSQL 17.6 with empty `SiteDesignState`/`SiteDesignVersion` (0/0) and existing CMS rows intact. Backup `nature-forward-prod-pre-studio-004c-20261111-1658.dump` checksum verified. No production schema migration, draft editing, design publish, or restore. Local `.env.local` iso DB remains gitignored and excluded from deploy. Canonical singleton initialization authorized only via authenticated Studio `getSiteDesignWorkspaceAction` → `ensureSiteDesignState`.
+
+## 2026-11-11 — Isolated Studio browser acceptance (NFT-STUDIO-005A)
+
+Local acceptance of NFT-STUDIO-005 against disposable PostgreSQL 17 `nft_studio_005a_69653` on loopback `:5433` only. Proven Next.js Environments `.env.local, .env` with effective DATABASE_URL/DIRECT_URL on `127.0.0.1:5433` (no Supabase). Auth.js credentials sessions for local EDITOR/DEVELOPER; unauthenticated `/admin/studio` redirects to login. Workspace action initialized canonical singleton (`key=default`, draft/published revision 0, empty history) idempotently. Playwright Chromium exercised Studio routes, mouse/keyboard Studio chrome, Tab isolation (0 focus hits inside preview), and responsive viewports. Preview isolation correction: standards `inert` on `StudioPreviewFrame` (plus existing pointer-events/aria-hidden). Login form gained `method="post"` so pre-hydration submits cannot leak credentials into the query string. Failure probes: invalid draft preserved with “needs attention” UI and no publish; DB connection limit caused auth/session redirect rather than fake Studio success. Regression: `test:site-design` 36 pass, typecheck, build, targeted eslint clean. No production writes, commit, push, or deploy.
+
+## 2026-11-11 — Website Studio workspace shell (NFT-STUDIO-005)
+
+Local Website Studio shell at `/admin/studio` (Overview / Design / Media / History) for EDITOR and DEVELOPER. Integrates `getSiteDesignWorkspaceAction` only (no parallel reader), shows live vs draft status without inventing publication, and reuses `HomePresentation` in a read-only preview of the live-facing design (not draft preview). Media/history are informational placeholders without upload/restore/publish controls. RBAC path `/admin/studio` added. No production writes, commit, or deploy in this tranche.
+
 ## 2026-11-11 — Production SiteDesign release (NFT-STUDIO-004D)
 
 Authorized production release of NFT-STUDIO-004/004A. Verified 004C backup checksum, passed tests/typecheck/build, confirmed production DB identity (`dbqprchzgfhthpxngemy`), applied additive SQL `prisma/migrations-manual/nft-studio-004-site-design.sql` via PostgreSQL 17 `psql` (`ON_ERROR_STOP=1`) creating empty `SiteDesignState` / `SiteDesignVersion` only. Existing CMS + carpet/store row counts unchanged. No design publish; no `prisma db push`. Commit/push/Vercel deploy follow this journal entry in the same release window.

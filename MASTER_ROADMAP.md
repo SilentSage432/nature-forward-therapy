@@ -33,6 +33,9 @@
 - [x] NFT-STUDIO-004A isolated PostgreSQL publishing acceptance — **verified on disposable local DB**
 - [x] NFT-STUDIO-004C independent PG17 logical backup + isolated restore — **verified**
 - [x] NFT-STUDIO-004D production additive migration + release — **authorized release window**
+- [x] NFT-STUDIO-005 Website Studio workspace shell — **local implementation; not committed/deployed**
+- [x] NFT-STUDIO-005A isolated browser acceptance & preview safety — **local VERIFIED with noted limitations**
+- [x] NFT-STUDIO-005B Website Studio production release — **authorized gated release (no design publish)**
 
 ## Near-term
 - [ ] Website Studio visual editor over `HomePresentation` (consumes SiteDesign draft/publish)

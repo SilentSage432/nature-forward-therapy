@@ -8,7 +8,7 @@
 
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { resolveDesignActor } from "@/lib/actions/site-design";
+import { resolveDesignActor } from "@/lib/site-design/actor";
 import { isEditor } from "@/lib/rbac";
 
 describe("site-design action authorization", () => {

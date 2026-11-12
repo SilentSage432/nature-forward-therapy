@@ -10,6 +10,7 @@ import {
   Mail,
   MapPin,
   Megaphone,
+  Palette,
   PenLine,
   Sparkles,
 } from "lucide-react";
@@ -64,6 +65,12 @@ const cards = [
     icon: Megaphone,
     title: "Announcement Banner",
     description: "Optional site-wide notice above the main navigation",
+  },
+  {
+    href: "/admin/studio",
+    icon: Palette,
+    title: "Website Studio",
+    description: "Preview presentation and prepare future visual design tools",
   },
 ] as const;
 
