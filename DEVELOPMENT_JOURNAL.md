@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-11 — Preview handshake production hotfix (NFT-STUDIO-006E)
+
+Authorized gated code-only release of NFT-STUDIO-006D handshake repair to `origin/main` + Vercel production. No production DB writes, Save Draft, design publish/restore, or schema migrations. Preflight: baseline `7b98005`, recovery checkpoint checksum verified, SiteDesign tables expected unchanged (draft/published revision 0). Quality gates: 76 site-design tests, typecheck, build, targeted eslint, isolated prod-mode browser acceptance on `nft_studio_006_22555`. Release scope limited to preview handshake + tests + docs.
+
+## 2026-11-11 — Preview handshake repair (NFT-STUDIO-006D)
+
+Local bounded correction for NFT-STUDIO-006C. Parent iframe `onLoad` was clearing `frameReady` after READY without a recoverable re-handshake, freezing subsequent SET_DESIGN posts. Added per-document READY `documentId`, parent handshake state (`preview-handshake.ts`) that retires superseded ids, iframe READY on mount/load/bounded retries, and parent `STUDIO_PREVIEW_REQUEST_READY` ping on load so late load and genuine reload both re-arm. Protocol remains version 1 with exact origin, source-window, and SiteDesign validation. Isolated DB `nft_studio_006_22555` on `127.0.0.1:5433`; production-mode Playwright on `:3014` VERIFIED clay/dusk accents, modern font attr, prominent h1 size change, late-load recovery, reload restore of unsaved design, draft/published/version unchanged. Quality gates: 75 site-design tests, typecheck, build, targeted eslint clean. No commit/push/deploy; no production design writes.
+
 ## 2026-11-11 — Visual editor production release (NFT-STUDIO-006B)
 
 Authorized gated release of NFT-STUDIO-006/006A private visual design editor to `origin/main` and Vercel production. Code-only release: curated Typography/Colors controls, private draft preview iframe, Save Draft UI, concurrency/unsaved guards, preview protocol hardening, SAMEORIGIN framing limited to `/admin/studio/preview-frame`. No production schema migration, no authorized draft writes during release smoke, no design publish/restore. Preflight confirmed Supabase `dbqprchzgfhthpxngemy` / PG 17.6 singleton `default` draft/published revision 0, versions 0. Recovery checkpoint `nature-forward-prod-pre-studio-004c-20261111-1658.dump` checksum verified. Public site must remain forest-gold canonical until an authorized publish tranche.

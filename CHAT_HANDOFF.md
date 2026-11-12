@@ -7,7 +7,9 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-005 / 005A / 005B (production):** Website Studio shell at `/admin/studio` released to `origin/main` + Vercel (`c567918`). Preview isolation uses `inert` + `aria-hidden` + `pointer-events-none`. No design publish. Canonical singleton may initialize on first authenticated Studio visit only.
 
-**NFT-STUDIO-006 / 006A / 006B (production release window):** Private visual design editor at `/admin/studio/design` — curated Typography + Colors, private draft iframe preview (`/admin/studio/preview-frame`), Save Draft + optimistic concurrency, unsaved Stay/Discard guard, versioned postMessage protocol, SAMEORIGIN framing only on preview-frame. No design publish/restore/media mutations in this release. Public site remains published/canonical forest-gold until a later authorized publish tranche.
+**NFT-STUDIO-006 / 006A / 006B (production):** Private visual design editor at `/admin/studio/design` — curated Typography + Colors, private draft iframe preview (`/admin/studio/preview-frame`), Save Draft + optimistic concurrency, unsaved Stay/Discard guard, versioned postMessage protocol, SAMEORIGIN framing only on preview-frame. No design publish/restore/media mutations in this release. Public site remains published/canonical forest-gold until a later authorized publish tranche.
+
+**NFT-STUDIO-006C / 006D / 006E:** 006C diagnosed preview freeze (READY then late iframe `onLoad` cleared readiness). 006D repaired handshake (per-document READY ids, `REQUEST_READY` recovery, stale-id retirement). 006E is the authorized gated code-only production release of that repair — no design Save/Publish and no schema migration.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)

@@ -1,5 +1,9 @@
 import type { SiteDesign } from "@/lib/site-design/schema";
 import { parseSiteDesign } from "@/lib/site-design/schema";
+import {
+  createStudioPreviewDocumentId,
+  isStudioPreviewDocumentId,
+} from "@/lib/site-design/preview-handshake";
 
 /** Explicit message channel identity — not a CSS/theme value. */
 export const STUDIO_PREVIEW_SOURCE = "nft-studio-preview" as const;
@@ -17,6 +21,8 @@ export type StudioPreviewReadyMessage = {
   source: typeof STUDIO_PREVIEW_SOURCE;
   protocolVersion: typeof STUDIO_PREVIEW_PROTOCOL_VERSION;
   type: "STUDIO_PREVIEW_READY";
+  /** Per iframe-document handshake id (survives late load; retired on replace). */
+  documentId: string;
 };
 
 export type StudioPreviewSetDesignMessage = {
@@ -26,9 +32,17 @@ export type StudioPreviewSetDesignMessage = {
   design: SiteDesign;
 };
 
+/** Parent → iframe: ask the current document to re-announce READY. */
+export type StudioPreviewRequestReadyMessage = {
+  source: typeof STUDIO_PREVIEW_SOURCE;
+  protocolVersion: typeof STUDIO_PREVIEW_PROTOCOL_VERSION;
+  type: "STUDIO_PREVIEW_REQUEST_READY";
+};
+
 export type StudioPreviewMessage =
   | StudioPreviewReadyMessage
-  | StudioPreviewSetDesignMessage;
+  | StudioPreviewSetDesignMessage
+  | StudioPreviewRequestReadyMessage;
 
 export type StudioPreviewParseFailure = {
   ok: false;
@@ -40,7 +54,8 @@ export type StudioPreviewParseFailure = {
     | "origin"
     | "source-window"
     | "oversized"
-    | "invalid-design";
+    | "invalid-design"
+    | "invalid-document-id";
 };
 
 export type StudioPreviewParseSuccess = {
@@ -115,12 +130,16 @@ export function parseStudioPreviewMessage(
   }
 
   if (message.type === "STUDIO_PREVIEW_READY") {
+    if (!isStudioPreviewDocumentId(message.documentId)) {
+      return { ok: false, reason: "invalid-document-id" };
+    }
     return {
       ok: true,
       message: {
         source: STUDIO_PREVIEW_SOURCE,
         protocolVersion: STUDIO_PREVIEW_PROTOCOL_VERSION,
         type: "STUDIO_PREVIEW_READY",
+        documentId: message.documentId,
       },
     };
   }
@@ -141,15 +160,32 @@ export function parseStudioPreviewMessage(
     };
   }
 
+  if (message.type === "STUDIO_PREVIEW_REQUEST_READY") {
+    return {
+      ok: true,
+      message: {
+        source: STUDIO_PREVIEW_SOURCE,
+        protocolVersion: STUDIO_PREVIEW_PROTOCOL_VERSION,
+        type: "STUDIO_PREVIEW_REQUEST_READY",
+      },
+    };
+  }
+
   return { ok: false, reason: "type" };
 }
 
 /** Build a READY envelope for the iframe → parent handshake. */
-export function createStudioPreviewReadyMessage(): StudioPreviewReadyMessage {
+export function createStudioPreviewReadyMessage(
+  documentId: string = createStudioPreviewDocumentId(),
+): StudioPreviewReadyMessage {
+  if (!isStudioPreviewDocumentId(documentId)) {
+    throw new Error("Studio preview READY requires a valid documentId.");
+  }
   return {
     source: STUDIO_PREVIEW_SOURCE,
     protocolVersion: STUDIO_PREVIEW_PROTOCOL_VERSION,
     type: "STUDIO_PREVIEW_READY",
+    documentId,
   };
 }
 
@@ -162,6 +198,15 @@ export function createStudioPreviewSetDesignMessage(
     protocolVersion: STUDIO_PREVIEW_PROTOCOL_VERSION,
     type: "STUDIO_PREVIEW_SET_DESIGN",
     design,
+  };
+}
+
+/** Build a REQUEST_READY envelope (parent → iframe recovery ping). */
+export function createStudioPreviewRequestReadyMessage(): StudioPreviewRequestReadyMessage {
+  return {
+    source: STUDIO_PREVIEW_SOURCE,
+    protocolVersion: STUDIO_PREVIEW_PROTOCOL_VERSION,
+    type: "STUDIO_PREVIEW_REQUEST_READY",
   };
 }
 

@@ -3,6 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import type { SiteDesign } from "@/lib/site-design/schema";
 import {
+  acceptPreviewReady,
+  createPreviewHandshakeState,
+  invalidatePreviewHandshake,
+  isPreviewHandshakeReady,
+  type PreviewHandshakeState,
+} from "@/lib/site-design/preview-handshake";
+import {
+  createStudioPreviewRequestReadyMessage,
   createStudioPreviewSetDesignMessage,
   parseStudioPreviewMessage,
 } from "@/lib/site-design/preview-protocol";
@@ -22,6 +30,7 @@ export function DesignPreviewPane({
 }: DesignPreviewPaneProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const latestDesignRef = useRef(design);
+  const handshakeRef = useRef<PreviewHandshakeState>(createPreviewHandshakeState());
   const [frameReady, setFrameReady] = useState(false);
 
   useEffect(() => {
@@ -38,9 +47,18 @@ export function DesignPreviewPane({
         expectedSource: frameWindow,
       });
       if (!parsed.ok) return;
-      if (parsed.message.type === "STUDIO_PREVIEW_READY") {
-        setFrameReady(true);
-      }
+      if (parsed.message.type !== "STUDIO_PREVIEW_READY") return;
+
+      const accepted = acceptPreviewReady(
+        handshakeRef.current,
+        parsed.message.documentId,
+      );
+      if (!accepted.ok) return;
+
+      handshakeRef.current = accepted.state;
+      // Always sync React readiness from the handshake state. Same-boolean
+      // updates are ignored by React, so idempotent READY does not resend.
+      setFrameReady(isPreviewHandshakeReady(accepted.state));
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -126,8 +144,21 @@ export function DesignPreviewPane({
               tabIndex={-1}
               loading="eager"
               onLoad={() => {
-                // Require a fresh READY after every frame load to avoid stale races.
+                // Clear readiness for this browsing context, then ping the
+                // iframe to re-announce READY. Covers late resource load
+                // (READY-then-load) and genuine reloads without relying on
+                // the iframe's one-shot window load listener alone.
+                handshakeRef.current = invalidatePreviewHandshake(
+                  handshakeRef.current,
+                );
                 setFrameReady(false);
+                const frameWindow = iframeRef.current?.contentWindow;
+                if (frameWindow) {
+                  frameWindow.postMessage(
+                    createStudioPreviewRequestReadyMessage(),
+                    window.location.origin,
+                  );
+                }
               }}
             />
           </div>

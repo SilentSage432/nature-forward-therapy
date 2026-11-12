@@ -97,6 +97,10 @@ describe("preview message protocol", () => {
     if (result.ok) {
       assert.equal(result.message.type, "STUDIO_PREVIEW_READY");
       assert.equal(result.message.protocolVersion, STUDIO_PREVIEW_PROTOCOL_VERSION);
+      if (result.message.type === "STUDIO_PREVIEW_READY") {
+        assert.equal(typeof result.message.documentId, "string");
+        assert.ok(result.message.documentId.length >= 8);
+      }
     }
   });
 

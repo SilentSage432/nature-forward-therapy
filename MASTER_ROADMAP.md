@@ -39,9 +39,13 @@
 - [x] NFT-STUDIO-006 Visual design editing Phase One — **local VERIFIED (draft controls + private preview + Save Draft); not committed/deployed**
 - [x] NFT-STUDIO-006A Editor safety & release readiness — **local VERIFIED (nav guard + preview auth/protocol + SAMEORIGIN frame)**
 - [x] NFT-STUDIO-006B Visual editor production release — **authorized gated release (no design publish; no release-window draft writes)**
+- [x] NFT-STUDIO-006C Production preview failure diagnostic — **root cause: late iframe load cleared readiness**
+- [x] NFT-STUDIO-006D Preview handshake repair — **local VERIFIED**
+- [x] NFT-STUDIO-006E Preview handshake production hotfix — **authorized gated code-only release**
 
 ## Near-term
-- [ ] NFT-STUDIO-007 design publish / review gates (after operator smoke of 006B editor)
+- [ ] Operator authenticated production smoke of repaired Design preview (no Save Draft required)
+- [ ] NFT-STUDIO-007 design publish / review gates (after operator smoke of repaired preview)
 - [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
 - [ ] Additional curated theme/typography presets as needed
 - [ ] Render reserved SiteDesign dimensions (order / visibility / media slots) safely

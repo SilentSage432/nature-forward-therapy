@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:site-design": "tsx --test lib/site-design/**/*.test.ts lib/actions/site-design.auth.test.ts",
+    "test:site-design": "node --import tsx --test lib/site-design/**/*.test.ts lib/actions/site-design.auth.test.ts",
     "test:site-design:db": "tsx --test lib/site-design/service.integration.test.ts",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
