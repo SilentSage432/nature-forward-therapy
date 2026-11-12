@@ -13,7 +13,9 @@ export const CANONICAL_SITE_DESIGN: SiteDesign = {
     presetId: "forest-gold",
   },
   typography: {
-    presetId: "classic",
+    fontFamilyId: "classic",
+    headingScaleId: "comfortable",
+    bodyScaleId: "comfortable",
   },
   hero: {
     layoutId: "centered-portrait",

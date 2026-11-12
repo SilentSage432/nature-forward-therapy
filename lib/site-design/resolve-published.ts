@@ -1,17 +1,32 @@
-import { cloneCanonicalSiteDesign } from "@/lib/site-design/defaults";
 import { parseSiteDesign } from "@/lib/site-design/schema";
-import type { SiteDesign } from "@/lib/site-design/schema";
+import type {
+  SiteBodyScaleId,
+  SiteDesign,
+  SiteFontFamilyId,
+  SiteHeadingScaleId,
+  SiteThemePresetId,
+} from "@/lib/site-design/schema";
+import {
+  canonicalPresentationConfig,
+  presentationFromDesign,
+} from "@/lib/site-design/presentation";
 
 /**
  * Safe public presentation configuration derived from published SiteDesign.
  *
  * Reserved dimensions (section order, visibility, media slots, focal point)
  * are carried for future Studio rendering but are NOT applied by HomePresentation
- * in this tranche — visual parity with NFT-STUDIO-003 is required.
+ * for layout yet — section markup stays fixed. Theme + typography tokens ARE
+ * applied through SiteTheme.
  */
 export type PublishedPresentationConfig = {
   design: SiteDesign;
-  themePresetId: "forest-gold";
+  themePresetId: SiteThemePresetId;
+  typography: {
+    fontFamilyId: SiteFontFamilyId;
+    headingScaleId: SiteHeadingScaleId;
+    bodyScaleId: SiteBodyScaleId;
+  };
   /**
    * How the design was resolved for this request.
    * `fallback` means storage was missing/invalid — not a successful recovery write.
@@ -23,20 +38,6 @@ export type PublishedPresentationConfig = {
     issues?: string[];
   };
 };
-
-function canonicalPresentation(
-  source: "canonical-default" | "fallback",
-  diagnostic?: PublishedPresentationConfig["diagnostic"],
-): PublishedPresentationConfig {
-  const design = cloneCanonicalSiteDesign();
-  return {
-    design,
-    themePresetId: "forest-gold",
-    source,
-    publishedRevision: null,
-    diagnostic,
-  };
-}
 
 /**
  * Pure published-row → presentation resolver (no DB writes).
@@ -52,23 +53,22 @@ export function resolvePublishedPresentationFromRow(
     | undefined,
 ): PublishedPresentationConfig {
   if (!row) {
-    return canonicalPresentation("canonical-default", {
+    return canonicalPresentationConfig("canonical-default", {
       reason: "No SiteDesignState row; using canonical default.",
     });
   }
 
   const parsed = parseSiteDesign(row.publishedJson);
   if (!parsed.ok) {
-    return canonicalPresentation("fallback", {
+    return canonicalPresentationConfig("fallback", {
       reason: parsed.reason,
       issues: parsed.issues,
     });
   }
 
-  return {
-    design: parsed.design,
-    themePresetId: "forest-gold",
-    source: "published",
-    publishedRevision: row.publishedRevision,
-  };
+  return presentationFromDesign(
+    parsed.design,
+    "published",
+    row.publishedRevision,
+  );
 }

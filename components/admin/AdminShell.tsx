@@ -74,6 +74,20 @@ export function AdminShell({ developer, email, children }: AdminShellProps) {
     return <AuthLoadingScreen label="Redirecting…" />;
   }
 
+  const isStudioPreviewFrame = pathname.startsWith(
+    "/admin/studio/preview-frame",
+  );
+
+  // Bare authenticated shell for iframe draft preview (accurate viewport).
+  if (isStudioPreviewFrame) {
+    return (
+      <div className="min-h-screen overflow-x-hidden bg-forest text-body-text">
+        {showForcePassword ? <ForcePasswordModal /> : null}
+        {showForcePassword ? null : children}
+      </div>
+    );
+  }
+
   const showDeveloperNav = developer && !previewEditor;
 
   return (

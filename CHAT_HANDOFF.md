@@ -5,11 +5,9 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-004 / 004A / 004D (production):** SiteDesign V1 persistence + publish service + public published reader. Additive SQL applied (empty tables at release; no design publish).
 
-**NFT-STUDIO-005 (local, uncommitted):** Website Studio shell at `/admin/studio` (Overview/Design/Media/History) using `getSiteDesignWorkspaceAction`, status cards, and read-only live-facing `HomePresentation` preview. No draft editing, publish, media upload, or restore UI yet. Not deployed.
+**NFT-STUDIO-005 / 005A / 005B (production):** Website Studio shell at `/admin/studio` released to `origin/main` + Vercel (`c567918`). Preview isolation uses `inert` + `aria-hidden` + `pointer-events-none`. No design publish. Canonical singleton may initialize on first authenticated Studio visit only.
 
-**NFT-STUDIO-005A (local acceptance):** Isolated browser acceptance on disposable PG17 `nft_studio_005a_69653` (`127.0.0.1:5433`) via `.env.local` (overrides production `.env`). Auth.js credentials EDITOR/DEVELOPER verified; unauthenticated Studio → login; singleton `default` init idempotent; preview uses `inert` + `aria-hidden` + `pointer-events-none`. Playwright viewports 390/768/1280 usable.
-
-**NFT-STUDIO-005B (authorized production release):** Website Studio shell release to `origin/main` + Vercel production. No schema migration; no design publish. Canonical singleton may initialize on first authenticated Studio visit only.
+**NFT-STUDIO-006 / 006A / 006B (production release window):** Private visual design editor at `/admin/studio/design` — curated Typography + Colors, private draft iframe preview (`/admin/studio/preview-frame`), Save Draft + optimistic concurrency, unsaved Stay/Discard guard, versioned postMessage protocol, SAMEORIGIN framing only on preview-frame. No design publish/restore/media mutations in this release. Public site remains published/canonical forest-gold until a later authorized publish tranche.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
@@ -27,12 +25,13 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 - Library: `lucide-react` (named imports only)
 - Specialty CMS emoji keys → Lucide via `lib/specialty-icons.tsx` (presentation only; DB unchanged)
 
-**Presentation foundation (NFT-STUDIO-003 + 004):**
-- Homepage composition: `components/site/HomePresentation.tsx` (used by `app/page.tsx`)
-- Public theme scope: `components/site/SiteTheme.tsx` → `data-site-theme="forest-gold"`
-- Semantic tokens: `app/globals.css` (`--site-*` on `:root` + theme scope)
+**Presentation foundation (NFT-STUDIO-003 + 004 + 006 local):**
+- Homepage composition: `components/site/HomePresentation.tsx` (used by `app/page.tsx` + Studio preview)
+- Public theme scope: `components/site/SiteTheme.tsx` → `data-site-theme` / font / heading / body attrs
+- Semantic tokens: `app/globals.css` (`--site-*` on `:root` + curated theme/type scopes)
 - Design state: `lib/site-design/*` + `lib/actions/site-design.ts`
-- Additive migration (not applied): `prisma/migrations-manual/nft-studio-004-site-design.sql`
+- Studio editor: `components/admin/studio/DesignEditor.tsx` + control/preview panes
+- Additive migration (production-applied in 004D): `prisma/migrations-manual/nft-studio-004-site-design.sql`
 
 ## How to run
 ```bash
@@ -66,9 +65,10 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | --- | --- |
 | Public presentation | `components/site/HomePresentation.tsx`, `components/site/SiteTheme.tsx`, `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
 | Semantic public theme tokens | `app/globals.css` (`--site-*`, `[data-site-theme]`) |
-| SiteDesign contract / defaults | `lib/site-design/schema.ts`, `lib/site-design/defaults.ts` |
+| SiteDesign contract / defaults | `lib/site-design/schema.ts`, `lib/site-design/defaults.ts`, `lib/site-design/options.ts` |
 | Design draft/publish/history | `lib/site-design/service.ts`, `lib/actions/site-design.ts` |
-| Published design public read | `lib/site-design/published.ts` |
+| Studio visual editor (draft only) | `components/admin/studio/DesignEditor.tsx`, preview-frame route |
+| Published design public read | `lib/site-design/published.ts` / `resolve-published.ts` |
 | Design persistence SQL | `prisma/migrations-manual/nft-studio-004-site-design.sql` |
 | Public ISR + invalidation | `lib/public-cache.ts`, `lib/public-cache-shared.ts`, CMS actions/APIs |
 | Maintenance rewrite | `proxy.ts`, `getMaintenanceModeCached`, `/maintenance` |

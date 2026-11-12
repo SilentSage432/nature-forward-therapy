@@ -40,9 +40,19 @@ export function HomePresentation({
   presentation = null,
 }: HomePresentationProps) {
   const themePreset = presentation?.themePresetId ?? "forest-gold";
+  const typography = presentation?.typography ?? {
+    fontFamilyId: "classic" as const,
+    headingScaleId: "comfortable" as const,
+    bodyScaleId: "comfortable" as const,
+  };
 
   return (
-    <SiteTheme preset={themePreset}>
+    <SiteTheme
+      preset={themePreset}
+      fontFamilyId={typography.fontFamilyId}
+      headingScaleId={typography.headingScaleId}
+      bodyScaleId={typography.bodyScaleId}
+    >
       <Navbar banner={banner} />
       <main>
         <Hero profile={content.profile} />

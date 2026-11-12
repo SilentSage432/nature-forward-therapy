@@ -18,7 +18,9 @@ describe("SiteDesign canonical default", () => {
     if (result.ok) {
       assert.equal(result.design.schemaVersion, SITE_DESIGN_SCHEMA_VERSION);
       assert.equal(result.design.theme.presetId, "forest-gold");
-      assert.equal(result.design.typography.presetId, "classic");
+      assert.equal(result.design.typography.fontFamilyId, "classic");
+      assert.equal(result.design.typography.headingScaleId, "comfortable");
+      assert.equal(result.design.typography.bodyScaleId, "comfortable");
       assert.deepEqual(result.design.sections.order, [
         "hero",
         "about",
@@ -61,6 +63,45 @@ describe("SiteDesign validation", () => {
     if (!result.ok) {
       assert.ok(result.issues?.some((issue) => issue.includes("theme")));
     }
+  });
+
+  it("accepts curated alternate themes", () => {
+    for (const presetId of ["dusk-sage", "clay-sand"] as const) {
+      const result = parseSiteDesign({
+        ...CANONICAL_SITE_DESIGN,
+        theme: { presetId },
+      });
+      assert.equal(result.ok, true);
+      if (result.ok) {
+        assert.equal(result.design.theme.presetId, presetId);
+      }
+    }
+  });
+
+  it("normalizes legacy typography.presetId classic drafts", () => {
+    const legacy = {
+      ...CANONICAL_SITE_DESIGN,
+      typography: { presetId: "classic" },
+    };
+    const result = parseSiteDesign(legacy);
+    assert.equal(result.ok, true);
+    if (result.ok) {
+      assert.equal(result.design.typography.fontFamilyId, "classic");
+      assert.equal(result.design.typography.headingScaleId, "comfortable");
+      assert.equal(result.design.typography.bodyScaleId, "comfortable");
+    }
+  });
+
+  it("rejects arbitrary font URLs and CSS injection keys", () => {
+    const result = parseSiteDesign({
+      ...CANONICAL_SITE_DESIGN,
+      typography: {
+        ...CANONICAL_SITE_DESIGN.typography,
+        fontUrl: "https://evil.example/font.css",
+        customCss: "body{display:none}",
+      },
+    });
+    assert.equal(result.ok, false);
   });
 
   it("rejects unknown keys (strict)", () => {

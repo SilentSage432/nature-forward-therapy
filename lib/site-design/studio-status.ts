@@ -48,7 +48,8 @@ export function designsEqual(
 }
 
 export function themeDisplayName(presetId: string | undefined | null): string {
-  if (presetId === "forest-gold") return "Forest & Gold";
+  if (presetId === "dusk-sage") return "Dusk & Sage";
+  if (presetId === "clay-sand") return "Clay & Sand";
   return "Forest & Gold";
 }
 

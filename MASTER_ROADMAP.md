@@ -36,11 +36,14 @@
 - [x] NFT-STUDIO-005 Website Studio workspace shell — **local implementation; not committed/deployed**
 - [x] NFT-STUDIO-005A isolated browser acceptance & preview safety — **local VERIFIED with noted limitations**
 - [x] NFT-STUDIO-005B Website Studio production release — **authorized gated release (no design publish)**
+- [x] NFT-STUDIO-006 Visual design editing Phase One — **local VERIFIED (draft controls + private preview + Save Draft); not committed/deployed**
+- [x] NFT-STUDIO-006A Editor safety & release readiness — **local VERIFIED (nav guard + preview auth/protocol + SAMEORIGIN frame)**
+- [x] NFT-STUDIO-006B Visual editor production release — **authorized gated release (no design publish; no release-window draft writes)**
 
 ## Near-term
-- [ ] Website Studio visual editor over `HomePresentation` (consumes SiteDesign draft/publish)
+- [ ] NFT-STUDIO-007 design publish / review gates (after operator smoke of 006B editor)
 - [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
-- [ ] Theme presets over semantic tokens (NFT-STUDIO-002 Tranche 4)
+- [ ] Additional curated theme/typography presets as needed
 - [ ] Render reserved SiteDesign dimensions (order / visibility / media slots) safely
 - [ ] Optional follow-up: cold-start / edge geography re-measure after traffic settles
 - [ ] Optional: localize remaining below-fold Unsplash section images (About/Specialties/Contact)

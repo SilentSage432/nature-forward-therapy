@@ -86,6 +86,159 @@
   --site-outline-hover-fill: rgba(196, 139, 113, 0.12);
 }
 
+/* Curated alternate palette — cooler dusk greens (Studio-selectable). */
+[data-site-theme="dusk-sage"] {
+  --site-surface-page: #121c1b;
+  --site-surface-page-mid: #182624;
+  --site-surface-page-soft: #243330;
+  --site-surface-nav: rgba(10, 16, 15, 0.9);
+  --site-surface-section: #121c1b;
+  --site-surface-elevated: rgba(14, 22, 21, 0.9);
+  --site-surface-elevated-strong: rgba(10, 16, 15, 0.88);
+  --site-surface-elevated-solid: rgba(10, 16, 15, 0.92);
+  --site-surface-mobile-nav: rgba(10, 16, 15, 0.96);
+  --site-foreground: #e4ebe7;
+  --site-foreground-heading: #f5faf7;
+  --site-foreground-muted: #9db0a7;
+  --site-foreground-faint: #5d6f68;
+  --site-accent: #9fbfad;
+  --site-accent-strong: #7fa392;
+  --site-accent-foreground: #121c1b;
+  --site-accent-secondary: #c4a484;
+  --site-accent-glow: rgba(159, 191, 173, 0.32);
+  --site-accent-soft: #d5e6dc;
+  --site-border-subtle: rgba(159, 191, 173, 0.18);
+  --site-border-subtle-strong: #243330;
+  --site-border-muted: #3d4f48;
+  --site-border-mobile-nav: rgba(127, 163, 146, 0.35);
+  --site-border-hover: rgba(159, 191, 173, 0.45);
+  --site-interactive-hover: #9fbfad;
+  --site-focus-ring: rgba(159, 191, 173, 0.55);
+  --site-hero-overlay-start: rgba(18, 28, 27, 0.9);
+  --site-hero-overlay-mid: rgba(36, 51, 48, 0.78);
+  --site-hero-overlay-end: rgba(18, 28, 27, 0.92);
+  --site-card-glow: rgba(159, 191, 173, 0.12);
+  --site-outline-hover-fill: rgba(196, 164, 132, 0.12);
+}
+
+/* Curated alternate palette — warmer clay accents (Studio-selectable). */
+[data-site-theme="clay-sand"] {
+  --site-surface-page: #1a201c;
+  --site-surface-page-mid: #232a25;
+  --site-surface-page-soft: #314038;
+  --site-surface-nav: rgba(14, 18, 16, 0.9);
+  --site-surface-section: #1a201c;
+  --site-surface-elevated: rgba(20, 24, 21, 0.9);
+  --site-surface-elevated-strong: rgba(14, 18, 16, 0.88);
+  --site-surface-elevated-solid: rgba(14, 18, 16, 0.92);
+  --site-surface-mobile-nav: rgba(14, 18, 16, 0.96);
+  --site-foreground: #efe8df;
+  --site-foreground-heading: #fffaf3;
+  --site-foreground-muted: #b7aa9a;
+  --site-foreground-faint: #6d6358;
+  --site-accent: #d4a574;
+  --site-accent-strong: #b88958;
+  --site-accent-foreground: #1a201c;
+  --site-accent-secondary: #c48b71;
+  --site-accent-glow: rgba(212, 165, 116, 0.34);
+  --site-accent-soft: #f0d7b8;
+  --site-border-subtle: rgba(212, 165, 116, 0.18);
+  --site-border-subtle-strong: #314038;
+  --site-border-muted: #4a433b;
+  --site-border-mobile-nav: rgba(196, 139, 113, 0.35);
+  --site-border-hover: rgba(212, 165, 116, 0.45);
+  --site-interactive-hover: #d4a574;
+  --site-focus-ring: rgba(212, 165, 116, 0.55);
+  --site-hero-overlay-start: rgba(26, 32, 28, 0.9);
+  --site-hero-overlay-mid: rgba(49, 64, 56, 0.78);
+  --site-hero-overlay-end: rgba(26, 32, 28, 0.92);
+  --site-card-glow: rgba(212, 165, 116, 0.12);
+  --site-outline-hover-fill: rgba(196, 139, 113, 0.14);
+}
+
+/* Typography families — scoped under public SiteTheme only. */
+[data-site-font="classic"] {
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-site-font="editorial"] {
+  --font-heading: var(--font-cormorant), ui-serif, Georgia, "Times New Roman",
+    serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, "Times New Roman",
+    serif;
+}
+
+[data-site-font="modern"] {
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Heading / body scale tokens.
+ * Defaults match current public sizes; Studio can select curated variants.
+ */
+[data-site-heading="comfortable"] {
+  --site-heading-hero: clamp(1.85rem, 4vw + 1rem, 3.75rem);
+  --site-heading-section: clamp(1.875rem, 2vw + 1rem, 2.25rem);
+  --site-heading-card: 1.25rem;
+}
+
+[data-site-heading="prominent"] {
+  --site-heading-hero: clamp(2.05rem, 4.4vw + 1rem, 4.1rem);
+  --site-heading-section: clamp(2.05rem, 2.3vw + 1rem, 2.55rem);
+  --site-heading-card: 1.35rem;
+}
+
+[data-site-heading="compact"] {
+  --site-heading-hero: clamp(1.65rem, 3.4vw + 1rem, 3.25rem);
+  --site-heading-section: clamp(1.65rem, 1.7vw + 1rem, 2rem);
+  --site-heading-card: 1.125rem;
+}
+
+[data-site-body="comfortable"] {
+  --site-body-lead: clamp(1.125rem, 0.6vw + 1rem, 1.25rem);
+  --site-body-copy: 1rem;
+  --site-body-serif: clamp(1.125rem, 0.8vw + 0.9rem, 1.5rem);
+}
+
+[data-site-body="relaxed"] {
+  --site-body-lead: clamp(1.2rem, 0.8vw + 1rem, 1.4rem);
+  --site-body-copy: 1.0625rem;
+  --site-body-serif: clamp(1.2rem, 1vw + 0.9rem, 1.65rem);
+}
+
+[data-site-body="compact"] {
+  --site-body-lead: clamp(1rem, 0.4vw + 0.95rem, 1.125rem);
+  --site-body-copy: 0.9375rem;
+  --site-body-serif: clamp(1rem, 0.5vw + 0.85rem, 1.3rem);
+}
+
+[data-site-theme] #hero h1 {
+  font-size: var(--site-heading-hero);
+}
+
+[data-site-theme] #about h2,
+[data-site-theme] #specialties h2,
+[data-site-theme] #contact h2 {
+  font-size: var(--site-heading-section);
+}
+
+[data-site-theme] #specialties h3,
+[data-site-theme] #contact h3 {
+  font-size: var(--site-heading-card);
+}
+
+[data-site-theme] #hero p,
+[data-site-theme] #about > div > p:first-of-type {
+  font-size: var(--site-body-lead);
+}
+
+[data-site-theme] .editorial-serif {
+  font-size: var(--site-body-serif);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

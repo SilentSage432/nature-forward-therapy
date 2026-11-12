@@ -42,14 +42,14 @@ export function Hero({ profile }: HeroProps) {
             />
           </div>
         </div>
-        <h1 className="animate-slide-up delay-2 mb-3 font-heading text-[1.85rem] leading-tight font-bold text-white sm:mb-3 sm:text-4xl md:text-5xl lg:text-6xl">
+        <h1 className="animate-slide-up delay-2 mb-3 font-heading leading-tight font-bold text-white sm:mb-3">
           {displayName}
         </h1>
         <p className="animate-slide-up delay-3 mb-3 max-w-xl text-base leading-relaxed text-sage-light sm:mb-2 sm:text-lg md:text-xl">
           Clinical Social Work &amp; Therapy | {profile.location}
         </p>
         <BotanicalLine className="animate-fade-in delay-3 mx-auto my-3 w-24 sm:my-4 sm:w-32" />
-        <p className="editorial-serif animate-slide-up delay-4 mx-auto mb-8 max-w-2xl text-xl leading-snug text-parchment/95 sm:mb-10 sm:text-2xl md:text-3xl">
+        <p className="editorial-serif animate-slide-up delay-4 mx-auto mb-8 max-w-2xl leading-snug text-parchment/95 sm:mb-10">
           {profile.tagline}
         </p>
         <div className="animate-slide-up delay-4 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">

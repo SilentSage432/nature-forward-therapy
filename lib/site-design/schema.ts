@@ -6,12 +6,44 @@ import { z } from "zod";
  * Business content (profile, specialties, articles, bookshelf, announcements,
  * booking URLs) remains owned by existing CMS models. Media binaries remain
  * outside this contract until Media Library lands.
+ *
+ * NFT-STUDIO-006 expands curated theme + typography enums only. No arbitrary
+ * CSS, font URLs, or freeform color values are accepted.
  */
 
 export const SITE_DESIGN_SCHEMA_VERSION = 1 as const;
 
-export const SITE_THEME_PRESET_IDS = ["forest-gold"] as const;
+/** Curated color palettes applied via [data-site-theme]. */
+export const SITE_THEME_PRESET_IDS = [
+  "forest-gold",
+  "dusk-sage",
+  "clay-sand",
+] as const;
+
+/**
+ * @deprecated Prefer fontFamilyId / headingScaleId / bodyScaleId.
+ * Kept for reading legacy drafts that only stored typography.presetId.
+ */
 export const SITE_TYPOGRAPHY_PRESET_IDS = ["classic"] as const;
+
+export const SITE_FONT_FAMILY_IDS = [
+  "classic",
+  "editorial",
+  "modern",
+] as const;
+
+export const SITE_HEADING_SCALE_IDS = [
+  "comfortable",
+  "prominent",
+  "compact",
+] as const;
+
+export const SITE_BODY_SCALE_IDS = [
+  "comfortable",
+  "relaxed",
+  "compact",
+] as const;
+
 export const SITE_HERO_LAYOUT_IDS = ["centered-portrait"] as const;
 export const SITE_SECTION_IDS = [
   "hero",
@@ -33,6 +65,9 @@ export const SITE_MEDIA_SLOT_IDS = [
 export type SiteThemePresetId = (typeof SITE_THEME_PRESET_IDS)[number];
 export type SiteTypographyPresetId =
   (typeof SITE_TYPOGRAPHY_PRESET_IDS)[number];
+export type SiteFontFamilyId = (typeof SITE_FONT_FAMILY_IDS)[number];
+export type SiteHeadingScaleId = (typeof SITE_HEADING_SCALE_IDS)[number];
+export type SiteBodyScaleId = (typeof SITE_BODY_SCALE_IDS)[number];
 export type SiteHeroLayoutId = (typeof SITE_HERO_LAYOUT_IDS)[number];
 export type SiteSectionId = (typeof SITE_SECTION_IDS)[number];
 export type SiteMediaSlotId = (typeof SITE_MEDIA_SLOT_IDS)[number];
@@ -84,14 +119,17 @@ const mediaSlotsSchema = z
   })
   .strict();
 
+const typographySchema = z
+  .object({
+    fontFamilyId: z.enum(SITE_FONT_FAMILY_IDS),
+    headingScaleId: z.enum(SITE_HEADING_SCALE_IDS),
+    bodyScaleId: z.enum(SITE_BODY_SCALE_IDS),
+  })
+  .strict();
+
 function hasExactSectionOrder(
   order: readonly SiteSectionId[],
-): order is [
-  "hero",
-  "about",
-  "specialties",
-  "contact",
-] {
+): order is ["hero", "about", "specialties", "contact"] {
   if (order.length !== SITE_SECTION_IDS.length) return false;
   const seen = new Set<string>();
   for (const id of order) {
@@ -103,10 +141,41 @@ function hasExactSectionOrder(
 }
 
 /**
- * Strict SiteDesign document. Unknown keys fail validation on write.
- * Public readers strip/fallback via parse helpers — they never mutate storage.
+ * Normalize legacy V1 drafts that only stored `typography.presetId: "classic"`.
+ * Does not invent themes or scales beyond the classic/comfortable mapping.
  */
-export const siteDesignSchema = z
+export function normalizeSiteDesignInput(value: unknown): unknown {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return value;
+  }
+
+  const doc = { ...(value as Record<string, unknown>) };
+  const typography = doc.typography;
+
+  if (
+    typography &&
+    typeof typography === "object" &&
+    !Array.isArray(typography)
+  ) {
+    const t = typography as Record<string, unknown>;
+    const hasNewShape =
+      typeof t.fontFamilyId === "string" &&
+      typeof t.headingScaleId === "string" &&
+      typeof t.bodyScaleId === "string";
+
+    if (!hasNewShape && t.presetId === "classic") {
+      doc.typography = {
+        fontFamilyId: "classic",
+        headingScaleId: "comfortable",
+        bodyScaleId: "comfortable",
+      };
+    }
+  }
+
+  return doc;
+}
+
+const siteDesignObjectSchema = z
   .object({
     schemaVersion: z.literal(SITE_DESIGN_SCHEMA_VERSION),
     theme: z
@@ -114,11 +183,7 @@ export const siteDesignSchema = z
         presetId: z.enum(SITE_THEME_PRESET_IDS),
       })
       .strict(),
-    typography: z
-      .object({
-        presetId: z.enum(SITE_TYPOGRAPHY_PRESET_IDS),
-      })
-      .strict(),
+    typography: typographySchema,
     hero: z
       .object({
         layoutId: z.enum(SITE_HERO_LAYOUT_IDS),
@@ -157,7 +222,17 @@ export const siteDesignSchema = z
   })
   .strict();
 
-export type SiteDesign = z.infer<typeof siteDesignSchema>;
+/**
+ * Strict SiteDesign document. Unknown keys fail validation on write.
+ * Public readers strip/fallback via parse helpers — they never mutate storage.
+ * Legacy typography.presetId documents are normalized before validation.
+ */
+export const siteDesignSchema = z.preprocess(
+  normalizeSiteDesignInput,
+  siteDesignObjectSchema,
+);
+
+export type SiteDesign = z.infer<typeof siteDesignObjectSchema>;
 
 export type SiteDesignParseSuccess = {
   ok: true;

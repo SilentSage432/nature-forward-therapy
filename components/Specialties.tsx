@@ -36,10 +36,10 @@ export function Specialties({
     >
       <AtmosphereGlow />
       <div className="relative z-10 mx-auto max-w-5xl">
-        <h2 className="mb-3 text-center font-heading text-3xl font-bold text-white md:text-4xl">
+        <h2 className="mb-3 text-center font-heading font-bold text-white">
           Personalized Therapeutic Approaches
         </h2>
-        <p className="editorial-serif mb-6 text-center text-xl text-sage-light md:text-2xl">
+        <p className="editorial-serif mb-6 text-center text-sage-light">
           Finding calm in the chaos of modern life.
         </p>
         <BotanicalLine className="mx-auto mb-14 w-24" />

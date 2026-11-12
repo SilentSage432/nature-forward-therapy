@@ -15,14 +15,14 @@ export function About({ profile }: AboutProps) {
     >
       <AtmosphereGlow variant="cool" />
       <div className="relative z-10 mx-auto max-w-4xl">
-        <h2 className="mb-3 text-center font-heading text-3xl font-bold text-white md:text-4xl">
+        <h2 className="mb-3 text-center font-heading font-bold text-white">
           A Welcoming Space for Healing
         </h2>
-        <p className="editorial-serif mb-6 text-center text-xl text-sage-light md:text-2xl">
+        <p className="editorial-serif mb-6 text-center text-sage-light">
           A grounded, non-judgmental space for growth and resilience.
         </p>
         <BotanicalLine className="mx-auto mb-10 w-24" />
-        <p className="editorial-serif mb-6 text-xl leading-relaxed text-parchment/90 md:text-2xl">
+        <p className="editorial-serif mb-6 leading-relaxed text-parchment/90">
           {profile.bio}
         </p>
         <p className="leading-relaxed text-sage-light/95">

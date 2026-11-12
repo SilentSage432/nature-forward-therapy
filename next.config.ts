@@ -12,6 +12,23 @@ const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "off" },
 ];
 
+/**
+ * Authenticated Studio draft preview is intentionally embedded in a
+ * same-origin iframe so desktop/mobile viewports can reflow accurately.
+ * Keep DENY everywhere else; allow SAMEORIGIN only for this route.
+ */
+const studioPreviewFrameHeaders = [
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+  },
+  { key: "X-DNS-Prefetch-Control", value: "off" },
+];
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
   experimental: {
@@ -33,6 +50,10 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: securityHeaders,
+      },
+      {
+        source: "/admin/studio/preview-frame",
+        headers: studioPreviewFrameHeaders,
       },
       {
         source: "/images/hero/:path*",

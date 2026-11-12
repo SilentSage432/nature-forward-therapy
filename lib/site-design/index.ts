@@ -5,12 +5,20 @@ export {
 export {
   SITE_DESIGN_SCHEMA_VERSION,
   SITE_THEME_PRESET_IDS,
+  SITE_FONT_FAMILY_IDS,
+  SITE_HEADING_SCALE_IDS,
+  SITE_BODY_SCALE_IDS,
   parseSiteDesign,
   parseSiteDesignJson,
   siteDesignSchema,
   type SiteDesign,
   type SiteDesignParseResult,
+  type SiteThemePresetId,
+  type SiteFontFamilyId,
+  type SiteHeadingScaleId,
+  type SiteBodyScaleId,
 } from "@/lib/site-design/schema";
+export { presentationFromDesign } from "@/lib/site-design/presentation";
 export {
   getPublishedPresentationConfig,
 } from "@/lib/site-design/published";
