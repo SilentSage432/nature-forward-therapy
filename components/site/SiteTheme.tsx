@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { SiteThemePresetId } from "@/lib/site-design/schema";
 
 /**
  * Public presentation theme boundary.
@@ -15,13 +16,22 @@ export type SiteThemePreset = typeof SITE_THEME_PRESET;
 
 type SiteThemeProps = {
   children: ReactNode;
-  /** Reserved for future curated presets; must remain forest-gold today. */
-  preset?: SiteThemePreset;
+  /**
+   * Curated theme preset from published SiteDesign.
+   * Unsupported values fall back to forest-gold (no speculative themes).
+   */
+  preset?: SiteThemePreset | SiteThemePresetId;
 };
+
+function resolvePreset(
+  preset: SiteThemePreset | SiteThemePresetId | undefined,
+): SiteThemePreset {
+  return preset === "forest-gold" ? "forest-gold" : SITE_THEME_PRESET;
+}
 
 export function SiteTheme({
   children,
   preset = SITE_THEME_PRESET,
 }: SiteThemeProps) {
-  return <div data-site-theme={preset}>{children}</div>;
+  return <div data-site-theme={resolvePreset(preset)}>{children}</div>;
 }

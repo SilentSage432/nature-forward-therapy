@@ -55,6 +55,9 @@ Browser
 | `proxy.ts` | Admin auth gate + public maintenance rewrite |
 | `components/site/HomePresentation.tsx` | Shared homepage composition (Navbar → sections → Footer) |
 | `components/site/SiteTheme.tsx` | Public `[data-site-theme]` boundary for semantic tokens |
+| `lib/site-design/*` | SiteDesign V1 contract, defaults, published reader, draft/publish service |
+| `lib/actions/site-design.ts` | Authenticated draft/publish/history/restore server actions |
+| `prisma` `SiteDesignState` / `SiteDesignVersion` | Design persistence (additive; manual SQL until operator applies) |
 | Presentation (`components/*`, `app/articles/**`, `app/bookshelf/**`) | Render only |
 
 ## RBAC
@@ -63,6 +66,7 @@ Browser
 | Edit profile / specialties / practice | ✓ | ✓ |
 | Articles & announcement banner | ✓ | ✓ |
 | Curated bookshelf | ✓ | ✓ |
+| Site design draft / publish / history (API; Studio UI deferred) | ✓ | ✓ |
 | Manage users | | ✓ |
 | Site settings / footer credit | | ✓ |
 | Raw env / schema (repo access) | | ✓ (outside app) |
@@ -95,8 +99,16 @@ Brand palette hex values live in `app/globals.css` `@theme` (forest/sage/gold/�
 - Semantic CSS variables (`--site-surface-page`, `--site-accent`, `--site-foreground`, …) are defined on `:root` and `[data-site-theme="forest-gold"]` with **identical current values**.
 - Public marketing surfaces wrap with `SiteTheme` (`data-site-theme="forest-gold"`). Admin / login remain outside that wrapper and inherit stable `:root` defaults.
 - Shared chrome classes (`.btn-gold`, `.btn-outline`, `.nav-glass`, hero overlays, `.frosted-leaf-card`, …) read semantic variables so a future curated public theme can override without rewriting components.
-- **Not implemented yet:** Website Studio UI, SiteDesign persistence, draft/publish, Media Library, alternate presets.
+
+### SiteDesign persistence (NFT-STUDIO-004)
+- **Contract:** Zod `siteDesignSchema` in `lib/site-design/schema.ts` (schemaVersion `1`). Presentation only — CMS content stays in existing models.
+- **Canonical default:** `CANONICAL_SITE_DESIGN` (`forest-gold` / classic / fixed sections) — deterministic, not inferred from DB.
+- **Persistence:** `SiteDesignState` (draft + published JSON + revisions) and append-only `SiteDesignVersion`. Additive SQL: `prisma/migrations-manual/nft-studio-004-site-design.sql` (do not `db push` production).
+- **Ops:** `lib/site-design/service.ts` + `lib/actions/site-design.ts` — EDITOR/DEVELOPER; optimistic concurrency; restore → draft only; publish appends history and calls `revalidatePublicSurfaces()` (includes `CACHE_TAGS.siteDesign`). Hard publish transaction failures return `{ ok:false, code:"ERROR" }` (no success audit). Audit writes remain outside the publish transaction (best-effort; failures are logged).
+- **Public read:** `getPublishedPresentationConfig()` — published only, cached, falls back to canonical default on missing/invalid JSON **without mutating storage**.
+- **Isolation tests:** `SITE_DESIGN_TEST_DATABASE_URL` + `lib/site-design/test-db-guard.ts` / `npm run test:site-design:db` (loopback `nft_studio_004a_*` only).
+- **Not implemented yet:** Website Studio visual UI, Media Library, alternate theme presets, rendered section reorder/visibility. Production additive SQL applied in NFT-STUDIO-004D (empty tables until Studio init/publish).
 
 ### Shared homepage presentation
-- `app/page.tsx` loads CMS data (`getSiteContent`, `getActiveAnnouncement`) and renders `HomePresentation`.
-- Section order and anchors (`hero`, `about`, `specialties`, `contact`) are fixed in `HomePresentation` for Studio reuse without a second renderer.
+- `app/page.tsx` loads CMS data (`getSiteContent`, `getActiveAnnouncement`) plus `getPublishedPresentationConfig()` and renders `HomePresentation`.
+- Section order and anchors (`hero`, `about`, `specialties`, `contact`) remain fixed in `HomePresentation` until Studio rendering support ships; reserved design fields are persisted but not advertised as live controls.

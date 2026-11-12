@@ -1,14 +1,14 @@
 # Chat Handoff — Nature-Forward Therapy
 
 ## Current state
-Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). **NFT-PERF-004 responsive hero/brand assets and NFT-DESIGN-001 Lucide icon system are deployed** (baseline `134a497`). Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite remains. Contact columns (`phone`/`fax`/`publicEmail`) were applied in production via targeted additive SQL (do not re-run `db push` for that change).
+Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public marketing pages are **ISR-cached** (`revalidate = 60`) and **live on production** after NFT-PERF-003 (`a6a5af6`). NFT-PERF-004, NFT-DESIGN-001, and **NFT-STUDIO-003** are deployed (baseline `faff6cf`). Maintenance is enforced in `proxy.ts` (rewrite to `/maintenance`) rather than a dynamic root layout gate. Developer Operational Suite remains. Contact columns (`phone`/`fax`/`publicEmail`) were applied in production via targeted additive SQL (do not re-run `db push` for that change).
 
-**NFT-STUDIO-003 (local, uncommitted):** Shared `HomePresentation` + semantic `--site-*` theme tokens + `[data-site-theme]` public boundary. No Studio UI, no SiteDesign DB, no Media Library.
+**NFT-STUDIO-004 / 004A / 004D (production release):** SiteDesign V1 contract + `SiteDesignState`/`SiteDesignVersion` persistence + draft/publish/history/restore-to-draft service + published reader wired into `HomePresentation`. Additive production SQL applied (empty tables; no design publish). No Studio UI, no Media Library, no alternate presets.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
 - `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)
-- CMS writes → `revalidatePublicSurfaces()` + path revalidation
+- CMS writes → `revalidatePublicSurfaces()` + path revalidation (now also expires `CACHE_TAGS.siteDesign`)
 - Maintenance toggle → `revalidateMaintenanceSurfaces()` (immediate tag expire)
 - Acceptance helpers: `scripts/nft-perf-002-verify.mjs`, `scripts/nft-perf-003-acceptance.mjs`
 
@@ -21,10 +21,12 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 - Library: `lucide-react` (named imports only)
 - Specialty CMS emoji keys → Lucide via `lib/specialty-icons.tsx` (presentation only; DB unchanged)
 
-**Presentation foundation (NFT-STUDIO-003):**
+**Presentation foundation (NFT-STUDIO-003 + 004):**
 - Homepage composition: `components/site/HomePresentation.tsx` (used by `app/page.tsx`)
 - Public theme scope: `components/site/SiteTheme.tsx` → `data-site-theme="forest-gold"`
 - Semantic tokens: `app/globals.css` (`--site-*` on `:root` + theme scope)
+- Design state: `lib/site-design/*` + `lib/actions/site-design.ts`
+- Additive migration (not applied): `prisma/migrations-manual/nft-studio-004-site-design.sql`
 
 ## How to run
 ```bash
@@ -33,14 +35,16 @@ npm run db:setup
 npm run dev
 ```
 
-Public site: `http://localhost:3000`  
-Articles hub: `http://localhost:3000/articles`  
-Bookshelf: `http://localhost:3000/bookshelf`  
-CMS login: `http://localhost:3000/login`  
-Admin: `http://localhost:3000/admin`  
-Developer support desk: `http://localhost:3000/admin/support`  
+Public site: `http://localhost:3000`
+Articles hub: `http://localhost:3000/articles`
+Bookshelf: `http://localhost:3000/bookshelf`
+CMS login: `http://localhost:3000/login`
+Admin: `http://localhost:3000/admin`
+Developer support desk: `http://localhost:3000/admin/support`
 Cache console: `http://localhost:3000/admin/cache`
 
+SiteDesign unit tests: `npm run test:site-design`
+SiteDesign isolated DB integration: `SITE_DESIGN_TEST_DATABASE_URL=postgresql://…@127.0.0.1:5432/nft_studio_004a_* npm run test:site-design:db` (refuses Supabase / non-`nft_studio_004a_*` names)
 Local ISR verification helper: `scripts/nft-perf-002-verify.mjs` (uses isolated DB env vars; do not point at production for writes).
 
 ### Seeded accounts (from `.env` / `.env.example`)
@@ -56,6 +60,10 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | --- | --- |
 | Public presentation | `components/site/HomePresentation.tsx`, `components/site/SiteTheme.tsx`, `components/*`, `app/page.tsx`, `app/articles/**`, `app/bookshelf/**` |
 | Semantic public theme tokens | `app/globals.css` (`--site-*`, `[data-site-theme]`) |
+| SiteDesign contract / defaults | `lib/site-design/schema.ts`, `lib/site-design/defaults.ts` |
+| Design draft/publish/history | `lib/site-design/service.ts`, `lib/actions/site-design.ts` |
+| Published design public read | `lib/site-design/published.ts` |
+| Design persistence SQL | `prisma/migrations-manual/nft-studio-004-site-design.sql` |
 | Public ISR + invalidation | `lib/public-cache.ts`, `lib/public-cache-shared.ts`, CMS actions/APIs |
 | Maintenance rewrite | `proxy.ts`, `getMaintenanceModeCached`, `/maintenance` |
 | Admin shell / mobile nav | `AdminShell`, `AdminHeader`, `AdminSidebar` |
@@ -69,8 +77,8 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 | Schema / seed | `prisma/schema.prisma`, `prisma/seed.ts` |
 
 ## Editor vs developer
-- **Editor:** profile (including location + optional phone/fax/publicEmail), specialties, practice details, articles/essays, curated bookshelf, announcement banner, floating Tech Desk chat.
-- **Developer:** Command Center (overview + support desk), Management (activity/rollback, backups, users/magic links), Controls (cache, SEO, system settings/maintenance).
+- **Editor:** profile (including location + optional phone/fax/publicEmail), specialties, practice details, articles/essays, curated bookshelf, announcement banner, floating Tech Desk chat, **SiteDesign draft/publish/history (server actions; UI deferred)**.
+- **Developer:** Command Center (overview + support desk), Management (activity/rollback, backups, users/magic links), Controls (cache, SEO, system settings/maintenance), same SiteDesign ops.
 
 ## Contact fields ownership
 | Concern | Owner |
@@ -95,3 +103,4 @@ Database: PostgreSQL via `DATABASE_URL` (pooler) + `DIRECT_URL` (migrations).
 - Maintenance mode: anonymous/EDITOR public traffic rewritten to `/maintenance`; DEVELOPER JWT bypasses and may see client banner cookie.
 - Magic links are single-use and expire in 15 minutes (`MagicToken`).
 - Do not reintroduce root `force-dynamic` / layout `auth()` for public pages without revisiting the caching contract.
+- SiteDesign: never auto-publish on startup/migration; never overwrite invalid stored JSON on public read; never expose draft via public reader; never `prisma db push` production for Studio tables — use additive manual SQL.

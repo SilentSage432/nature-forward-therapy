@@ -35,6 +35,7 @@ export function revalidatePublicSurfaces(options?: {
   expireTag(CACHE_TAGS.announcements);
   expireTag(CACHE_TAGS.articles);
   expireTag(CACHE_TAGS.bookshelf);
+  expireTag(CACHE_TAGS.siteDesign);
 
   if (includeHome) revalidatePath("/");
   if (includeArticles) revalidatePath("/articles");

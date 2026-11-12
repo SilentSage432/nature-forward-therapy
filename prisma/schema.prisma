@@ -181,3 +181,39 @@ model MagicToken {
   expiresAt DateTime
   createdAt DateTime @default(now())
 }
+
+/// Singleton website presentation state (draft + published SiteDesign JSON).
+/// Additive NFT-STUDIO-004 — do not sync destructively against production.
+model SiteDesignState {
+  id                   String    @id @default(cuid())
+  /// Singleton key for this single-practice site.
+  key                  String    @unique @default("default")
+  publishedJson        Json
+  draftJson            Json
+  publishedRevision    Int       @default(0)
+  draftRevision        Int       @default(0)
+  publishedAt          DateTime?
+  publishedById        String?
+  publishedByEmail     String?
+  draftUpdatedAt       DateTime?
+  draftUpdatedById     String?
+  draftUpdatedByEmail  String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+/// Immutable published SiteDesign snapshots (append-only on publish).
+model SiteDesignVersion {
+  id               String   @id @default(cuid())
+  revision         Int      @unique
+  snapshotJson     Json
+  publishedAt      DateTime @default(now())
+  publishedById    String
+  publishedByEmail String
+  note             String?
+  /// When this publish originated from restoring a prior revision into draft.
+  sourceRevision   Int?
+  createdAt        DateTime @default(now())
+
+  @@index([publishedAt(sort: Desc)])
+}

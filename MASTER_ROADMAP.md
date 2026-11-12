@@ -28,13 +28,17 @@
 - [x] Public rendering optimization (ISR + proxy maintenance + request/data cache) — **NFT-PERF-003 released to production (`a6a5af6`); TTFB/cache HIT measured**
 - [x] Visual asset optimization (responsive hero + sized logo/favicon) — **NFT-PERF-004 deployed**
 - [x] Unified Lucide SVG icon system replacing UI emoji (NFT-DESIGN-001) — **deployed at `134a497`**
-- [x] Shared homepage presentation + semantic public theme tokens (NFT-STUDIO-003) — **local implementation; not committed/deployed**
+- [x] Shared homepage presentation + semantic public theme tokens (NFT-STUDIO-003) — **released at `faff6cf`**
+- [x] SiteDesign draft/publish persistence foundation (NFT-STUDIO-004) — **local implementation; migration + commit/deploy not authorized**
+- [x] NFT-STUDIO-004A isolated PostgreSQL publishing acceptance — **verified on disposable local DB**
+- [x] NFT-STUDIO-004C independent PG17 logical backup + isolated restore — **verified**
+- [x] NFT-STUDIO-004D production additive migration + release — **authorized release window**
 
 ## Near-term
-- [ ] Website Studio foundation: SiteDesign draft/publish persistence (NFT-STUDIO-002 Tranche 2)
+- [ ] Website Studio visual editor over `HomePresentation` (consumes SiteDesign draft/publish)
 - [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
 - [ ] Theme presets over semantic tokens (NFT-STUDIO-002 Tranche 4)
-- [ ] Visual Website Studio editor over `HomePresentation` (NFT-STUDIO-002 Tranche 5)
+- [ ] Render reserved SiteDesign dimensions (order / visibility / media slots) safely
 - [ ] Optional follow-up: cold-start / edge geography re-measure after traffic settles
 - [ ] Optional: localize remaining below-fold Unsplash section images (About/Specialties/Contact)
 - [ ] Rotate seed passwords / `AUTH_SECRET` for production

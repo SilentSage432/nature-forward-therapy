@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Specialties } from "@/components/Specialties";
 import { SiteTheme } from "@/components/site/SiteTheme";
 import type { AnnouncementBannerData } from "@/lib/articles";
+import type { PublishedPresentationConfig } from "@/lib/site-design/resolve-published";
 import type { SiteContent } from "@/lib/types";
 
 export type HomePresentationProps = {
@@ -13,6 +14,14 @@ export type HomePresentationProps = {
   content: SiteContent;
   /** Active announcement strip; null when none. */
   banner?: AnnouncementBannerData | null;
+  /**
+   * Safe published presentation config from the design reader.
+   * When omitted, SiteTheme uses the forest-gold default (parity with NFT-STUDIO-003).
+   *
+   * Reserved design dimensions (order / visibility / media / focal) are not
+   * applied here yet — section markup stays fixed for visual parity.
+   */
+  presentation?: PublishedPresentationConfig | null;
 };
 
 /**
@@ -28,9 +37,12 @@ export type HomePresentationProps = {
 export function HomePresentation({
   content,
   banner = null,
+  presentation = null,
 }: HomePresentationProps) {
+  const themePreset = presentation?.themePresetId ?? "forest-gold";
+
   return (
-    <SiteTheme>
+    <SiteTheme preset={themePreset}>
       <Navbar banner={banner} />
       <main>
         <Hero profile={content.profile} />

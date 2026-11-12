@@ -9,6 +9,7 @@ export const CACHE_TAGS = {
   announcements: "announcements",
   articles: "articles",
   bookshelf: "bookshelf",
+  siteDesign: "site-design",
   maintenance: "maintenance-mode",
 } as const;
 
