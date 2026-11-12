@@ -2,20 +2,28 @@ import type {
   SiteBodyScaleId,
   SiteFontFamilyId,
   SiteHeadingScaleId,
-  SiteThemePresetId,
 } from "@/lib/site-design/schema";
+import {
+  FOREST_GOLD_CSS_TOKENS,
+  SITE_PALETTE_BY_ID,
+  SITE_THEME_PRESET_IDS,
+  resolvePaletteCssTokens,
+  type SitePaletteCssTokens,
+  type SiteThemePresetId,
+} from "@/lib/site-design/palette-registry";
 
 /**
  * Deterministic curated visual token tables for SiteDesign presentation.
  *
- * CSS in `app/globals.css` is the runtime source of truth under
- * `[data-site-theme]` / `[data-site-font]` / scale attributes.
+ * Authoritative palette values live in `palette-registry.ts`.
+ * CSS in `app/globals.css` is the runtime source under `[data-site-theme]`.
  * These maps mirror that CSS for regression tests and documentation —
  * keep both in sync when curated palettes or type stacks change.
  *
  * No arbitrary colors or font URLs are accepted; only curated IDs resolve.
  */
 
+/** Compatibility subset used by existing visual fidelity tests. */
 export type SitePaletteTokens = {
   surfacePage: string;
   surfacePageMid: string;
@@ -47,99 +55,48 @@ export type SitePaletteTokens = {
   focusRing: string;
 };
 
+function toCompatTokens(tokens: SitePaletteCssTokens): SitePaletteTokens {
+  return {
+    surfacePage: tokens.surfacePage,
+    surfacePageMid: tokens.surfacePageMid,
+    surfacePageSoft: tokens.surfacePageSoft,
+    surfaceSection: tokens.surfaceSection,
+    surfaceElevatedStrong: tokens.surfaceElevatedStrong,
+    foreground: tokens.foreground,
+    foregroundHeading: tokens.foregroundHeading,
+    foregroundMuted: tokens.foregroundMuted,
+    foregroundSupporting: tokens.foregroundSupporting,
+    foregroundSoft: tokens.foregroundSoft,
+    foregroundWarm: tokens.foregroundWarm,
+    accent: tokens.accent,
+    accentStrong: tokens.accentStrong,
+    accentForeground: tokens.accentForeground,
+    accentSecondary: tokens.accentSecondary,
+    accentSoft: tokens.accentSoft,
+    accentMuted: tokens.accentMuted,
+    accentGlow: tokens.accentGlow,
+    borderOrganic: tokens.borderOrganic,
+    iconSurface: tokens.iconSurface,
+    heroOverlayStart: tokens.heroOverlayStart,
+    heroOverlayMid: tokens.heroOverlayMid,
+    heroOverlayEnd: tokens.heroOverlayEnd,
+    cardGlow: tokens.cardGlow,
+    focusRing: tokens.focusRing,
+  };
+}
+
 /** Canonical forest-gold values — visually equivalent to production NFT-STUDIO-003. */
-export const FOREST_GOLD_TOKENS: SitePaletteTokens = {
-  surfacePage: "#162221",
-  surfacePageMid: "#1e2d2b",
-  surfacePageSoft: "#2d3a35",
-  surfaceSection: "#162221",
-  surfaceElevatedStrong: "rgba(12, 10, 9, 0.85)",
-  foreground: "#e8eae6",
-  foregroundHeading: "#ffffff",
-  foregroundMuted: "#a8a29e",
-  foregroundSupporting: "#a8c3b5",
-  foregroundSoft: "#f4f2ed",
-  foregroundWarm: "#c4b8a8",
-  accent: "#d4af37",
-  accentStrong: "#b8962e",
-  accentForeground: "#162221",
-  accentSecondary: "#c48b71",
-  accentSoft: "#fde68a",
-  accentMuted: "rgba(212, 175, 55, 0.2)",
-  accentGlow: "rgba(212, 175, 55, 0.35)",
-  borderOrganic: "#5a7266",
-  iconSurface: "rgba(90, 114, 102, 0.4)",
-  heroOverlayStart: "rgba(22, 34, 33, 0.88)",
-  heroOverlayMid: "rgba(45, 58, 53, 0.75)",
-  heroOverlayEnd: "rgba(22, 34, 33, 0.9)",
-  cardGlow: "rgba(212, 175, 55, 0.12)",
-  focusRing: "rgba(212, 175, 55, 0.55)",
-};
+export const FOREST_GOLD_TOKENS: SitePaletteTokens = toCompatTokens(
+  FOREST_GOLD_CSS_TOKENS,
+);
 
-export const DUSK_SAGE_TOKENS: SitePaletteTokens = {
-  surfacePage: "#121c1b",
-  surfacePageMid: "#182624",
-  surfacePageSoft: "#243330",
-  surfaceSection: "#121c1b",
-  surfaceElevatedStrong: "rgba(10, 16, 15, 0.88)",
-  foreground: "#e4ebe7",
-  foregroundHeading: "#f5faf7",
-  foregroundMuted: "#9db0a7",
-  foregroundSupporting: "#9db0a7",
-  foregroundSoft: "#eef6f1",
-  foregroundWarm: "#c4a484",
-  accent: "#9fbfad",
-  accentStrong: "#7fa392",
-  accentForeground: "#121c1b",
-  accentSecondary: "#c4a484",
-  accentSoft: "#d5e6dc",
-  accentMuted: "rgba(159, 191, 173, 0.22)",
-  accentGlow: "rgba(159, 191, 173, 0.32)",
-  borderOrganic: "#3d4f48",
-  iconSurface: "rgba(61, 79, 72, 0.45)",
-  heroOverlayStart: "rgba(18, 28, 27, 0.9)",
-  heroOverlayMid: "rgba(36, 51, 48, 0.78)",
-  heroOverlayEnd: "rgba(18, 28, 27, 0.92)",
-  cardGlow: "rgba(159, 191, 173, 0.12)",
-  focusRing: "rgba(159, 191, 173, 0.55)",
-};
-
-export const CLAY_SAND_TOKENS: SitePaletteTokens = {
-  surfacePage: "#1a201c",
-  surfacePageMid: "#232a25",
-  surfacePageSoft: "#314038",
-  surfaceSection: "#1a201c",
-  surfaceElevatedStrong: "rgba(14, 18, 16, 0.88)",
-  foreground: "#efe8df",
-  foregroundHeading: "#fffaf3",
-  foregroundMuted: "#b7aa9a",
-  foregroundSupporting: "#b7aa9a",
-  foregroundSoft: "#f7efe4",
-  foregroundWarm: "#d4c4b0",
-  accent: "#d4a574",
-  accentStrong: "#b88958",
-  accentForeground: "#1a201c",
-  accentSecondary: "#c48b71",
-  accentSoft: "#f0d7b8",
-  accentMuted: "rgba(212, 165, 116, 0.22)",
-  accentGlow: "rgba(212, 165, 116, 0.34)",
-  borderOrganic: "#4a433b",
-  iconSurface: "rgba(74, 67, 59, 0.45)",
-  heroOverlayStart: "rgba(26, 32, 28, 0.9)",
-  heroOverlayMid: "rgba(49, 64, 56, 0.78)",
-  heroOverlayEnd: "rgba(26, 32, 28, 0.92)",
-  cardGlow: "rgba(212, 165, 116, 0.12)",
-  focusRing: "rgba(212, 165, 116, 0.55)",
-};
-
-export const SITE_PALETTE_TOKENS: Record<
-  SiteThemePresetId,
-  SitePaletteTokens
-> = {
-  "forest-gold": FOREST_GOLD_TOKENS,
-  "dusk-sage": DUSK_SAGE_TOKENS,
-  "clay-sand": CLAY_SAND_TOKENS,
-};
+export const SITE_PALETTE_TOKENS: Record<SiteThemePresetId, SitePaletteTokens> =
+  Object.fromEntries(
+    SITE_THEME_PRESET_IDS.map((id) => [
+      id,
+      toCompatTokens(SITE_PALETTE_BY_ID[id].tokens),
+    ]),
+  ) as Record<SiteThemePresetId, SitePaletteTokens>;
 
 /**
  * Loaded Next.js font CSS variables only.
@@ -148,7 +105,12 @@ export const SITE_PALETTE_TOKENS: Record<
  */
 export const SITE_FONT_STACKS: Record<
   SiteFontFamilyId,
-  { headingVar: "--font-montserrat" | "--font-inter" | "--font-cormorant"; bodyVar: "--font-montserrat" | "--font-inter" | "--font-cormorant"; headingKind: "sans" | "serif"; bodyKind: "sans" }
+  {
+    headingVar: "--font-montserrat" | "--font-inter" | "--font-cormorant";
+    bodyVar: "--font-montserrat" | "--font-inter" | "--font-cormorant";
+    headingKind: "sans" | "serif";
+    bodyKind: "sans";
+  }
 > = {
   classic: {
     headingVar: "--font-montserrat",
@@ -216,6 +178,12 @@ export function resolvePaletteTokens(
   presetId: SiteThemePresetId,
 ): SitePaletteTokens {
   return SITE_PALETTE_TOKENS[presetId];
+}
+
+export function resolveFullPaletteTokens(
+  presetId: SiteThemePresetId,
+): SitePaletteCssTokens {
+  return resolvePaletteCssTokens(presetId);
 }
 
 export function resolveFontStack(fontFamilyId: SiteFontFamilyId) {

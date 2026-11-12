@@ -43,12 +43,15 @@
 - [x] NFT-STUDIO-006D Preview handshake repair — **local VERIFIED**
 - [x] NFT-STUDIO-006E Preview handshake production hotfix — **authorized gated code-only release**
 - [x] NFT-STUDIO-006F Visual design fidelity — **authorized gated production release (code-only; published design unchanged)**
+- [x] NFT-STUDIO-007A Expanded curated palette library & contrast foundation — **authorized gated production release (code-only; published design unchanged)**
 
 ## Near-term
+- [ ] Operator authenticated production Studio smoke of 007A palette gallery (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 006F fidelity (no Save Draft / Publish)
-- [ ] NFT-STUDIO-007 design publish / review gates
+- [ ] NFT-STUDIO-007B+ design publish / review gates (separate authorization)
 - [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
-- [ ] Additional curated theme/typography presets as needed
+- [ ] Deferred: custom-color architecture / saved palette tables (not in 007A)
+- [ ] Deferred: border/focus/hero-over-image accessibility measurement tranche
 - [ ] Render reserved SiteDesign dimensions (order / visibility / media slots) safely
 - [ ] Optional follow-up: cold-start / edge geography re-measure after traffic settles
 - [ ] Optional: localize remaining below-fold Unsplash section images (About/Specialties/Contact)

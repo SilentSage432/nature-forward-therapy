@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-12 — Expanded curated palette library production release (NFT-STUDIO-007A)
+
+Authorized gated code-only production release of NFT-STUDIO-007A. Ships 15 curated palettes, authoritative registry, deterministic contrast contract, grouped Studio gallery, and static CSS scopes. Preflight: production Supabase `dbqprchzgfhthpxngemy` / PG 17.6 SiteDesign singleton `default` draft/published revision 0, versions 0; carpet/store tables intact. Recovery checkpoint checksum verified. Quality gates: 105 site-design tests, typecheck, build, targeted eslint, CSS generator idempotency + marker safety, isolated browser/a11y acceptance on `nft_studio_007a_44117`. No production Save Draft/Publish, migrations, or DB writes during release. Public site remains forest-gold canonical until a later authorized publish tranche. Authenticated production Studio gallery smoke deferred to operator.
+
+## 2026-11-12 — Expanded curated palette library (NFT-STUDIO-007A)
+
+Local-only expansion of Website Studio curated color palettes from 3 → 15 complete visual systems. Authoritative registry in `lib/site-design/palette-registry.ts` drives Zod theme enums, Studio gallery options, and mirrored CSS under `[data-site-theme]`. Deterministic WCAG contrast evaluator + required opaque pair contract (`contrast.ts`, `palette-contrast-contract.ts`) gates every palette. Studio Colors UI becomes a grouped swatch gallery (Botanical / Earthy / Light & Airy / Deep & Calm) with instant preview. Forest & Gold remains canonical default with exact token identity. schemaVersion stays 1; existing stored V1 designs remain valid. Soft decorative borders / translucent focus / hero-over-image pairs intentionally excluded from deterministic required checks (documented). Isolated browser acceptance VERIFIED on PG17 `nft_studio_007a_44117` @ `127.0.0.1:5433` (all 15 palettes in Studio iframe, forest-gold at 390/768/1280, typography combos, keyboard gallery, handshake dusk switch, zoom spot checks). Quality gates: 105 site-design tests, typecheck, build. No commit/push/deploy; no production DB writes; no Save Draft/Publish.
+
 ## 2026-11-12 — Visual design fidelity production release (NFT-STUDIO-006F)
 
 Authorized gated code-only production release of NFT-STUDIO-006F visual fidelity. Homepage presentation uses live `--site-*` helpers under `SiteTheme`; typography inheritance corrected; Classic/Editorial/Modern differentiated via loaded Next fonts only. Forest-gold remains published/canonical. No Save Draft, Publish, Restore, migrations, or production DB writes. Quality gates: 87 site-design tests, typecheck, build, isolated browser acceptance, contrast sampling. WAVE deferred (tool unavailable).

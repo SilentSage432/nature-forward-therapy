@@ -44,6 +44,7 @@ describe("curated palette token resolution", () => {
     assert.deepEqual(new Set(accents).size, accents.length);
     assert.equal(resolvePaletteTokens("dusk-sage").accent, "#9fbfad");
     assert.equal(resolvePaletteTokens("clay-sand").accent, "#d4a574");
+    assert.ok(Object.keys(SITE_PALETTE_TOKENS).length >= 12);
   });
 
   it("keeps alternate palettes visually different beyond accent alone", () => {
@@ -54,6 +55,11 @@ describe("curated palette token resolution", () => {
     assert.notEqual(forest.surfacePage, clay.surfacePage);
     assert.notEqual(dusk.foregroundSupporting, clay.foregroundSupporting);
     assert.notEqual(forest.heroOverlayMid, dusk.heroOverlayMid);
+
+    const surfaces = Object.values(SITE_PALETTE_TOKENS).map((t) =>
+      [t.surfacePage, t.accent, t.foregroundSupporting].join("|"),
+    );
+    assert.equal(new Set(surfaces).size, surfaces.length);
   });
 });
 

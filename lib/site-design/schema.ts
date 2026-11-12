@@ -1,4 +1,8 @@
 import { z } from "zod";
+import {
+  SITE_THEME_PRESET_IDS as REGISTRY_THEME_PRESET_IDS,
+  type SiteThemePresetId,
+} from "@/lib/site-design/palette-registry";
 
 /**
  * SiteDesign V1 — presentation configuration only.
@@ -7,18 +11,15 @@ import { z } from "zod";
  * booking URLs) remains owned by existing CMS models. Media binaries remain
  * outside this contract until Media Library lands.
  *
- * NFT-STUDIO-006 expands curated theme + typography enums only. No arbitrary
- * CSS, font URLs, or freeform color values are accepted.
+ * NFT-STUDIO-007A expands curated theme enums from the palette registry only.
+ * No arbitrary CSS, font URLs, or freeform color values are accepted.
+ * schemaVersion remains 1 — curated enum members do not require a bump.
  */
 
 export const SITE_DESIGN_SCHEMA_VERSION = 1 as const;
 
-/** Curated color palettes applied via [data-site-theme]. */
-export const SITE_THEME_PRESET_IDS = [
-  "forest-gold",
-  "dusk-sage",
-  "clay-sand",
-] as const;
+/** Curated color palettes applied via [data-site-theme]. Owned by palette-registry. */
+export const SITE_THEME_PRESET_IDS = REGISTRY_THEME_PRESET_IDS;
 
 /**
  * @deprecated Prefer fontFamilyId / headingScaleId / bodyScaleId.
@@ -62,7 +63,7 @@ export const SITE_MEDIA_SLOT_IDS = [
   "contact.image",
 ] as const;
 
-export type SiteThemePresetId = (typeof SITE_THEME_PRESET_IDS)[number];
+export type { SiteThemePresetId };
 export type SiteTypographyPresetId =
   (typeof SITE_TYPOGRAPHY_PRESET_IDS)[number];
 export type SiteFontFamilyId = (typeof SITE_FONT_FAMILY_IDS)[number];

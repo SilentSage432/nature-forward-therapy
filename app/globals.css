@@ -60,8 +60,9 @@
 /*
  * Semantic theme tokens.
  * :root = stable system/admin defaults (current forest-gold identity).
- * [data-site-theme] = explicit public presentation boundary for future
- * curated presets / Studio preview. Values match today for visual parity.
+ * [data-site-theme] = explicit public presentation boundary for curated
+ * Studio presets. Forest-gold values match production visual parity.
+ * Token tables live in lib/site-design/palette-registry.ts — keep in sync.
  */
 :root,
 [data-site-theme="forest-gold"] {
@@ -71,7 +72,6 @@
   --site-surface-nav: rgba(12, 18, 17, 0.88);
   --site-surface-section: #162221;
   --site-surface-elevated: rgba(18, 24, 23, 0.88);
-  /* Exact former Tailwind stone-950 alpha fills used on public cards/nav. */
   --site-surface-elevated-strong: rgba(12, 10, 9, 0.85);
   --site-surface-elevated-solid: rgba(12, 10, 9, 0.9);
   --site-surface-mobile-nav: rgba(12, 10, 9, 0.95);
@@ -79,7 +79,6 @@
   --site-foreground-heading: #ffffff;
   --site-foreground-muted: #a8a29e;
   --site-foreground-faint: #57534e;
-  /* Exact former Tailwind sage-light / parchment / sand used on homepage copy. */
   --site-foreground-supporting: #a8c3b5;
   --site-foreground-soft: #f4f2ed;
   --site-foreground-warm: #c4b8a8;
@@ -88,18 +87,13 @@
   --site-accent-foreground: #162221;
   --site-accent-secondary: #c48b71;
   --site-accent-glow: rgba(212, 175, 55, 0.35);
-  /* Exact former Tailwind amber-200 used for soft gold public links. */
   --site-accent-soft: #fde68a;
   --site-accent-muted: rgba(212, 175, 55, 0.2);
   --site-border-subtle: rgba(212, 175, 55, 0.15);
-  /* Exact former Tailwind stone-800 used on public cards. */
   --site-border-subtle-strong: #292524;
-  /* Exact former Tailwind stone-700 used on bookshelf "Coming soon". */
   --site-border-muted: #44403c;
   --site-border-mobile-nav: rgba(120, 53, 15, 0.3);
-  /* Exact former Tailwind amber-500/40 hover border. */
   --site-border-hover: rgba(245, 158, 11, 0.4);
-  /* Exact former Tailwind sage-dark used on organic borders / icon wells. */
   --site-border-organic: #5a7266;
   --site-icon-surface: rgba(90, 114, 102, 0.4);
   --site-interactive-hover: #d4af37;
@@ -111,7 +105,8 @@
   --site-outline-hover-fill: rgba(196, 139, 113, 0.12);
 }
 
-/* Curated alternate palette — cooler dusk greens (Studio-selectable). */
+/* Curated palette — Dusk & Sage (Studio-selectable). */
+
 [data-site-theme="dusk-sage"] {
   --site-surface-page: #121c1b;
   --site-surface-page-mid: #182624;
@@ -152,7 +147,8 @@
   --site-outline-hover-fill: rgba(196, 164, 132, 0.12);
 }
 
-/* Curated alternate palette — warmer clay accents (Studio-selectable). */
+/* Curated palette — Clay & Sand (Studio-selectable). */
+
 [data-site-theme="clay-sand"] {
   --site-surface-page: #1a201c;
   --site-surface-page-mid: #232a25;
@@ -191,6 +187,510 @@
   --site-hero-overlay-end: rgba(26, 32, 28, 0.92);
   --site-card-glow: rgba(212, 165, 116, 0.12);
   --site-outline-hover-fill: rgba(196, 139, 113, 0.14);
+}
+
+/* Curated palette — Soft Eucalyptus (Studio-selectable). */
+
+[data-site-theme="soft-eucalyptus"] {
+  --site-surface-page: #15241f;
+  --site-surface-page-mid: #1c2f29;
+  --site-surface-page-soft: #2a4038;
+  --site-surface-nav: rgba(12, 22, 19, 0.9);
+  --site-surface-section: #15241f;
+  --site-surface-elevated: rgba(16, 28, 24, 0.9);
+  --site-surface-elevated-strong: rgba(10, 18, 15, 0.88);
+  --site-surface-elevated-solid: rgba(10, 18, 15, 0.92);
+  --site-surface-mobile-nav: rgba(10, 18, 15, 0.96);
+  --site-foreground: #e6f0eb;
+  --site-foreground-heading: #f5fbf7;
+  --site-foreground-muted: #9bb5a8;
+  --site-foreground-faint: #5a6f66;
+  --site-foreground-supporting: #b7cfc0;
+  --site-foreground-soft: #eef6f1;
+  --site-foreground-warm: #cbb89f;
+  --site-accent: #8fbfa8;
+  --site-accent-strong: #6f9f8a;
+  --site-accent-foreground: #15241f;
+  --site-accent-secondary: #c4a484;
+  --site-accent-glow: rgba(143, 191, 168, 0.34);
+  --site-accent-soft: #d4ebe0;
+  --site-accent-muted: rgba(143, 191, 168, 0.22);
+  --site-border-subtle: rgba(143, 191, 168, 0.18);
+  --site-border-subtle-strong: #2a4038;
+  --site-border-muted: #3f554c;
+  --site-border-mobile-nav: rgba(111, 159, 138, 0.35);
+  --site-border-hover: rgba(143, 191, 168, 0.45);
+  --site-border-organic: #4a675c;
+  --site-icon-surface: rgba(74, 103, 92, 0.45);
+  --site-interactive-hover: #8fbfa8;
+  --site-focus-ring: rgba(143, 191, 168, 0.55);
+  --site-hero-overlay-start: rgba(21, 36, 31, 0.9);
+  --site-hero-overlay-mid: rgba(42, 64, 56, 0.78);
+  --site-hero-overlay-end: rgba(21, 36, 31, 0.92);
+  --site-card-glow: rgba(143, 191, 168, 0.12);
+  --site-outline-hover-fill: rgba(196, 164, 132, 0.12);
+}
+
+/* Curated palette — Olive & Linen (Studio-selectable). */
+
+[data-site-theme="olive-linen"] {
+  --site-surface-page: #1b2118;
+  --site-surface-page-mid: #242c20;
+  --site-surface-page-soft: #333c2d;
+  --site-surface-nav: rgba(14, 18, 12, 0.9);
+  --site-surface-section: #1b2118;
+  --site-surface-elevated: rgba(20, 26, 18, 0.9);
+  --site-surface-elevated-strong: rgba(12, 16, 10, 0.88);
+  --site-surface-elevated-solid: rgba(12, 16, 10, 0.92);
+  --site-surface-mobile-nav: rgba(12, 16, 10, 0.96);
+  --site-foreground: #ece8df;
+  --site-foreground-heading: #faf7f0;
+  --site-foreground-muted: #a8a090;
+  --site-foreground-faint: #646057;
+  --site-foreground-supporting: #a8b39a;
+  --site-foreground-soft: #f3efe6;
+  --site-foreground-warm: #d2c4a8;
+  --site-accent: #c6b48a;
+  --site-accent-strong: #a8976c;
+  --site-accent-foreground: #1b2118;
+  --site-accent-secondary: #b08968;
+  --site-accent-glow: rgba(198, 180, 138, 0.34);
+  --site-accent-soft: #e8dcc0;
+  --site-accent-muted: rgba(198, 180, 138, 0.22);
+  --site-border-subtle: rgba(198, 180, 138, 0.18);
+  --site-border-subtle-strong: #333c2d;
+  --site-border-muted: #4a463c;
+  --site-border-mobile-nav: rgba(176, 137, 104, 0.35);
+  --site-border-hover: rgba(198, 180, 138, 0.45);
+  --site-border-organic: #5a6350;
+  --site-icon-surface: rgba(90, 99, 80, 0.45);
+  --site-interactive-hover: #c6b48a;
+  --site-focus-ring: rgba(198, 180, 138, 0.55);
+  --site-hero-overlay-start: rgba(27, 33, 24, 0.9);
+  --site-hero-overlay-mid: rgba(51, 60, 45, 0.78);
+  --site-hero-overlay-end: rgba(27, 33, 24, 0.92);
+  --site-card-glow: rgba(198, 180, 138, 0.12);
+  --site-outline-hover-fill: rgba(176, 137, 104, 0.14);
+}
+
+/* Curated palette — Midnight Garden (Studio-selectable). */
+
+[data-site-theme="midnight-garden"] {
+  --site-surface-page: #151822;
+  --site-surface-page-mid: #1c2030;
+  --site-surface-page-soft: #2a3044;
+  --site-surface-nav: rgba(10, 12, 18, 0.9);
+  --site-surface-section: #151822;
+  --site-surface-elevated: rgba(16, 18, 28, 0.9);
+  --site-surface-elevated-strong: rgba(8, 10, 16, 0.88);
+  --site-surface-elevated-solid: rgba(8, 10, 16, 0.92);
+  --site-surface-mobile-nav: rgba(8, 10, 16, 0.96);
+  --site-foreground: #e8eaf2;
+  --site-foreground-heading: #f7f8fc;
+  --site-foreground-muted: #9aa3b8;
+  --site-foreground-faint: #5c6478;
+  --site-foreground-supporting: #9aa7c4;
+  --site-foreground-soft: #eef0f8;
+  --site-foreground-warm: #cbb8a8;
+  --site-accent: #b8a4d4;
+  --site-accent-strong: #9680b8;
+  --site-accent-foreground: #151822;
+  --site-accent-secondary: #c4a484;
+  --site-accent-glow: rgba(184, 164, 212, 0.34);
+  --site-accent-soft: #ddd0f0;
+  --site-accent-muted: rgba(184, 164, 212, 0.22);
+  --site-border-subtle: rgba(184, 164, 212, 0.18);
+  --site-border-subtle-strong: #2a3044;
+  --site-border-muted: #3d4458;
+  --site-border-mobile-nav: rgba(150, 128, 184, 0.35);
+  --site-border-hover: rgba(184, 164, 212, 0.45);
+  --site-border-organic: #4a5268;
+  --site-icon-surface: rgba(74, 82, 104, 0.45);
+  --site-interactive-hover: #b8a4d4;
+  --site-focus-ring: rgba(184, 164, 212, 0.55);
+  --site-hero-overlay-start: rgba(21, 24, 34, 0.9);
+  --site-hero-overlay-mid: rgba(42, 48, 68, 0.78);
+  --site-hero-overlay-end: rgba(21, 24, 34, 0.92);
+  --site-card-glow: rgba(184, 164, 212, 0.12);
+  --site-outline-hover-fill: rgba(196, 164, 132, 0.12);
+}
+
+/* Curated palette — Slate & Sky (Studio-selectable). */
+
+[data-site-theme="slate-sky"] {
+  --site-surface-page: #171b20;
+  --site-surface-page-mid: #1f252c;
+  --site-surface-page-soft: #2c343e;
+  --site-surface-nav: rgba(10, 12, 16, 0.9);
+  --site-surface-section: #171b20;
+  --site-surface-elevated: rgba(16, 20, 24, 0.9);
+  --site-surface-elevated-strong: rgba(8, 10, 14, 0.88);
+  --site-surface-elevated-solid: rgba(8, 10, 14, 0.92);
+  --site-surface-mobile-nav: rgba(8, 10, 14, 0.96);
+  --site-foreground: #e6ebf0;
+  --site-foreground-heading: #f5f8fb;
+  --site-foreground-muted: #9aabba;
+  --site-foreground-faint: #5c6a78;
+  --site-foreground-supporting: #a8b8c4;
+  --site-foreground-soft: #eef3f7;
+  --site-foreground-warm: #c4b4a4;
+  --site-accent: #8eb6d4;
+  --site-accent-strong: #6e98b8;
+  --site-accent-foreground: #171b20;
+  --site-accent-secondary: #b8a090;
+  --site-accent-glow: rgba(142, 182, 212, 0.34);
+  --site-accent-soft: #cde0ee;
+  --site-accent-muted: rgba(142, 182, 212, 0.22);
+  --site-border-subtle: rgba(142, 182, 212, 0.18);
+  --site-border-subtle-strong: #2c343e;
+  --site-border-muted: #3e4a56;
+  --site-border-mobile-nav: rgba(110, 152, 184, 0.35);
+  --site-border-hover: rgba(142, 182, 212, 0.45);
+  --site-border-organic: #4a5868;
+  --site-icon-surface: rgba(74, 88, 104, 0.45);
+  --site-interactive-hover: #8eb6d4;
+  --site-focus-ring: rgba(142, 182, 212, 0.55);
+  --site-hero-overlay-start: rgba(23, 27, 32, 0.9);
+  --site-hero-overlay-mid: rgba(44, 52, 62, 0.78);
+  --site-hero-overlay-end: rgba(23, 27, 32, 0.92);
+  --site-card-glow: rgba(142, 182, 212, 0.12);
+  --site-outline-hover-fill: rgba(184, 160, 144, 0.12);
+}
+
+/* Curated palette — Blue Willow (Studio-selectable). */
+
+[data-site-theme="blue-willow"] {
+  --site-surface-page: #121a24;
+  --site-surface-page-mid: #182230;
+  --site-surface-page-soft: #263448;
+  --site-surface-nav: rgba(8, 12, 18, 0.9);
+  --site-surface-section: #121a24;
+  --site-surface-elevated: rgba(12, 18, 28, 0.9);
+  --site-surface-elevated-strong: rgba(6, 10, 16, 0.88);
+  --site-surface-elevated-solid: rgba(6, 10, 16, 0.92);
+  --site-surface-mobile-nav: rgba(6, 10, 16, 0.96);
+  --site-foreground: #e6edf4;
+  --site-foreground-heading: #f5f9fc;
+  --site-foreground-muted: #9aadc0;
+  --site-foreground-faint: #5a6c80;
+  --site-foreground-supporting: #b8c4d4;
+  --site-foreground-soft: #eef4f9;
+  --site-foreground-warm: #c8b8a8;
+  --site-accent: #9bb4d4;
+  --site-accent-strong: #7a96b8;
+  --site-accent-foreground: #121a24;
+  --site-accent-secondary: #c4a890;
+  --site-accent-glow: rgba(155, 180, 212, 0.34);
+  --site-accent-soft: #d2e0f0;
+  --site-accent-muted: rgba(155, 180, 212, 0.22);
+  --site-border-subtle: rgba(155, 180, 212, 0.18);
+  --site-border-subtle-strong: #263448;
+  --site-border-muted: #3a4a5c;
+  --site-border-mobile-nav: rgba(122, 150, 184, 0.35);
+  --site-border-hover: rgba(155, 180, 212, 0.45);
+  --site-border-organic: #45586c;
+  --site-icon-surface: rgba(69, 88, 108, 0.45);
+  --site-interactive-hover: #9bb4d4;
+  --site-focus-ring: rgba(155, 180, 212, 0.55);
+  --site-hero-overlay-start: rgba(18, 26, 36, 0.9);
+  --site-hero-overlay-mid: rgba(38, 52, 72, 0.78);
+  --site-hero-overlay-end: rgba(18, 26, 36, 0.92);
+  --site-card-glow: rgba(155, 180, 212, 0.12);
+  --site-outline-hover-fill: rgba(196, 168, 144, 0.12);
+}
+
+/* Curated palette — Rosewood (Studio-selectable). */
+
+[data-site-theme="rosewood"] {
+  --site-surface-page: #1c1516;
+  --site-surface-page-mid: #261c1e;
+  --site-surface-page-soft: #382c2e;
+  --site-surface-nav: rgba(14, 10, 11, 0.9);
+  --site-surface-section: #1c1516;
+  --site-surface-elevated: rgba(22, 16, 18, 0.9);
+  --site-surface-elevated-strong: rgba(10, 8, 8, 0.88);
+  --site-surface-elevated-solid: rgba(10, 8, 8, 0.92);
+  --site-surface-mobile-nav: rgba(10, 8, 8, 0.96);
+  --site-foreground: #f0e8e6;
+  --site-foreground-heading: #fff8f6;
+  --site-foreground-muted: #b8a4a0;
+  --site-foreground-faint: #6e5c58;
+  --site-foreground-supporting: #c4a8a8;
+  --site-foreground-soft: #f7efed;
+  --site-foreground-warm: #d4c0b0;
+  --site-accent: #d4a090;
+  --site-accent-strong: #b88070;
+  --site-accent-foreground: #1c1516;
+  --site-accent-secondary: #c4a070;
+  --site-accent-glow: rgba(212, 160, 144, 0.34);
+  --site-accent-soft: #f0d4cc;
+  --site-accent-muted: rgba(212, 160, 144, 0.22);
+  --site-border-subtle: rgba(212, 160, 144, 0.18);
+  --site-border-subtle-strong: #382c2e;
+  --site-border-muted: #4a3c3c;
+  --site-border-mobile-nav: rgba(184, 128, 112, 0.35);
+  --site-border-hover: rgba(212, 160, 144, 0.45);
+  --site-border-organic: #5a4848;
+  --site-icon-surface: rgba(90, 72, 72, 0.45);
+  --site-interactive-hover: #d4a090;
+  --site-focus-ring: rgba(212, 160, 144, 0.55);
+  --site-hero-overlay-start: rgba(28, 21, 22, 0.9);
+  --site-hero-overlay-mid: rgba(56, 44, 46, 0.78);
+  --site-hero-overlay-end: rgba(28, 21, 22, 0.92);
+  --site-card-glow: rgba(212, 160, 144, 0.12);
+  --site-outline-hover-fill: rgba(196, 160, 112, 0.14);
+}
+
+/* Curated palette — Warm Terracotta (Studio-selectable). */
+
+[data-site-theme="warm-terracotta"] {
+  --site-surface-page: #1e1814;
+  --site-surface-page-mid: #28201a;
+  --site-surface-page-soft: #3a3028;
+  --site-surface-nav: rgba(14, 12, 10, 0.9);
+  --site-surface-section: #1e1814;
+  --site-surface-elevated: rgba(22, 18, 14, 0.9);
+  --site-surface-elevated-strong: rgba(12, 10, 8, 0.88);
+  --site-surface-elevated-solid: rgba(12, 10, 8, 0.92);
+  --site-surface-mobile-nav: rgba(12, 10, 8, 0.96);
+  --site-foreground: #f0e8e0;
+  --site-foreground-heading: #fffaf4;
+  --site-foreground-muted: #b8a898;
+  --site-foreground-faint: #6e6054;
+  --site-foreground-supporting: #c4b09a;
+  --site-foreground-soft: #f7efe6;
+  --site-foreground-warm: #d8c4a8;
+  --site-accent: #d4896a;
+  --site-accent-strong: #b86e52;
+  --site-accent-foreground: #1e1814;
+  --site-accent-secondary: #c4a070;
+  --site-accent-glow: rgba(212, 137, 106, 0.34);
+  --site-accent-soft: #f0c8b4;
+  --site-accent-muted: rgba(212, 137, 106, 0.22);
+  --site-border-subtle: rgba(212, 137, 106, 0.18);
+  --site-border-subtle-strong: #3a3028;
+  --site-border-muted: #4a4038;
+  --site-border-mobile-nav: rgba(184, 110, 82, 0.35);
+  --site-border-hover: rgba(212, 137, 106, 0.45);
+  --site-border-organic: #5a4c40;
+  --site-icon-surface: rgba(90, 76, 64, 0.45);
+  --site-interactive-hover: #d4896a;
+  --site-focus-ring: rgba(212, 137, 106, 0.55);
+  --site-hero-overlay-start: rgba(30, 24, 20, 0.9);
+  --site-hero-overlay-mid: rgba(58, 48, 40, 0.78);
+  --site-hero-overlay-end: rgba(30, 24, 20, 0.92);
+  --site-card-glow: rgba(212, 137, 106, 0.12);
+  --site-outline-hover-fill: rgba(196, 160, 112, 0.14);
+}
+
+/* Curated palette — Sandstone (Studio-selectable). */
+
+[data-site-theme="sandstone"] {
+  --site-surface-page: #1c1a16;
+  --site-surface-page-mid: #26231e;
+  --site-surface-page-soft: #38342c;
+  --site-surface-nav: rgba(12, 10, 8, 0.9);
+  --site-surface-section: #1c1a16;
+  --site-surface-elevated: rgba(20, 18, 14, 0.9);
+  --site-surface-elevated-strong: rgba(10, 8, 6, 0.88);
+  --site-surface-elevated-solid: rgba(10, 8, 6, 0.92);
+  --site-surface-mobile-nav: rgba(10, 8, 6, 0.96);
+  --site-foreground: #eee8de;
+  --site-foreground-heading: #faf6ee;
+  --site-foreground-muted: #b0a490;
+  --site-foreground-faint: #685c4e;
+  --site-foreground-supporting: #c4b8a4;
+  --site-foreground-soft: #f4eee4;
+  --site-foreground-warm: #d4c4a8;
+  --site-accent: #d3b58d;
+  --site-accent-strong: #b89868;
+  --site-accent-foreground: #1c1a16;
+  --site-accent-secondary: #c48b71;
+  --site-accent-glow: rgba(211, 181, 141, 0.34);
+  --site-accent-soft: #ead8b8;
+  --site-accent-muted: rgba(211, 181, 141, 0.22);
+  --site-border-subtle: rgba(211, 181, 141, 0.18);
+  --site-border-subtle-strong: #38342c;
+  --site-border-muted: #4a443c;
+  --site-border-mobile-nav: rgba(184, 152, 104, 0.35);
+  --site-border-hover: rgba(211, 181, 141, 0.45);
+  --site-border-organic: #5a5248;
+  --site-icon-surface: rgba(90, 82, 72, 0.45);
+  --site-interactive-hover: #d3b58d;
+  --site-focus-ring: rgba(211, 181, 141, 0.55);
+  --site-hero-overlay-start: rgba(28, 26, 22, 0.9);
+  --site-hero-overlay-mid: rgba(56, 52, 44, 0.78);
+  --site-hero-overlay-end: rgba(28, 26, 22, 0.92);
+  --site-card-glow: rgba(211, 181, 141, 0.12);
+  --site-outline-hover-fill: rgba(196, 139, 113, 0.14);
+}
+
+/* Curated palette — Coastal Mist (Studio-selectable). */
+
+[data-site-theme="coastal-mist"] {
+  --site-surface-page: #eef3f6;
+  --site-surface-page-mid: #e4ebf0;
+  --site-surface-page-soft: #d7e2e8;
+  --site-surface-nav: rgba(238, 243, 246, 0.92);
+  --site-surface-section: #eef3f6;
+  --site-surface-elevated: rgba(255, 255, 255, 0.88);
+  --site-surface-elevated-strong: rgba(255, 255, 255, 0.92);
+  --site-surface-elevated-solid: rgba(255, 255, 255, 0.96);
+  --site-surface-mobile-nav: rgba(238, 243, 246, 0.97);
+  --site-foreground: #1e3038;
+  --site-foreground-heading: #122028;
+  --site-foreground-muted: #4a6470;
+  --site-foreground-faint: #7a909a;
+  --site-foreground-supporting: #3d5c68;
+  --site-foreground-soft: #243840;
+  --site-foreground-warm: #5a4a3c;
+  --site-accent: #245c6e;
+  --site-accent-strong: #1a4a5a;
+  --site-accent-foreground: #f5fafc;
+  --site-accent-secondary: #6a7e5c;
+  --site-accent-glow: rgba(36, 92, 110, 0.28);
+  --site-accent-soft: #3d7a8c;
+  --site-accent-muted: rgba(36, 92, 110, 0.14);
+  --site-border-subtle: rgba(36, 92, 110, 0.16);
+  --site-border-subtle-strong: #c5d2da;
+  --site-border-muted: #9aadb8;
+  --site-border-mobile-nav: rgba(36, 92, 110, 0.28);
+  --site-border-hover: rgba(36, 92, 110, 0.4);
+  --site-border-organic: #5a7a88;
+  --site-icon-surface: rgba(90, 122, 136, 0.22);
+  --site-interactive-hover: #1a4a5a;
+  --site-focus-ring: rgba(36, 92, 110, 0.45);
+  --site-hero-overlay-start: rgba(238, 243, 246, 0.9);
+  --site-hero-overlay-mid: rgba(215, 226, 232, 0.86);
+  --site-hero-overlay-end: rgba(238, 243, 246, 0.92);
+  --site-card-glow: rgba(36, 92, 110, 0.1);
+  --site-outline-hover-fill: rgba(36, 92, 110, 0.1);
+}
+
+/* Curated palette — Lavender Meadow (Studio-selectable). */
+
+[data-site-theme="lavender-meadow"] {
+  --site-surface-page: #f5f2f8;
+  --site-surface-page-mid: #ebe6f0;
+  --site-surface-page-soft: #e0d8e8;
+  --site-surface-nav: rgba(245, 242, 248, 0.92);
+  --site-surface-section: #f5f2f8;
+  --site-surface-elevated: rgba(255, 255, 255, 0.88);
+  --site-surface-elevated-strong: rgba(255, 255, 255, 0.92);
+  --site-surface-elevated-solid: rgba(255, 255, 255, 0.96);
+  --site-surface-mobile-nav: rgba(245, 242, 248, 0.97);
+  --site-foreground: #2a2438;
+  --site-foreground-heading: #1a1428;
+  --site-foreground-muted: #5c546c;
+  --site-foreground-faint: #8a8098;
+  --site-foreground-supporting: #4a4060;
+  --site-foreground-soft: #322a42;
+  --site-foreground-warm: #5c4a3c;
+  --site-accent: #4a3d5c;
+  --site-accent-strong: #3a2e4c;
+  --site-accent-foreground: #f8f5fc;
+  --site-accent-secondary: #6a7e5c;
+  --site-accent-glow: rgba(74, 61, 92, 0.28);
+  --site-accent-soft: #6a5a7a;
+  --site-accent-muted: rgba(74, 61, 92, 0.14);
+  --site-border-subtle: rgba(74, 61, 92, 0.16);
+  --site-border-subtle-strong: #d4ccd8;
+  --site-border-muted: #a898b0;
+  --site-border-mobile-nav: rgba(74, 61, 92, 0.28);
+  --site-border-hover: rgba(74, 61, 92, 0.4);
+  --site-border-organic: #6a5a7a;
+  --site-icon-surface: rgba(106, 90, 122, 0.2);
+  --site-interactive-hover: #3a2e4c;
+  --site-focus-ring: rgba(74, 61, 92, 0.45);
+  --site-hero-overlay-start: rgba(245, 242, 248, 0.9);
+  --site-hero-overlay-mid: rgba(224, 216, 232, 0.86);
+  --site-hero-overlay-end: rgba(245, 242, 248, 0.92);
+  --site-card-glow: rgba(74, 61, 92, 0.1);
+  --site-outline-hover-fill: rgba(74, 61, 92, 0.1);
+}
+
+/* Curated palette — Botanical Cream (Studio-selectable). */
+
+[data-site-theme="botanical-cream"] {
+  --site-surface-page: #f4f1ea;
+  --site-surface-page-mid: #ebe6dc;
+  --site-surface-page-soft: #e0d8cc;
+  --site-surface-nav: rgba(244, 241, 234, 0.92);
+  --site-surface-section: #f4f1ea;
+  --site-surface-elevated: rgba(255, 255, 255, 0.88);
+  --site-surface-elevated-strong: rgba(255, 255, 255, 0.92);
+  --site-surface-elevated-solid: rgba(255, 255, 255, 0.96);
+  --site-surface-mobile-nav: rgba(244, 241, 234, 0.97);
+  --site-foreground: #243028;
+  --site-foreground-heading: #162018;
+  --site-foreground-muted: #5a6458;
+  --site-foreground-faint: #8a9084;
+  --site-foreground-supporting: #3a5044;
+  --site-foreground-soft: #2a3830;
+  --site-foreground-warm: #5c4c3c;
+  --site-accent: #2f4a3c;
+  --site-accent-strong: #243a30;
+  --site-accent-foreground: #f7f4ee;
+  --site-accent-secondary: #8a6a48;
+  --site-accent-glow: rgba(47, 74, 60, 0.28);
+  --site-accent-soft: #3d5c4c;
+  --site-accent-muted: rgba(47, 74, 60, 0.14);
+  --site-border-subtle: rgba(47, 74, 60, 0.16);
+  --site-border-subtle-strong: #d4ccc0;
+  --site-border-muted: #a8a090;
+  --site-border-mobile-nav: rgba(47, 74, 60, 0.28);
+  --site-border-hover: rgba(47, 74, 60, 0.4);
+  --site-border-organic: #5a7266;
+  --site-icon-surface: rgba(90, 114, 102, 0.2);
+  --site-interactive-hover: #243a30;
+  --site-focus-ring: rgba(47, 74, 60, 0.45);
+  --site-hero-overlay-start: rgba(244, 241, 234, 0.9);
+  --site-hero-overlay-mid: rgba(224, 216, 204, 0.86);
+  --site-hero-overlay-end: rgba(244, 241, 234, 0.92);
+  --site-card-glow: rgba(47, 74, 60, 0.1);
+  --site-outline-hover-fill: rgba(138, 106, 72, 0.12);
+}
+
+/* Curated palette — Misty Morning (Studio-selectable). */
+
+[data-site-theme="misty-morning"] {
+  --site-surface-page: #f2f4f1;
+  --site-surface-page-mid: #e6ebe6;
+  --site-surface-page-soft: #d8e0d8;
+  --site-surface-nav: rgba(242, 244, 241, 0.92);
+  --site-surface-section: #f2f4f1;
+  --site-surface-elevated: rgba(255, 255, 255, 0.88);
+  --site-surface-elevated-strong: rgba(255, 255, 255, 0.92);
+  --site-surface-elevated-solid: rgba(255, 255, 255, 0.96);
+  --site-surface-mobile-nav: rgba(242, 244, 241, 0.97);
+  --site-foreground: #243028;
+  --site-foreground-heading: #162018;
+  --site-foreground-muted: #566058;
+  --site-foreground-faint: #849088;
+  --site-foreground-supporting: #3a5048;
+  --site-foreground-soft: #2a3830;
+  --site-foreground-warm: #5c5040;
+  --site-accent: #3d5c52;
+  --site-accent-strong: #2e4a42;
+  --site-accent-foreground: #f5f8f6;
+  --site-accent-secondary: #8a6e4c;
+  --site-accent-glow: rgba(61, 92, 82, 0.28);
+  --site-accent-soft: #4a6e62;
+  --site-accent-muted: rgba(61, 92, 82, 0.14);
+  --site-border-subtle: rgba(61, 92, 82, 0.16);
+  --site-border-subtle-strong: #c8d0c8;
+  --site-border-muted: #9aa49c;
+  --site-border-mobile-nav: rgba(61, 92, 82, 0.28);
+  --site-border-hover: rgba(61, 92, 82, 0.4);
+  --site-border-organic: #5a7266;
+  --site-icon-surface: rgba(90, 114, 102, 0.2);
+  --site-interactive-hover: #2e4a42;
+  --site-focus-ring: rgba(61, 92, 82, 0.45);
+  --site-hero-overlay-start: rgba(242, 244, 241, 0.9);
+  --site-hero-overlay-mid: rgba(216, 224, 216, 0.86);
+  --site-hero-overlay-end: rgba(242, 244, 241, 0.92);
+  --site-card-glow: rgba(61, 92, 82, 0.1);
+  --site-outline-hover-fill: rgba(138, 110, 76, 0.12);
 }
 
 /* Typography families — scoped under public SiteTheme only. */

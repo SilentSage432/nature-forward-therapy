@@ -4,6 +4,12 @@ import type {
   SiteHeadingScaleId,
   SiteThemePresetId,
 } from "@/lib/site-design/schema";
+import {
+  SITE_PALETTE_DEFINITIONS,
+  SITE_PALETTE_GROUP_LABELS,
+  SITE_PALETTE_GROUPS,
+  type SitePaletteGroupId,
+} from "@/lib/site-design/palette-registry";
 
 export type CuratedOption<T extends string> = {
   id: T;
@@ -11,24 +17,37 @@ export type CuratedOption<T extends string> = {
   description: string;
 };
 
-/** Nicole-facing color palette choices (no CSS jargon). */
-export const THEME_PALETTE_OPTIONS: CuratedOption<SiteThemePresetId>[] = [
-  {
-    id: "forest-gold",
-    label: "Forest & Gold",
-    description: "The current deep forest look with warm gold accents.",
-  },
-  {
-    id: "dusk-sage",
-    label: "Dusk & Sage",
-    description: "Cooler evening greens with soft sage highlights.",
-  },
-  {
-    id: "clay-sand",
-    label: "Clay & Sand",
-    description: "Warmer earth tones with clay accents on deep green.",
-  },
-];
+export type ThemePaletteOption = CuratedOption<SiteThemePresetId> & {
+  group: SitePaletteGroupId;
+  mode: "dark" | "light";
+  swatches: readonly [string, string, string];
+};
+
+/** Nicole-facing color palette choices derived from the palette registry. */
+export const THEME_PALETTE_OPTIONS: ThemePaletteOption[] =
+  SITE_PALETTE_DEFINITIONS.map((palette) => ({
+    id: palette.id,
+    label: palette.label,
+    description: palette.description,
+    group: palette.group,
+    mode: palette.mode,
+    swatches: palette.swatches,
+  }));
+
+export type ThemePaletteGroup = {
+  id: SitePaletteGroupId;
+  label: string;
+  options: ThemePaletteOption[];
+};
+
+/** Gallery groups for the Studio Colors panel. */
+export const THEME_PALETTE_GROUPS: ThemePaletteGroup[] = SITE_PALETTE_GROUPS.map(
+  (groupId) => ({
+    id: groupId,
+    label: SITE_PALETTE_GROUP_LABELS[groupId],
+    options: THEME_PALETTE_OPTIONS.filter((option) => option.group === groupId),
+  }),
+).filter((group) => group.options.length > 0);
 
 export const FONT_FAMILY_OPTIONS: CuratedOption<SiteFontFamilyId>[] = [
   {

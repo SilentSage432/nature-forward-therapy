@@ -24,8 +24,33 @@ export {
   SITE_PALETTE_TOKENS,
   SITE_FONT_STACKS,
   resolvePaletteTokens,
+  resolveFullPaletteTokens,
   resolveFontStack,
 } from "@/lib/site-design/visual-tokens";
+export {
+  SITE_PALETTE_DEFINITIONS,
+  SITE_PALETTE_GROUPS,
+  SITE_PALETTE_GROUP_LABELS,
+  resolvePaletteCssTokens,
+  isSiteThemePresetId,
+  type SitePaletteCssTokens,
+  type SitePaletteDefinition,
+} from "@/lib/site-design/palette-registry";
+export {
+  contrastRatio,
+  contrastRatioForCssColors,
+  evaluateContrastPair,
+  parseCssColor,
+  relativeLuminance,
+  CONTRAST_THRESHOLDS,
+} from "@/lib/site-design/contrast";
+export {
+  REQUIRED_PALETTE_CONTRAST_PAIRS,
+  EXCLUDED_PALETTE_CONTRAST_NOTES,
+  evaluatePaletteContrast,
+  evaluateAllPaletteContrasts,
+  assertAllPalettesMeetContrastContract,
+} from "@/lib/site-design/palette-contrast-contract";
 export {
   getPublishedPresentationConfig,
 } from "@/lib/site-design/published";

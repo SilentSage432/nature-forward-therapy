@@ -1,3 +1,4 @@
+import { themeDisplayLabel } from "@/lib/site-design/options";
 import type { SiteDesign } from "@/lib/site-design/schema";
 import type {
   SiteDesignWorkspace,
@@ -48,9 +49,7 @@ export function designsEqual(
 }
 
 export function themeDisplayName(presetId: string | undefined | null): string {
-  if (presetId === "dusk-sage") return "Dusk & Sage";
-  if (presetId === "clay-sand") return "Clay & Sand";
-  return "Forest & Gold";
+  return themeDisplayLabel(presetId ?? "forest-gold");
 }
 
 export function formatStudioTimestamp(iso: string | null | undefined): string | null {

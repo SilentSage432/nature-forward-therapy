@@ -1,6 +1,9 @@
 import { cloneCanonicalSiteDesign } from "@/lib/site-design/defaults";
 import type { SiteDesign } from "@/lib/site-design/schema";
-import type { SiteThemePresetId } from "@/lib/site-design/schema";
+import {
+  SITE_THEME_PRESET_IDS,
+  type SiteThemePresetId,
+} from "@/lib/site-design/schema";
 import type { PublishedPresentationConfig } from "@/lib/site-design/resolve-published";
 
 /**
@@ -42,7 +45,5 @@ export function canonicalPresentationConfig(
 export function isKnownThemePreset(
   value: string,
 ): value is SiteThemePresetId {
-  return (
-    value === "forest-gold" || value === "dusk-sage" || value === "clay-sand"
-  );
+  return (SITE_THEME_PRESET_IDS as readonly string[]).includes(value);
 }

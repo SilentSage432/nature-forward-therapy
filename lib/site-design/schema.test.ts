@@ -8,6 +8,7 @@ import {
   parseSiteDesign,
   parseSiteDesignJson,
   SITE_DESIGN_SCHEMA_VERSION,
+  SITE_THEME_PRESET_IDS,
 } from "@/lib/site-design/schema";
 import { resolvePublishedPresentationFromRow } from "@/lib/site-design/resolve-published";
 
@@ -66,7 +67,8 @@ describe("SiteDesign validation", () => {
   });
 
   it("accepts curated alternate themes", () => {
-    for (const presetId of ["dusk-sage", "clay-sand"] as const) {
+    for (const presetId of SITE_THEME_PRESET_IDS) {
+      if (presetId === "forest-gold") continue;
       const result = parseSiteDesign({
         ...CANONICAL_SITE_DESIGN,
         theme: { presetId },

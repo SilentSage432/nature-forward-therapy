@@ -18,9 +18,10 @@ import {
 
 describe("curated design options", () => {
   it("exposes only safe palette and typography catalogs", () => {
-    assert.deepEqual(
-      THEME_PALETTE_OPTIONS.map((o) => o.id),
-      ["forest-gold", "dusk-sage", "clay-sand"],
+    assert.ok(THEME_PALETTE_OPTIONS.length >= 12);
+    assert.equal(THEME_PALETTE_OPTIONS[0]?.id, "forest-gold");
+    assert.ok(
+      THEME_PALETTE_OPTIONS.every((o) => typeof o.id === "string" && o.label),
     );
     assert.deepEqual(
       FONT_FAMILY_OPTIONS.map((o) => o.id),
