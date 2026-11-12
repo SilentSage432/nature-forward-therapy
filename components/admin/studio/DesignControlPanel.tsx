@@ -15,6 +15,24 @@ import {
   type ThemePaletteOption,
 } from "@/lib/site-design/options";
 
+/**
+ * Palette gallery layout contract (NFT-STUDIO-007A-UX01).
+ *
+ * Cards use a stacked composition so swatches never share a horizontal track
+ * with the title. Column count is container-driven (not viewport-driven): the
+ * Studio control panel is often ~280–360px beside the preview at xl, where
+ * viewport `sm:grid-cols-2` previously forced two undersized columns.
+ */
+export const PALETTE_GALLERY_LAYOUT = {
+  /** Container query: two columns only when the gallery itself is wide enough. */
+  gridClassName: "grid grid-cols-1 gap-2 @[26rem]:grid-cols-2",
+  /** Outer panel establishes the query container. */
+  containerClassName: "@container min-w-0",
+  cardClassName:
+    "flex min-h-[44px] min-w-0 cursor-pointer flex-col gap-2 rounded-xl border px-3 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-gold",
+  swatchSizeClassName: "h-6 w-6 shrink-0 rounded-full border border-white/15 shadow-sm",
+} as const;
+
 type DesignControlPanelProps = {
   design: SiteDesign;
   disabled?: boolean;
@@ -95,12 +113,17 @@ function PaletteSwatches({
   label: string;
 }) {
   return (
-    <span className="flex shrink-0 gap-1" aria-hidden="true">
+    <span
+      className="flex flex-wrap gap-1.5"
+      aria-hidden="true"
+      data-palette-swatches=""
+    >
       {swatches.map((color, index) => (
         <span
           key={`${label}-${index}`}
-          className="h-7 w-7 rounded-full border border-white/15 shadow-sm"
+          className={PALETTE_GALLERY_LAYOUT.swatchSizeClassName}
           style={{ backgroundColor: color }}
+          data-palette-swatch=""
         />
       ))}
     </span>
@@ -117,7 +140,11 @@ function PaletteGallery({
   onChange: (id: SiteThemePresetId) => void;
 }) {
   return (
-    <fieldset className="space-y-4" disabled={disabled}>
+    <fieldset
+      className={`space-y-4 ${PALETTE_GALLERY_LAYOUT.containerClassName}`}
+      disabled={disabled}
+      data-palette-gallery=""
+    >
       <legend className="font-heading text-lg font-semibold text-white">
         Colors
       </legend>
@@ -128,14 +155,15 @@ function PaletteGallery({
 
       <div className="space-y-5">
         {THEME_PALETTE_GROUPS.map((group) => (
-          <div key={group.id} className="space-y-2">
+          <div key={group.id} className="space-y-2" data-palette-group={group.id}>
             <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-gold/80">
               {group.label}
             </h3>
             <div
               role="radiogroup"
               aria-label={`${group.label} color palettes`}
-              className="grid gap-2 sm:grid-cols-2"
+              className={PALETTE_GALLERY_LAYOUT.gridClassName}
+              data-palette-grid=""
             >
               {group.options.map((option) => {
                 const selected = option.id === value;
@@ -144,40 +172,46 @@ function PaletteGallery({
                   <label
                     key={option.id}
                     htmlFor={inputId}
-                    className={`flex min-h-[44px] cursor-pointer items-start gap-3 rounded-xl border px-3 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-gold ${
+                    data-palette-card={option.id}
+                    data-palette-selected={selected ? "true" : "false"}
+                    className={`${PALETTE_GALLERY_LAYOUT.cardClassName} ${
                       selected
                         ? "border-gold/50 bg-forest-soft text-gold ring-1 ring-gold/30"
                         : "border-sage-dark/30 text-sage-light hover:border-gold/30 hover:text-gold"
                     } ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
                   >
-                    <input
-                      id={inputId}
-                      type="radio"
-                      name="theme-palette"
-                      value={option.id}
-                      checked={selected}
-                      disabled={disabled}
-                      onChange={() => onChange(option.id)}
-                      className="mt-1 h-4 w-4 accent-gold"
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-start justify-between gap-2">
-                        <span className="block text-sm font-semibold text-white">
-                          {option.label}
+                    <span className="flex min-w-0 items-start gap-3">
+                      <input
+                        id={inputId}
+                        type="radio"
+                        name="theme-palette"
+                        value={option.id}
+                        checked={selected}
+                        disabled={disabled}
+                        onChange={() => onChange(option.id)}
+                        className="mt-1 h-4 w-4 shrink-0 accent-gold"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                          <span className="text-sm font-semibold text-white">
+                            {option.label}
+                          </span>
                           {option.id === "forest-gold" ? (
-                            <span className="ml-2 text-[10px] font-medium uppercase tracking-wide text-gold/70">
+                            <span className="text-[10px] font-medium uppercase tracking-wide text-gold/70">
                               Default
                             </span>
                           ) : null}
                         </span>
-                        <PaletteSwatches
-                          swatches={option.swatches}
-                          label={option.label}
-                        />
                       </span>
-                      <span className="mt-1 block text-xs text-sage-light">
-                        {option.description}
-                      </span>
+                    </span>
+
+                    <PaletteSwatches
+                      swatches={option.swatches}
+                      label={option.label}
+                    />
+
+                    <span className="block text-xs leading-relaxed text-sage-light">
+                      {option.description}
                     </span>
                   </label>
                 );
@@ -199,7 +233,7 @@ export function DesignControlPanel({
   onBodyScaleChange,
 }: DesignControlPanelProps) {
   return (
-    <div className="space-y-8 rounded-2xl border border-sage-dark/30 bg-forest-soft/70 p-5 sm:p-6">
+    <div className="min-w-0 space-y-8 rounded-2xl border border-sage-dark/30 bg-forest-soft/70 p-5 sm:p-6">
       <PaletteGallery
         value={design.theme.presetId}
         disabled={disabled}

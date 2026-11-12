@@ -13,7 +13,9 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-006F (production):** Visual fidelity released — homepage presentation uses live semantic `--site-*` helpers under `SiteTheme`; typography inheritance fixed; Modern/Classic/Editorial stacks distinguishable via loaded Next fonts only. Public published design remains forest-gold canonical until a later authorized publish tranche.
 
-**NFT-STUDIO-007A (production):** Expanded curated palette library (15 palettes) + deterministic contrast foundation released code-only. Source of truth: `lib/site-design/palette-registry.ts`. Contrast: `lib/site-design/contrast.ts` + `palette-contrast-contract.ts`. Studio Colors gallery grouped with swatches. Public published appearance still forest-gold until an authorized publish tranche. No production design Save/Publish during release. Custom color pickers / saved palette tables deferred. Operator Studio gallery smoke deferred.
+**NFT-STUDIO-007A (production):** Expanded curated palette library (15 palettes) + deterministic contrast foundation released code-only. Source of truth: `lib/site-design/palette-registry.ts`. Contrast: `lib/site-design/contrast.ts` + `palette-contrast-contract.ts`. Studio Colors gallery grouped with swatches. Public published appearance still forest-gold until an authorized publish tranche. No production design Save/Publish during release. Custom color pickers / saved palette tables deferred.
+
+**NFT-STUDIO-007A-UX01 (production hotfix):** Palette gallery alignment repair — stacked card composition + container-query columns (`@container` / `@[26rem]:grid-cols-2`) replacing viewport `sm:grid-cols-2`. Fixes swatch overflow/overlap in the narrow Design panel. Code-only release; no design Save/Publish. Operator production Studio visual confirmation deferred.
 
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)

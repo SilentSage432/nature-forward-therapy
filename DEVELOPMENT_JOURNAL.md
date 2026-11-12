@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-12 — Palette gallery alignment production hotfix (NFT-STUDIO-007A-UX01)
+
+Authorized gated code-only production hotfix for Studio Colors gallery overflow. Ships stacked palette cards + `@container` / `@[26rem]:grid-cols-2` (replacing viewport `sm:grid-cols-2`). Preflight: Supabase `dbqprchzgfhthpxngemy` SiteDesign `default` draft/published revision 0, versions 0; recovery checkpoint checksum verified. Quality gates: 110 site-design tests, typecheck, build, targeted eslint, isolated geometry acceptance (panel 280–640; viewports 390/768/1280/1536). No palette/token/contrast/schema changes; no Save Draft/Publish; no production DB writes. Authenticated production Studio visual confirmation deferred to operator.
+
+## 2026-11-12 — Palette gallery responsive layout repair (NFT-STUDIO-007A-UX01)
+
+Local presentation-layer repair for Website Studio Colors gallery overflow. Root cause: viewport `sm:grid-cols-2` forced two columns inside the ~280–360px Design control column at xl, while title and `shrink-0` 28px swatches shared one horizontal flex row — swatches escaped cards and overlapped neighbors. Fix: stacked card composition (radio+title → swatch row → description) and `@container` / `@[26rem]:grid-cols-2` so two columns appear only when the gallery container itself is wide enough. Geometry acceptance VERIFIED at panel widths 280/320/360/420/520/640 and viewports 390/768/1280/1536 (1280 stays 1-col ≈310px). Preview selection, keyboard, dirty-nav intact. Quality gates: 110 site-design tests, typecheck, build, targeted eslint. No palette/token/contrast/schema changes; no commit/push/deploy; no production writes.
+
 ## 2026-11-12 — Expanded curated palette library production release (NFT-STUDIO-007A)
 
 Authorized gated code-only production release of NFT-STUDIO-007A. Ships 15 curated palettes, authoritative registry, deterministic contrast contract, grouped Studio gallery, and static CSS scopes. Preflight: production Supabase `dbqprchzgfhthpxngemy` / PG 17.6 SiteDesign singleton `default` draft/published revision 0, versions 0; carpet/store tables intact. Recovery checkpoint checksum verified. Quality gates: 105 site-design tests, typecheck, build, targeted eslint, CSS generator idempotency + marker safety, isolated browser/a11y acceptance on `nft_studio_007a_44117`. No production Save Draft/Publish, migrations, or DB writes during release. Public site remains forest-gold canonical until a later authorized publish tranche. Authenticated production Studio gallery smoke deferred to operator.

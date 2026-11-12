@@ -44,8 +44,10 @@
 - [x] NFT-STUDIO-006E Preview handshake production hotfix — **authorized gated code-only release**
 - [x] NFT-STUDIO-006F Visual design fidelity — **authorized gated production release (code-only; published design unchanged)**
 - [x] NFT-STUDIO-007A Expanded curated palette library & contrast foundation — **authorized gated production release (code-only; published design unchanged)**
+- [x] NFT-STUDIO-007A-UX01 Palette gallery responsive layout repair — **authorized gated production hotfix (code-only)**
 
 ## Near-term
+- [ ] Operator authenticated production Studio visual confirmation of UX01 gallery layout (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 007A palette gallery (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 006F fidelity (no Save Draft / Publish)
 - [ ] NFT-STUDIO-007B+ design publish / review gates (separate authorization)

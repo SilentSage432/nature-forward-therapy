@@ -243,15 +243,17 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
           </div>
         ) : null}
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(280px,360px)_minmax(0,1fr)]">
-          <DesignControlPanel
-            design={draft}
-            disabled={pending}
-            onThemeChange={onThemeChange}
-            onFontFamilyChange={onFontFamilyChange}
-            onHeadingScaleChange={onHeadingScaleChange}
-            onBodyScaleChange={onBodyScaleChange}
-          />
+        <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(280px,360px)_minmax(0,1fr)]">
+          <div className="min-w-0">
+            <DesignControlPanel
+              design={draft}
+              disabled={pending}
+              onThemeChange={onThemeChange}
+              onFontFamilyChange={onFontFamilyChange}
+              onHeadingScaleChange={onHeadingScaleChange}
+              onBodyScaleChange={onBodyScaleChange}
+            />
+          </div>
           <DesignPreviewPane
             design={draft}
             mode={previewMode}
