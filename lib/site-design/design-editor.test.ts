@@ -23,8 +23,11 @@ describe("curated design options", () => {
     assert.ok(
       THEME_PALETTE_OPTIONS.every((o) => typeof o.id === "string" && o.label),
     );
+    assert.ok(FONT_FAMILY_OPTIONS.length >= 8);
+    assert.ok(FONT_FAMILY_OPTIONS.length <= 12);
+    assert.equal(FONT_FAMILY_OPTIONS[0]?.id, "classic");
     assert.deepEqual(
-      FONT_FAMILY_OPTIONS.map((o) => o.id),
+      FONT_FAMILY_OPTIONS.slice(0, 3).map((o) => o.id),
       ["classic", "editorial", "modern"],
     );
     assert.deepEqual(

@@ -3,6 +3,10 @@ import {
   SITE_THEME_PRESET_IDS as REGISTRY_THEME_PRESET_IDS,
   type SiteThemePresetId,
 } from "@/lib/site-design/palette-registry";
+import {
+  SITE_FONT_FAMILY_IDS as REGISTRY_FONT_FAMILY_IDS,
+  type SiteFontFamilyId as RegistrySiteFontFamilyId,
+} from "@/lib/site-design/typography-registry";
 
 /**
  * SiteDesign V1 — presentation configuration only.
@@ -11,8 +15,9 @@ import {
  * booking URLs) remains owned by existing CMS models. Media binaries remain
  * outside this contract until Media Library lands.
  *
- * NFT-STUDIO-007A expands curated theme enums from the palette registry only.
- * No arbitrary CSS, font URLs, or freeform color values are accepted.
+ * NFT-STUDIO-007A expands curated theme enums from the palette registry.
+ * NFT-STUDIO-007B expands curated fontFamilyId enums from the typography
+ * registry. No arbitrary CSS, font URLs, or freeform color values are accepted.
  * schemaVersion remains 1 — curated enum members do not require a bump.
  */
 
@@ -27,11 +32,8 @@ export const SITE_THEME_PRESET_IDS = REGISTRY_THEME_PRESET_IDS;
  */
 export const SITE_TYPOGRAPHY_PRESET_IDS = ["classic"] as const;
 
-export const SITE_FONT_FAMILY_IDS = [
-  "classic",
-  "editorial",
-  "modern",
-] as const;
+/** Curated typography pairings applied via [data-site-font]. Owned by typography-registry. */
+export const SITE_FONT_FAMILY_IDS = REGISTRY_FONT_FAMILY_IDS;
 
 export const SITE_HEADING_SCALE_IDS = [
   "comfortable",
@@ -66,7 +68,7 @@ export const SITE_MEDIA_SLOT_IDS = [
 export type { SiteThemePresetId };
 export type SiteTypographyPresetId =
   (typeof SITE_TYPOGRAPHY_PRESET_IDS)[number];
-export type SiteFontFamilyId = (typeof SITE_FONT_FAMILY_IDS)[number];
+export type SiteFontFamilyId = RegistrySiteFontFamilyId;
 export type SiteHeadingScaleId = (typeof SITE_HEADING_SCALE_IDS)[number];
 export type SiteBodyScaleId = (typeof SITE_BODY_SCALE_IDS)[number];
 export type SiteHeroLayoutId = (typeof SITE_HERO_LAYOUT_IDS)[number];

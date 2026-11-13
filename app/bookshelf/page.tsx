@@ -1,6 +1,7 @@
 import { BookshelfCatalog } from "@/components/bookshelf/BookshelfCatalog";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { PublicFontScope } from "@/components/site/PublicFontScope";
 import { SiteTheme } from "@/components/site/SiteTheme";
 import { getActiveAnnouncement } from "@/lib/articles";
 import { getPublishedBookshelfItems } from "@/lib/bookshelf";
@@ -24,6 +25,7 @@ export default async function BookshelfPage() {
   ]);
 
   return (
+    <PublicFontScope>
     <SiteTheme>
       <Navbar banner={banner} />
       <main className="px-5 pt-28 pb-16 sm:px-6">
@@ -45,5 +47,6 @@ export default async function BookshelfPage() {
       </main>
       <Footer profile={content.profile} />
     </SiteTheme>
+    </PublicFontScope>
   );
 }

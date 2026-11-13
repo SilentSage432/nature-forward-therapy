@@ -1,34 +1,19 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Montserrat } from "next/font/google";
 import { DeveloperMaintenanceBanner } from "@/components/DeveloperMaintenanceBanner";
 import { getSiteContent } from "@/lib/content";
+import { ROOT_CHROME_FONT_VARIABLE_CLASSNAME } from "@/lib/site-design/site-font-chrome";
 import "./globals.css";
 
 /** ISR window for public HTML (must be a static literal for Next.js). */
 export const revalidate = 60;
 
-const inter = Inter({
-  subsets: ["latin"],
-  // 700 required for Modern preset headings (font-bold) without synthesis.
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
+/*
+ * NFT-STUDIO-007B-PERF02 font delivery (root):
+ * Attach only admin/public chrome faces here (Inter, Montserrat, Cormorant).
+ * Published pairing supplements are applied in PublicFontScope; the full
+ * curated library is attached in the Studio layout (incl. preview-frame).
+ * Root avoids headers()/pathname branching so public ISR is preserved.
+ */
 
 const SITE_URL = process.env.NEXTAUTH_URL ?? "https://flockoffox.org";
 
@@ -78,7 +63,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${montserrat.variable} ${cormorant.variable} scroll-smooth antialiased`}
+      className={`${ROOT_CHROME_FONT_VARIABLE_CLASSNAME} scroll-smooth antialiased`}
+      data-font-delivery="chrome"
     >
       <body className="min-h-screen font-body">
         <DeveloperMaintenanceBanner />

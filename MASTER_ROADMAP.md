@@ -45,12 +45,18 @@
 - [x] NFT-STUDIO-006F Visual design fidelity — **authorized gated production release (code-only; published design unchanged)**
 - [x] NFT-STUDIO-007A Expanded curated palette library & contrast foundation — **authorized gated production release (code-only; published design unchanged)**
 - [x] NFT-STUDIO-007A-UX01 Palette gallery responsive layout repair — **authorized gated production hotfix (code-only)**
+- [x] NFT-STUDIO-007B Expanded typography library & curated font pairings — **local VERIFIED**
+- [x] NFT-STUDIO-007B-PERF02 Public/Studio font delivery separation — **local VERIFIED (Classic public 4/~159KB)**
+- [x] NFT-STUDIO-007B-REL01 Combined typography + font-delivery production release — **authorized gated release (code-only; published design unchanged)**
 
 ## Near-term
+- [ ] Operator authenticated production Studio visual confirmation of 007B typography gallery (no Save Draft / Publish)
+- [ ] NFT-STUDIO-007C (next planned Studio tranche — scope TBD with operator)
 - [ ] Operator authenticated production Studio visual confirmation of UX01 gallery layout (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 007A palette gallery (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 006F fidelity (no Save Draft / Publish)
-- [ ] NFT-STUDIO-007B+ design publish / review gates (separate authorization)
+- [ ] NFT-STUDIO design publish / review gates (separate authorization)
+- [ ] Deferred: further Studio-only font chunk isolation if shared next/font CSS cost matters
 - [ ] Media Library + Vercel Blob optimized variants (NFT-STUDIO-002 Tranche 3)
 - [ ] Deferred: custom-color architecture / saved palette tables (not in 007A)
 - [ ] Deferred: border/focus/hero-over-image accessibility measurement tranche

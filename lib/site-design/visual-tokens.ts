@@ -11,6 +11,12 @@ import {
   type SitePaletteCssTokens,
   type SiteThemePresetId,
 } from "@/lib/site-design/palette-registry";
+import {
+  SITE_FONT_FAMILY_IDS,
+  resolveTypographyStack,
+  type SiteFontCssVar,
+  type SiteFontKind,
+} from "@/lib/site-design/typography-registry";
 
 /**
  * Deterministic curated visual token tables for SiteDesign presentation.
@@ -99,38 +105,41 @@ export const SITE_PALETTE_TOKENS: Record<SiteThemePresetId, SitePaletteTokens> =
   ) as Record<SiteThemePresetId, SitePaletteTokens>;
 
 /**
- * Loaded Next.js font CSS variables only.
- * Classic keeps Montserrat headings; Modern uses Inter for both so presets
- * are distinguishable without new font assets.
+ * Loaded Next.js font CSS variables only — derived from typography-registry.
+ * Classic keeps Montserrat headings; Modern uses Inter for both so historical
+ * presets remain distinguishable. Additional curated pairings share body faces
+ * where possible to bound download cost.
  */
 export const SITE_FONT_STACKS: Record<
   SiteFontFamilyId,
   {
-    headingVar: "--font-montserrat" | "--font-inter" | "--font-cormorant";
-    bodyVar: "--font-montserrat" | "--font-inter" | "--font-cormorant";
-    headingKind: "sans" | "serif";
-    bodyKind: "sans";
+    headingVar: SiteFontCssVar;
+    bodyVar: SiteFontCssVar;
+    headingKind: SiteFontKind;
+    bodyKind: SiteFontKind;
   }
-> = {
-  classic: {
-    headingVar: "--font-montserrat",
-    bodyVar: "--font-inter",
-    headingKind: "sans",
-    bodyKind: "sans",
-  },
-  editorial: {
-    headingVar: "--font-cormorant",
-    bodyVar: "--font-inter",
-    headingKind: "serif",
-    bodyKind: "sans",
-  },
-  modern: {
-    headingVar: "--font-inter",
-    bodyVar: "--font-inter",
-    headingKind: "sans",
-    bodyKind: "sans",
-  },
-};
+> = Object.fromEntries(
+  SITE_FONT_FAMILY_IDS.map((id) => {
+    const stack = resolveTypographyStack(id);
+    return [
+      id,
+      {
+        headingVar: stack.headingVar,
+        bodyVar: stack.bodyVar,
+        headingKind: stack.headingKind,
+        bodyKind: stack.bodyKind,
+      },
+    ];
+  }),
+) as Record<
+  SiteFontFamilyId,
+  {
+    headingVar: SiteFontCssVar;
+    bodyVar: SiteFontCssVar;
+    headingKind: SiteFontKind;
+    bodyKind: SiteFontKind;
+  }
+>;
 
 export const SITE_HEADING_SCALE_TOKENS: Record<
   SiteHeadingScaleId,

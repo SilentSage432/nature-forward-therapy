@@ -6,6 +6,7 @@ import { ArticleBody } from "@/components/articles/ArticleBody";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { PublicFontScope } from "@/components/site/PublicFontScope";
 import { SiteTheme } from "@/components/site/SiteTheme";
 import {
   estimateReadMinutes,
@@ -66,6 +67,7 @@ export default async function ArticleReadingPage({ params }: ArticlePageProps) {
   const shareUrl = `${SITE_URL}/articles/${article.slug}`;
 
   return (
+    <PublicFontScope>
     <SiteTheme>
       <Navbar banner={banner} />
       <main className="px-5 pt-28 pb-20 sm:px-6">
@@ -148,5 +150,6 @@ export default async function ArticleReadingPage({ params }: ArticlePageProps) {
       </main>
       <Footer profile={content.profile} />
     </SiteTheme>
+    </PublicFontScope>
   );
 }

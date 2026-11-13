@@ -10,6 +10,13 @@ import {
   SITE_PALETTE_GROUPS,
   type SitePaletteGroupId,
 } from "@/lib/site-design/palette-registry";
+import {
+  SITE_FONT_FACE_BY_ID,
+  SITE_TYPOGRAPHY_GROUP_LABELS,
+  SITE_TYPOGRAPHY_GROUPS,
+  SITE_TYPOGRAPHY_PAIRINGS,
+  type SiteTypographyGroupId,
+} from "@/lib/site-design/typography-registry";
 
 export type CuratedOption<T extends string> = {
   id: T;
@@ -49,23 +56,50 @@ export const THEME_PALETTE_GROUPS: ThemePaletteGroup[] = SITE_PALETTE_GROUPS.map
   }),
 ).filter((group) => group.options.length > 0);
 
-export const FONT_FAMILY_OPTIONS: CuratedOption<SiteFontFamilyId>[] = [
-  {
-    id: "classic",
-    label: "Classic",
-    description: "Clear headings with a calm, readable body.",
-  },
-  {
-    id: "editorial",
-    label: "Editorial",
-    description: "Softer serif headings for a more literary feel.",
-  },
-  {
-    id: "modern",
-    label: "Modern",
-    description: "Clean sans-serif throughout for a contemporary look.",
-  },
-];
+export type FontFamilyOption = CuratedOption<SiteFontFamilyId> & {
+  group: SiteTypographyGroupId;
+  headingCssVar: string;
+  bodyCssVar: string;
+  sampleHeading: string;
+  sampleBody: string;
+  headingLetterSpacingEm?: number;
+};
+
+/** Nicole-facing typography pairings derived from the typography registry. */
+export const FONT_FAMILY_OPTIONS: FontFamilyOption[] =
+  SITE_TYPOGRAPHY_PAIRINGS.map((pairing) => {
+    const def = pairing as (typeof SITE_TYPOGRAPHY_PAIRINGS)[number] & {
+      headingLetterSpacingEm?: number;
+    };
+    const heading = SITE_FONT_FACE_BY_ID[def.headingFaceId];
+    const body = SITE_FONT_FACE_BY_ID[def.bodyFaceId];
+    return {
+      id: def.id,
+      label: def.label,
+      description: def.description,
+      group: def.group,
+      headingCssVar: heading.cssVar,
+      bodyCssVar: body.cssVar,
+      sampleHeading: def.sampleHeading,
+      sampleBody: def.sampleBody,
+      headingLetterSpacingEm: def.headingLetterSpacingEm,
+    };
+  });
+
+export type FontFamilyGroup = {
+  id: SiteTypographyGroupId;
+  label: string;
+  options: FontFamilyOption[];
+};
+
+/** Gallery groups for the Studio Typography panel. */
+export const FONT_FAMILY_GROUPS: FontFamilyGroup[] = SITE_TYPOGRAPHY_GROUPS.map(
+  (groupId) => ({
+    id: groupId,
+    label: SITE_TYPOGRAPHY_GROUP_LABELS[groupId],
+    options: FONT_FAMILY_OPTIONS.filter((option) => option.group === groupId),
+  }),
+).filter((group) => group.options.length > 0);
 
 export const HEADING_SCALE_OPTIONS: CuratedOption<SiteHeadingScaleId>[] = [
   {

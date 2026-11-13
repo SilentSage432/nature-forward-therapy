@@ -9,9 +9,10 @@ import type {
 } from "@/lib/site-design/schema";
 import {
   BODY_SCALE_OPTIONS,
-  FONT_FAMILY_OPTIONS,
+  FONT_FAMILY_GROUPS,
   HEADING_SCALE_OPTIONS,
   THEME_PALETTE_GROUPS,
+  type FontFamilyOption,
   type ThemePaletteOption,
 } from "@/lib/site-design/options";
 
@@ -31,6 +32,17 @@ export const PALETTE_GALLERY_LAYOUT = {
   cardClassName:
     "flex min-h-[44px] min-w-0 cursor-pointer flex-col gap-2 rounded-xl border px-3 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-gold",
   swatchSizeClassName: "h-6 w-6 shrink-0 rounded-full border border-white/15 shadow-sm",
+} as const;
+
+/**
+ * Typography pairing gallery (NFT-STUDIO-007B).
+ * One-column by default in the narrow Studio panel; samples use live next/font CSS vars.
+ */
+export const FONT_PAIRING_GALLERY_LAYOUT = {
+  containerClassName: "@container min-w-0",
+  gridClassName: "grid grid-cols-1 gap-2",
+  cardClassName:
+    "flex min-h-[44px] min-w-0 cursor-pointer flex-col gap-2 rounded-xl border px-3 py-3 transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-gold",
 } as const;
 
 type DesignControlPanelProps = {
@@ -224,6 +236,116 @@ function PaletteGallery({
   );
 }
 
+function FontPairingGallery({
+  value,
+  disabled,
+  onChange,
+}: {
+  value: SiteFontFamilyId;
+  disabled?: boolean;
+  onChange: (id: SiteFontFamilyId) => void;
+}) {
+  return (
+    <fieldset
+      className={`space-y-4 ${FONT_PAIRING_GALLERY_LAYOUT.containerClassName}`}
+      disabled={disabled}
+      data-font-gallery=""
+    >
+      <legend className="font-heading text-lg font-semibold text-white">
+        Font style
+      </legend>
+      <p className="text-sm text-sage-light">
+        Pick how headings and body text feel together. Preview updates
+        immediately — Save Draft when you are ready to keep it.
+      </p>
+
+      <div className="space-y-5">
+        {FONT_FAMILY_GROUPS.map((group) => (
+          <div key={group.id} className="space-y-2" data-font-group={group.id}>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-gold/80">
+              {group.label}
+            </h3>
+            <div
+              role="radiogroup"
+              aria-label={`${group.label} font pairings`}
+              className={FONT_PAIRING_GALLERY_LAYOUT.gridClassName}
+              data-font-grid=""
+            >
+              {group.options.map((option: FontFamilyOption) => {
+                const selected = option.id === value;
+                const inputId = `font-family-${option.id}`;
+                return (
+                  <label
+                    key={option.id}
+                    htmlFor={inputId}
+                    data-font-card={option.id}
+                    data-font-selected={selected ? "true" : "false"}
+                    className={`${FONT_PAIRING_GALLERY_LAYOUT.cardClassName} ${
+                      selected
+                        ? "border-gold/50 bg-forest-soft text-gold ring-1 ring-gold/30"
+                        : "border-sage-dark/30 text-sage-light hover:border-gold/30 hover:text-gold"
+                    } ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
+                  >
+                    <span className="flex min-w-0 items-start gap-3">
+                      <input
+                        id={inputId}
+                        type="radio"
+                        name="font-family"
+                        value={option.id}
+                        checked={selected}
+                        disabled={disabled}
+                        onChange={() => onChange(option.id)}
+                        className="mt-1 h-4 w-4 shrink-0 accent-gold"
+                      />
+                      <span className="min-w-0 flex-1 space-y-1.5">
+                        <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                          <span className="text-sm font-semibold text-white">
+                            {option.label}
+                          </span>
+                          {option.id === "classic" ? (
+                            <span className="text-[10px] font-medium uppercase tracking-wide text-gold/70">
+                              Default
+                            </span>
+                          ) : null}
+                        </span>
+                        <span
+                          className="block text-[0.95rem] font-semibold leading-snug text-white"
+                          style={{
+                            fontFamily: `var(${option.headingCssVar})`,
+                            letterSpacing:
+                              option.headingLetterSpacingEm != null
+                                ? `${option.headingLetterSpacingEm}em`
+                                : undefined,
+                          }}
+                          data-font-sample-heading=""
+                        >
+                          {option.sampleHeading}
+                        </span>
+                        <span
+                          className="block text-xs leading-relaxed text-sage-light"
+                          style={{
+                            fontFamily: `var(${option.bodyCssVar})`,
+                          }}
+                          data-font-sample-body=""
+                        >
+                          {option.sampleBody}
+                        </span>
+                        <span className="block text-[11px] leading-snug text-sage-light/90">
+                          {option.description}
+                        </span>
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 export function DesignControlPanel({
   design,
   disabled = false,
@@ -240,12 +362,8 @@ export function DesignControlPanel({
         onChange={onThemeChange}
       />
 
-      <OptionGroup
-        legend="Font style"
-        description="Pick how headings and body text feel together."
-        name="font-family"
+      <FontPairingGallery
         value={design.typography.fontFamilyId}
-        options={FONT_FAMILY_OPTIONS}
         disabled={disabled}
         onChange={onFontFamilyChange}
       />

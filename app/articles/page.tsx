@@ -1,6 +1,7 @@
 import { ArticlesCatalog } from "@/components/articles/ArticlesCatalog";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { PublicFontScope } from "@/components/site/PublicFontScope";
 import { SiteTheme } from "@/components/site/SiteTheme";
 import {
   getActiveAnnouncement,
@@ -26,6 +27,7 @@ export default async function ArticlesPage() {
   ]);
 
   return (
+    <PublicFontScope>
     <SiteTheme>
       <Navbar banner={banner} />
       <main className="px-5 pt-28 pb-16 sm:px-6">
@@ -46,5 +48,6 @@ export default async function ArticlesPage() {
       </main>
       <Footer profile={content.profile} />
     </SiteTheme>
+    </PublicFontScope>
   );
 }

@@ -37,6 +37,29 @@ export {
   type SitePaletteDefinition,
 } from "@/lib/site-design/palette-registry";
 export {
+  SITE_TYPOGRAPHY_PAIRINGS,
+  SITE_TYPOGRAPHY_GROUPS,
+  SITE_TYPOGRAPHY_GROUP_LABELS,
+  SITE_FONT_FACES,
+  LEGACY_FONT_FAMILY_IDS,
+  resolveTypographyStack,
+  formatTypographyCssBlock,
+  isSiteFontFamilyId,
+  type SiteTypographyPairingDefinition,
+  type SiteFontFaceDefinition,
+} from "@/lib/site-design/typography-registry";
+export {
+  ADMIN_CHROME_FACE_IDS,
+  ALL_CURATED_FACE_IDS,
+  PAIRINGS_WITH_SERIF_OVERRIDE,
+  pairingFaceIds,
+  publicDeliveryFaceIds,
+  studioDeliveryFaceIds,
+  isStudioFontSurface,
+  resolveDeliveryFaceIds,
+  pairingRequiresGlobalCormorantUtility,
+} from "@/lib/site-design/font-delivery";
+export {
   contrastRatio,
   contrastRatioForCssColors,
   evaluateContrastPair,

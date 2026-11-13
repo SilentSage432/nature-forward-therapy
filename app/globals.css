@@ -693,7 +693,11 @@
   --site-outline-hover-fill: rgba(138, 110, 76, 0.12);
 }
 
-/* Typography families — scoped under public SiteTheme only. */
+/*
+ * Typography families — scoped under public SiteTheme only.
+ * Token tables live in lib/site-design/typography-registry.ts — keep in sync.
+ * Existing classic / editorial / modern stacks are unchanged.
+ */
 [data-site-font="classic"] {
   --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -707,13 +711,49 @@
     serif;
 }
 
-/*
- * Modern: Inter throughout (distinct from Classic Montserrat headings).
- * Uses only already-loaded Next.js font assets — no new dependencies.
- */
 [data-site-font="modern"] {
   --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-site-font="literary"] {
+  --font-heading: var(--font-playfair), ui-serif, Georgia, "Times New Roman",
+    serif;
+  --font-body: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, "Times New Roman",
+    serif;
+}
+
+[data-site-font="warm-serif"] {
+  --font-heading: var(--font-lora), ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-lora), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+[data-site-font="scholarly"] {
+  --font-heading: var(--font-libre-baskerville), ui-serif, Georgia,
+    "Times New Roman", serif;
+  --font-body: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-libre-baskerville), ui-serif, Georgia,
+    "Times New Roman", serif;
+}
+
+[data-site-font="distinctive"] {
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, "Times New Roman",
+    serif;
+  --font-body: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, "Times New Roman",
+    serif;
+}
+
+[data-site-font="soft-sans"] {
+  --font-heading: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-site-font="contemporary"] {
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 [data-site-font="modern"] h1,
@@ -722,6 +762,14 @@
 [data-site-font="modern"] h4,
 [data-site-font="modern"] .font-heading {
   letter-spacing: -0.02em;
+}
+
+[data-site-font="contemporary"] h1,
+[data-site-font="contemporary"] h2,
+[data-site-font="contemporary"] h3,
+[data-site-font="contemporary"] h4,
+[data-site-font="contemporary"] .font-heading {
+  letter-spacing: -0.015em;
 }
 
 /*

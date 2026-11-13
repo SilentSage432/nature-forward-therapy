@@ -1,4 +1,5 @@
 import { HomePresentation } from "@/components/site/HomePresentation";
+import { PublicFontScope } from "@/components/site/PublicFontScope";
 import { getActiveAnnouncement } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
 import { getPublishedPresentationConfig } from "@/lib/site-design/published";
@@ -13,10 +14,12 @@ export default async function HomePage() {
   ]);
 
   return (
-    <HomePresentation
-      content={content}
-      banner={banner}
-      presentation={presentation}
-    />
+    <PublicFontScope>
+      <HomePresentation
+        content={content}
+        banner={banner}
+        presentation={presentation}
+      />
+    </PublicFontScope>
   );
 }
