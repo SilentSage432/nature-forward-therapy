@@ -1,5 +1,6 @@
 "use client";
 
+import { DesignAccessibilityPanel } from "@/components/admin/studio/DesignAccessibilityPanel";
 import type { SiteDesign } from "@/lib/site-design/schema";
 import type {
   SiteBodyScaleId,
@@ -387,6 +388,8 @@ export function DesignControlPanel({
         disabled={disabled}
         onChange={onBodyScaleChange}
       />
+
+      <DesignAccessibilityPanel design={design} />
     </div>
   );
 }

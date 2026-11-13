@@ -75,6 +75,16 @@ export {
   assertAllPalettesMeetContrastContract,
 } from "@/lib/site-design/palette-contrast-contract";
 export {
+  NEAR_THRESHOLD_MARGIN,
+  evaluateDesignAccessibility,
+  classifyContrastPairResult,
+  formatContrastRatio,
+  formatContrastThreshold,
+  type DesignAccessibilityEvaluation,
+  type DesignAccessibilityPairFinding,
+  type DesignAccessibilityOverallStatus,
+} from "@/lib/site-design/accessibility-evaluation";
+export {
   getPublishedPresentationConfig,
 } from "@/lib/site-design/published";
 export {

@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-13 — Deterministic Studio accessibility feedback production release (NFT-STUDIO-007C-REL02)
+
+Authorized gated code-only production release of NFT-STUDIO-007C-ENG01. Ships `accessibility-evaluation.ts` + `DesignAccessibilityPanel` for non-blocking deterministic Accessibility feedback in Website Studio Design (unsaved draft evaluation; no WCAG compliance claims). Reuses existing contrast contract; near-threshold advisory margin 15%. Preflight (REL01) confirmed nine-file manifest, no Prisma/migration/auth/public CSS/dependency changes. Quality gates: 141 site-design tests, typecheck, targeted eslint, production build. Release: commit + push `main` + Vercel Ready. No Save Draft/Publish, no migrations, no production DB writes. Public published design unchanged (forest-gold / Classic). Authenticated production Studio visual confirmation deferred to operator.
+
+## 2026-11-13 — Deterministic Studio accessibility feedback (NFT-STUDIO-007C-ENG01)
+
+Local bounded implementation of non-blocking accessibility feedback in Website Studio Design. Reuses `contrast.ts` + `palette-contrast-contract.ts` via `lib/site-design/accessibility-evaluation.ts` (no duplicated WCAG math; translucent pairs stay `requires-rendered-review`). `DesignAccessibilityPanel` in the Design control column evaluates the current unsaved SiteDesign (palette + typography context), updates without Save Draft / DB writes, distinguishes deterministic pass / issues / rendered review / manual review, and shows near-threshold advisories at a documented 15% margin without failing passing pairs. No schemaVersion change, no publish UI, no palette/typography token edits, no public styling changes. Quality gates: **141** site-design tests, typecheck, targeted eslint clean, production build. Authenticated Studio browser confirmation deferred (login required). No commit/push/deploy; no production DB writes.
+
 ## 2026-11-13 — Next.js font-build flake hotfix (post-REL01)
 
 Production docs redeploy failed with Turbopack `next/font/google queries have exactly one entry` on Fraunces — known Next.js issue when Google Fonts returns extensionless `/l/font?kit=…&skey=…` URLs (vercel/next.js#99114). Upgraded `next` **16.2.11 → 16.4.6** (fix included since 16.4.3). Local 131 tests + typecheck + build green. No SiteDesign/schema/content changes. Prior Ready deployment remained live until this hotfix aliases.
