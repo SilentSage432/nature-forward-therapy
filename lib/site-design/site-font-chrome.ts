@@ -1,8 +1,11 @@
 /**
- * Root-layout chrome fonts only (NFT-STUDIO-007B-PERF02).
+ * Root-layout chrome fonts (NFT-STUDIO-007B-PERF02 / REL01).
  *
- * Kept in a dedicated module so public routes that import the root layout
- * do not pull supplemental curated faces into the root preload set.
+ * All next/font/google faces for the app are declared exactly once in this
+ * module tree (`site-font-loaders.ts` reuses these chrome instances). Duplicate
+ * Google font constructors break Turbopack production builds on Vercel
+ * ("next/font/google queries have exactly one entry").
+ *
  * Chrome faces keep default preload:true (Inter / Montserrat / Cormorant).
  */
 

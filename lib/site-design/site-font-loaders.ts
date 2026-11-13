@@ -1,14 +1,13 @@
 /**
- * Full curated next/font loaders for Studio (NFT-STUDIO-007B-PERF02).
+ * Curated next/font loaders (NFT-STUDIO-007B-PERF02 / REL01).
  *
- * Do not import this module from the root layout or PublicFontScope.
- * Root chrome: `site-font-chrome.ts`
- * Public supplements: `public-font-scopes/*` (dynamic per published pairing)
+ * Single declaration site for every curated face. Public supplements and Studio
+ * both consume these instances — never re-declare the same Google font elsewhere
+ * (Turbopack production builds require exactly one next/font query per face).
  *
- * `preload: false` is required: Next merges next/font CSS into a shared root
- * chunk, so preload:true on Studio faces would force curated downloads onto
- * every public/login document. Studio still downloads faces when samples or
- * preview CSS actually use them.
+ * Do not import this module from the root layout (root uses site-font-chrome only).
+ * Non-chrome faces use preload:false so shared CSS does not force curated
+ * downloads onto public documents.
  */
 
 import {
@@ -21,7 +20,10 @@ import {
   Playfair_Display,
   Source_Sans_3,
 } from "next/font/google";
-import type { SiteFontFaceId } from "@/lib/site-design/typography-registry";
+import type {
+  SiteFontFaceId,
+  SiteFontFamilyId,
+} from "@/lib/site-design/typography-registry";
 import { uniqueFaceIds } from "@/lib/site-design/font-delivery";
 import {
   cormorant,
@@ -113,4 +115,26 @@ export function fontVariableClassName(
   return uniqueFaceIds(faceIds)
     .map((id) => SITE_FONT_VARIABLE_BY_FACE[id])
     .join(" ");
+}
+
+/**
+ * Static supplemental class strings beyond root chrome.
+ * Empty = chrome-only (Classic / Editorial / Modern).
+ */
+export const PUBLIC_SUPPLEMENTAL_CLASS_BY_PAIRING = {
+  classic: "",
+  editorial: "",
+  modern: "",
+  literary: `${playfair.variable} ${sourceSans3.variable}`,
+  "warm-serif": `${lora.variable} ${sourceSans3.variable}`,
+  scholarly: `${libreBaskerville.variable} ${sourceSans3.variable}`,
+  distinctive: `${fraunces.variable} ${sourceSans3.variable}`,
+  "soft-sans": nunitoSans.variable,
+  contemporary: `${manrope.variable} ${dmSans.variable}`,
+} as const satisfies Record<SiteFontFamilyId, string>;
+
+export function publicSupplementalClassName(
+  fontFamilyId: SiteFontFamilyId,
+): string {
+  return PUBLIC_SUPPLEMENTAL_CLASS_BY_PAIRING[fontFamilyId];
 }

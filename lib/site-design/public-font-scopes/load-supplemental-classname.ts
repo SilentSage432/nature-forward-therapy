@@ -1,32 +1,14 @@
 import type { SiteFontFamilyId } from "@/lib/site-design/typography-registry";
+import { publicSupplementalClassName } from "@/lib/site-design/site-font-loaders";
 
 /**
- * Dynamically load only the supplemental next/font module for the published
- * pairing. Classic / Editorial / Modern need no supplements (root chrome).
+ * Resolve supplemental next/font class names for the published pairing.
+ *
+ * Faces are declared once in `site-font-loaders.ts` (Turbopack-safe). This
+ * helper remains the PublicFontScope entry so callers stay pairing-oriented.
  */
 export async function loadPublicSupplementalClassName(
   fontFamilyId: SiteFontFamilyId,
 ): Promise<string> {
-  switch (fontFamilyId) {
-    case "literary":
-      return (await import("./literary")).CLASSNAME;
-    case "warm-serif":
-      return (await import("./warm-serif")).CLASSNAME;
-    case "scholarly":
-      return (await import("./scholarly")).CLASSNAME;
-    case "distinctive":
-      return (await import("./distinctive")).CLASSNAME;
-    case "soft-sans":
-      return (await import("./soft-sans")).CLASSNAME;
-    case "contemporary":
-      return (await import("./contemporary")).CLASSNAME;
-    case "classic":
-    case "editorial":
-    case "modern":
-      return "";
-    default: {
-      const _exhaustive: never = fontFamilyId;
-      return _exhaustive;
-    }
-  }
+  return publicSupplementalClassName(fontFamilyId);
 }

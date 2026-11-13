@@ -94,8 +94,12 @@ describe("typography registry completeness", () => {
     assert.doesNotMatch(LAYOUT_TSX, /Playfair_Display|Fraunces|Manrope/);
   });
 
-  it("keeps a public supplemental scope module for every non-chrome pairing", () => {
-    const scopesDir = join(process.cwd(), "lib/site-design/public-font-scopes");
+  it("maps every non-chrome pairing to a static supplemental class in loaders", () => {
+    const loaders = readFileSync(
+      join(process.cwd(), "lib/site-design/site-font-loaders.ts"),
+      "utf8",
+    );
+    assert.match(loaders, /PUBLIC_SUPPLEMENTAL_CLASS_BY_PAIRING/);
     for (const id of [
       "literary",
       "warm-serif",
@@ -104,10 +108,9 @@ describe("typography registry completeness", () => {
       "soft-sans",
       "contemporary",
     ] as const) {
-      const src = readFileSync(join(scopesDir, `${id}.ts`), "utf8");
-      assert.match(src, /next\/font\/google/);
-      assert.match(src, /export const CLASSNAME/);
+      assert.match(loaders, new RegExp(`"${id}"|${id}:`));
     }
+    assert.doesNotMatch(loaders, /Playfair_Display\([\s\S]*Playfair_Display\(/);
   });
 });
 
