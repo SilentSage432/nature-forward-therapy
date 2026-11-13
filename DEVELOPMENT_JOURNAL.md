@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-13 — Public keyboard accessibility production release (NFT-STUDIO-007C-REL04)
+
+Authorized gated code-only production release of NFT-STUDIO-007C-ENG02. Ships skip-to-main-content (`SiteTheme`/`SkipToContent`), `#main-content` landmarks, and `[data-site-theme]` `:focus-visible` rings (accent + page-surface cushion; filled CTAs use accent-foreground). Preflight (REL03): GO WITH CONDITIONS — 14-file ENG02 manifest, 146 site-design tests, typecheck, lint, build; browser keyboard smoke deferred. Release: commit + push `main` + Vercel Ready. No Save Draft/Publish, no migrations, no production DB writes. Public published design unchanged (forest-gold / Classic). Operator keyboard acceptance deferred.
+
+## 2026-11-13 — Public keyboard accessibility (NFT-STUDIO-007C-ENG02)
+
+Local bounded implementation of public keyboard accessibility: skip-to-main-content link inside `SiteTheme`, stable `#main-content` targets on homepage/articles/bookshelf, and `[data-site-theme]` `:focus-visible` treatments (opaque accent outline + page-surface cushion; filled CTAs use accent-foreground). Resting CTA/nav appearance unchanged. No palette/typography registry edits, no Studio/publish/auth/Prisma changes. Quality gates: **146** site-design tests, typecheck, targeted eslint clean, production build. Full keyboard browser confirmation deferred (no local public session required for code gates). No commit/push/deploy.
+
 ## 2026-11-13 — Deterministic Studio accessibility feedback production release (NFT-STUDIO-007C-REL02)
 
 Authorized gated code-only production release of NFT-STUDIO-007C-ENG01. Ships `accessibility-evaluation.ts` + `DesignAccessibilityPanel` for non-blocking deterministic Accessibility feedback in Website Studio Design (unsaved draft evaluation; no WCAG compliance claims). Reuses existing contrast contract; near-threshold advisory margin 15%. Preflight (REL01) confirmed nine-file manifest, no Prisma/migration/auth/public CSS/dependency changes. Quality gates: 141 site-design tests, typecheck, targeted eslint, production build. Release: commit + push `main` + Vercel Ready. No Save Draft/Publish, no migrations, no production DB writes. Public published design unchanged (forest-gold / Classic). Authenticated production Studio visual confirmation deferred to operator.

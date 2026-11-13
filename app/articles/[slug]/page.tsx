@@ -16,6 +16,7 @@ import {
   getPublishedArticles,
 } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
+import { PUBLIC_MAIN_CONTENT_ID } from "@/lib/site-design/public-keyboard";
 
 const SITE_URL = process.env.NEXTAUTH_URL ?? "https://flockoffox.org";
 
@@ -70,7 +71,11 @@ export default async function ArticleReadingPage({ params }: ArticlePageProps) {
     <PublicFontScope>
     <SiteTheme>
       <Navbar banner={banner} />
-      <main className="px-5 pt-28 pb-20 sm:px-6">
+      <main
+        id={PUBLIC_MAIN_CONTENT_ID}
+        tabIndex={-1}
+        className="px-5 pt-28 pb-20 sm:px-6"
+      >
         <article className="mx-auto max-w-3xl">
           <Link
             href="/articles"

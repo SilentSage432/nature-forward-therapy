@@ -8,6 +8,7 @@ import {
   getPublishedArticles,
 } from "@/lib/articles";
 import { getSiteContent } from "@/lib/content";
+import { PUBLIC_MAIN_CONTENT_ID } from "@/lib/site-design/public-keyboard";
 
 export const revalidate = 60;
 
@@ -30,7 +31,11 @@ export default async function ArticlesPage() {
     <PublicFontScope>
     <SiteTheme>
       <Navbar banner={banner} />
-      <main className="px-5 pt-28 pb-16 sm:px-6">
+      <main
+        id={PUBLIC_MAIN_CONTENT_ID}
+        tabIndex={-1}
+        className="px-5 pt-28 pb-16 sm:px-6"
+      >
         <header className="mx-auto max-w-3xl pb-10 text-center">
           <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-gold uppercase">
             Publication Hub

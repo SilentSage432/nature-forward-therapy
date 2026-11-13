@@ -85,6 +85,12 @@ export {
   type DesignAccessibilityOverallStatus,
 } from "@/lib/site-design/accessibility-evaluation";
 export {
+  PUBLIC_MAIN_CONTENT_ID,
+  PUBLIC_SKIP_HREF,
+  PUBLIC_SKIP_LABEL,
+  PUBLIC_KEYBOARD_CSS_MARKERS,
+} from "@/lib/site-design/public-keyboard";
+export {
   getPublishedPresentationConfig,
 } from "@/lib/site-design/published";
 export {

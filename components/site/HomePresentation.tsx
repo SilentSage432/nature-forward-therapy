@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Specialties } from "@/components/Specialties";
 import { SiteTheme } from "@/components/site/SiteTheme";
 import type { AnnouncementBannerData } from "@/lib/articles";
+import { PUBLIC_MAIN_CONTENT_ID } from "@/lib/site-design/public-keyboard";
 import type { PublishedPresentationConfig } from "@/lib/site-design/resolve-published";
 import type { SiteContent } from "@/lib/types";
 
@@ -54,7 +55,7 @@ export function HomePresentation({
       bodyScaleId={typography.bodyScaleId}
     >
       <Navbar banner={banner} />
-      <main>
+      <main id={PUBLIC_MAIN_CONTENT_ID} tabIndex={-1}>
         <Hero profile={content.profile} />
         <About profile={content.profile} />
         <Specialties

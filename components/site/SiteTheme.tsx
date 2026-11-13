@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SkipToContent } from "@/components/site/SkipToContent";
 import type {
   SiteBodyScaleId,
   SiteFontFamilyId,
@@ -48,6 +49,7 @@ export function SiteTheme({
       data-site-heading={headingScaleId}
       data-site-body={bodyScaleId}
     >
+      <SkipToContent />
       {children}
     </div>
   );
