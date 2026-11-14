@@ -31,6 +31,8 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-007C-BUILD01 / BUILD02 (local, uncommitted):** BUILD01 diagnosed prerender `Invalid time value` as `formatPublishedDate` rejecting ISO strings from `unstable_cache` (DB dates valid). BUILD02 hardened `formatPublishedDate` for `Date | string | null | undefined` + `lib/articles.test.ts`. Build now PASS with both article slugs SSG; a11y 15/15. Report: `NFT-STUDIO-007C-BUILD02-REPORT.md`. No commit/push/deploy.
 
+**NFT-STUDIO-007C-ENG04-DISC01 / ENG01 / REL01 / REL02 (production):** DISC01 traced light-palette axe `color-contrast` to `.focus-pill` + `.site-accent-soft-muted` alpha composition. ENG01 light-scoped Option B remaps (opaque accent) for four Light & Airy palettes; Forest & Gold preserved; no Option C tokens. REL01 preflight GO WITH CONDITIONS. REL02 authorized gated code-only production release — no design Save/Publish, no migrations, no production DB writes. Public published design remains forest-gold / Classic; light palettes unpublished. Reports: ENG01 / REL01 / REL02.
+
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
 - `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)

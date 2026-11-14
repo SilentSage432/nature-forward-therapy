@@ -22,6 +22,7 @@ Future **pre-publish strict** evaluation is defined in `helpers/enforcement-poli
 - Public GET routes only (`/`, `/articles`, `/bookshelf`; article detail only if a published link exists).
 - No authentication, no Studio session, no Save Draft / Publish, no SiteDesign DB writes.
 - Palette/typography sampling mutates `data-site-theme` / `data-site-font` in the browser session only.
+- Ephemeral sampling injects a temporary `transition: none` freeze so axe does not measure mid-`transition-colors` frames after theme switches (ENG04-ENG01).
 
 ## Run
 

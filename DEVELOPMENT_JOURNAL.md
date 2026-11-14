@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-13 — Light palette contrast remediation production release (NFT-STUDIO-007C-ENG04-REL02)
+
+Authorized gated code-only production release of ENG04-ENG01. Ships light-scoped Option B remaps for four Light & Airy palettes + deterministic `light-semantic-contrast` coverage + browser remediates assertions. Preflight REL01: GO WITH CONDITIONS. Public published design unchanged (forest-gold / Classic). No Save Draft/Publish, no migrations, no production DB writes. Light palettes remain unpublished. Report: `NFT-STUDIO-007C-ENG04-REL02-REPORT.md`.
+
+## 2026-11-13 — Light palette semantic contrast remediation (NFT-STUDIO-007C-ENG04-ENG01)
+
+Bounded Option B fix for ENG04-DISC01 rendered contrast failures on Light & Airy utilities. Light-scoped CSS remaps `.site-accent-soft-muted` → opaque `--site-accent` and `.focus-pill` → accent label + accent-tinted fill for `coastal-mist` / `lavender-meadow` / `botanical-cream` / `misty-morning` only. Forest & Gold retains soft-gold wash + terracotta pills. No Option C tokens; no registry retokenization; no Prisma/SiteDesign writes. Deterministic coverage: `light-semantic-contrast.ts` (+4 tests; site-design **150**). Harness: sample all four light palettes × classic/editorial/modern; ephemeral transition freeze; remediates-selector axe probe + 390/768/1280 smoke. `test:a11y` **17/17**; advisory light samples clean; incomplete still manual. Report: `NFT-STUDIO-007C-ENG04-ENG01-REPORT.md`. No commit/push/deploy.
+
 ## 2026-11-13 — Cache-safe article date formatting (NFT-STUDIO-007C-BUILD02)
 
 Bounded fix for prerender `RangeError: Invalid time value` on `/articles/[slug]`. Root cause (BUILD01): `unstable_cache` JSON-deserializes Prisma `Date` fields to ISO strings; `formatPublishedDate` passed them to `Intl.DateTimeFormat#format`. Formatter now accepts `Date | string | null | undefined`, validates `getTime()`, returns `""` for invalid/missing values without inventing dates. Tests: `lib/articles.test.ts` (10). Quality gates: site-design 146, a11y policy 6, a11y 15/15, typecheck, targeted eslint, **build PASS** (both article slugs SSG). No DB/CMS/SiteDesign changes. Report: `NFT-STUDIO-007C-BUILD02-REPORT.md`. No commit/push/deploy.

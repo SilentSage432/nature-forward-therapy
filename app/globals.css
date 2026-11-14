@@ -1067,8 +1067,29 @@
   .site-fg-faint {
     color: var(--site-foreground-faint);
   }
+  /*
+   * Soft accent text for dark palettes: translucent gold/lilac wash over a
+   * dark page. Light & Airy remaps below — 70%→transparent washes mid-tone
+   * accentSoft into unreadable chalk on light surfaces (ENG04-DISC01).
+   */
   .site-accent-soft-muted {
     color: color-mix(in srgb, var(--site-accent-soft) 70%, transparent);
+  }
+
+  /*
+   * NFT-STUDIO-007C-ENG04-ENG01 Option B (light-scoped only):
+   * Opaque accent preserves each light palette's hue while meeting AA for
+   * footer brand + nav links. Forest & Gold / other dark themes keep the
+   * translucent soft wash above unchanged.
+   */
+  :is(
+    [data-site-theme="coastal-mist"],
+    [data-site-theme="lavender-meadow"],
+    [data-site-theme="botanical-cream"],
+    [data-site-theme="misty-morning"]
+  )
+    .site-accent-soft-muted {
+    color: var(--site-accent);
   }
 
   .nav-glass {
@@ -1295,6 +1316,11 @@
     background: rgba(212, 175, 55, 0.7);
   }
 
+  /*
+   * Focus pills (Specialties tags). Dark palettes use terracotta/warm
+   * secondary companions. Light & Airy remaps below — secondary on a light
+   * alpha fill fails 4.5:1 for 14px text (ENG04-DISC01).
+   */
   .focus-pill {
     border: 1px solid
       color-mix(in srgb, var(--site-accent-secondary) 45%, transparent);
@@ -1305,6 +1331,23 @@
   .focus-pill:hover {
     border-color: color-mix(in srgb, var(--site-accent) 45%, transparent);
     background: color-mix(in srgb, var(--site-accent) 16%, transparent);
+    color: var(--site-accent);
+  }
+
+  /*
+   * NFT-STUDIO-007C-ENG04-ENG01 Option B (light-scoped only):
+   * Opaque accent label + matching accent-tinted fill so pill text contrasts
+   * with its actual rendered background. Does not recolor Forest & Gold.
+   */
+  :is(
+    [data-site-theme="coastal-mist"],
+    [data-site-theme="lavender-meadow"],
+    [data-site-theme="botanical-cream"],
+    [data-site-theme="misty-morning"]
+  )
+    .focus-pill {
+    border-color: color-mix(in srgb, var(--site-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--site-accent) 14%, transparent);
     color: var(--site-accent);
   }
 }

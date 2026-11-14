@@ -150,6 +150,8 @@ export const EXCLUDED_PALETTE_CONTRAST_NOTES = [
   "Focus rings expressed as translucent rgba (require rendered review).",
   "Foreground faint separators used as decorative punctuation, not body copy.",
   "Outline button hover fills expressed as translucent overlays.",
+  "Focus-pill decorative borders (color-mix) remain below opaque 3:1 UI solids; text contrast for light-airy pills is covered by light-semantic-contrast.ts after ENG04-ENG01 Option B.",
+  "Dark-palette .site-accent-soft-muted translucent wash is intentional (Forest soft gold); light-airy remaps to opaque accent — see light-semantic-contrast.ts (not new Option C tokens).",
 ] as const;
 
 function tokenValue(

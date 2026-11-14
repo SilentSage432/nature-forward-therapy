@@ -21,11 +21,15 @@ import {
 } from "./helpers/enforcement-report";
 import { gotoPublic } from "./helpers/goto";
 import {
+  LIGHT_AIRY_REMEDIATION_PALETTES,
   REPRESENTATIVE_FONTS,
   REPRESENTATIVE_PALETTES,
   applyEphemeralPresentation,
 } from "./helpers/palette";
 import { VIEWPORTS } from "./helpers/routes";
+
+const REMEDIATED_SELECTOR_HINT =
+  /\.focus-pill|\.site-accent-soft-muted|focus-pill|site-accent-soft-muted/i;
 
 test.describe("Representative palette / typography sampling (ephemeral DOM)", () => {
   test("documents strategy and samples light + dark without SiteDesign writes", async ({
@@ -165,13 +169,122 @@ test.describe("Representative palette / typography sampling (ephemeral DOM)", ()
     // Sanity: light and dark samples actually differ in surface token.
     const forest = findings.find((f) => f.theme === "forest-gold");
     const coastal = findings.find((f) => f.theme === "coastal-mist");
-    expect(forest && coastal).toBeTruthy();
+    const midnight = findings.find((f) => f.theme === "midnight-garden");
+    expect(forest && coastal && midnight).toBeTruthy();
     expect(forest!.surface).not.toEqual(coastal!.surface);
     expect(forest!.enforcement).toBe("enforced");
     expect(forest!.violationCount).toBe(0);
+    expect(midnight!.violationCount).toBe(0);
     expect(coastal!.enforcement).toBe("advisory");
-    // FIX01: zero advisory violations would also be valid — do not require gaps.
+    // FIX01: zero advisory violations is valid — ENG04 remediation targets clean.
     expect(advisoryViolationsAreAcceptable(coastal!.violationCount)).toBeTruthy();
+
+    // ENG04-ENG01: remediates selectors covered by the dedicated probe below.
+    // Advisory lane still accepts zero-or-more total violations (FIX01).
+    for (const paletteId of LIGHT_AIRY_REMEDIATION_PALETTES) {
+      for (const font of REPRESENTATIVE_FONTS) {
+        const sample = findings.find(
+          (f) => f.theme === paletteId && f.font === font.id,
+        );
+        expect(sample, `${paletteId}+${font.id} sampled`).toBeTruthy();
+        expect(
+          advisoryViolationsAreAcceptable(sample!.violationCount),
+        ).toBeTruthy();
+      }
+    }
+  });
+
+  test("ENG04 light remaps keep remediates selectors contrast-clean across fonts", async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize(VIEWPORTS.desktop);
+    await gotoPublic(page, "/");
+
+    const probe: Array<{
+      theme: string;
+      font: string;
+      softMuted: { color: string; background: string };
+      focusPill: { color: string; background: string };
+      remediatedContrastViolations: number;
+    }> = [];
+
+    for (const paletteId of LIGHT_AIRY_REMEDIATION_PALETTES) {
+      for (const font of REPRESENTATIVE_FONTS) {
+        await applyEphemeralPresentation(page, {
+          themeId: paletteId,
+          fontId: font.id,
+        });
+
+        const computed = await page.evaluate(() => {
+          const root = document.querySelector<HTMLElement>("[data-site-theme]");
+          const soft = document.querySelector<HTMLElement>(
+            ".site-accent-soft-muted",
+          );
+          const pill = document.querySelector<HTMLElement>(".focus-pill");
+          const accent = root
+            ? getComputedStyle(root).getPropertyValue("--site-accent").trim()
+            : "";
+          const read = (el: HTMLElement | null) => {
+            if (!el) return { color: "", background: "" };
+            const cs = getComputedStyle(el);
+            return { color: cs.color, background: cs.backgroundColor };
+          };
+          return {
+            accent,
+            softMuted: read(soft),
+            focusPill: read(pill),
+          };
+        });
+
+        // Option B: both remapped utilities resolve to opaque accent.
+        expect(computed.accent.length).toBeGreaterThan(0);
+        expect(computed.softMuted.color).toBe(computed.focusPill.color);
+
+        const axe = await runAxeOnPage(page, {
+          route: "/",
+          viewport: VIEWPORTS.desktop.label,
+          theme: `eng04-${paletteId}+${font.id}`,
+        });
+        const remediated = axe.violations.filter(
+          (v) =>
+            v.id === "color-contrast" &&
+            v.nodes.some(
+              (n) =>
+                REMEDIATED_SELECTOR_HINT.test(n.html) ||
+                n.target.some((t) => REMEDIATED_SELECTOR_HINT.test(String(t))),
+            ),
+        );
+        expect(
+          remediated,
+          formatAxeFailure({
+            ...axe,
+            violations: remediated,
+          }),
+        ).toEqual([]);
+        expect(axe.violations.filter((v) => v.id === "color-contrast")).toEqual(
+          [],
+        );
+
+        probe.push({
+          theme: paletteId,
+          font: font.id,
+          softMuted: computed.softMuted,
+          focusPill: computed.focusPill,
+          remediatedContrastViolations: remediated.length,
+        });
+      }
+    }
+
+    const reportDir = path.resolve("tmp/a11y");
+    mkdirSync(reportDir, { recursive: true });
+    writeFileSync(
+      path.join(reportDir, "eng04-eng01-light-remap-probe.json"),
+      JSON.stringify({ probe }, null, 2),
+    );
+    await testInfo.attach("eng04-light-remap-probe", {
+      body: Buffer.from(JSON.stringify({ probe }, null, 2)),
+      contentType: "application/json",
+    });
   });
 
   test("mobile menu semantics remain coherent under a light palette", async ({
@@ -188,5 +301,86 @@ test.describe("Representative palette / typography sampling (ephemeral DOM)", ()
     await expect(page.locator("#mobile-nav-menu a").first()).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("ENG04 specialties + footer remain readable at 390/768/1280", async ({
+    page,
+  }, testInfo) => {
+    await gotoPublic(page, "/");
+    const viewports = [
+      VIEWPORTS.mobile,
+      VIEWPORTS.tablet,
+      VIEWPORTS.desktop,
+    ] as const;
+    const rows: Array<{
+      theme: string;
+      viewport: string;
+      softMutedColor: string;
+      pillColor: string;
+      pillOverflow: boolean;
+      footerOverflow: boolean;
+      focusOutline: string;
+    }> = [];
+
+    for (const theme of [
+      "forest-gold",
+      "coastal-mist",
+      "lavender-meadow",
+    ] as const) {
+      for (const vp of viewports) {
+        await page.setViewportSize({ width: vp.width, height: vp.height });
+        await applyEphemeralPresentation(page, { themeId: theme });
+
+        const specialties = page.locator("#specialties");
+        const footer = page.locator("footer");
+        await expect(specialties).toBeVisible();
+        await expect(footer).toBeVisible();
+        await expect(page.locator(".focus-pill").first()).toBeVisible();
+        await expect(page.locator(".site-accent-soft-muted").first()).toBeVisible();
+
+        const metrics = await page.evaluate(() => {
+          const pill = document.querySelector<HTMLElement>(".focus-pill");
+          const soft = document.querySelector<HTMLElement>(
+            ".site-accent-soft-muted",
+          );
+          const footerEl = document.querySelector("footer");
+          const overflowX = (el: Element | null) => {
+            if (!el) return true;
+            const r = el.getBoundingClientRect();
+            return r.right > window.innerWidth + 1 || r.left < -1;
+          };
+          const focusTarget =
+            document.querySelector<HTMLElement>("footer a") ?? soft;
+          focusTarget?.focus();
+          const focusCs = focusTarget
+            ? getComputedStyle(focusTarget)
+            : null;
+          return {
+            softMutedColor: soft ? getComputedStyle(soft).color : "",
+            pillColor: pill ? getComputedStyle(pill).color : "",
+            pillOverflow: overflowX(pill),
+            footerOverflow: overflowX(footerEl),
+            focusOutline: focusCs
+              ? `${focusCs.outlineStyle} ${focusCs.outlineWidth} ${focusCs.outlineColor}`
+              : "",
+          };
+        });
+
+        expect(metrics.pillOverflow).toBe(false);
+        expect(metrics.footerOverflow).toBe(false);
+        rows.push({ theme, viewport: vp.label, ...metrics });
+      }
+    }
+
+    const reportDir = path.resolve("tmp/a11y");
+    mkdirSync(reportDir, { recursive: true });
+    writeFileSync(
+      path.join(reportDir, "eng04-eng01-responsive-probe.json"),
+      JSON.stringify({ rows }, null, 2),
+    );
+    await testInfo.attach("eng04-responsive-probe", {
+      body: Buffer.from(JSON.stringify({ rows }, null, 2)),
+      contentType: "application/json",
+    });
   });
 });

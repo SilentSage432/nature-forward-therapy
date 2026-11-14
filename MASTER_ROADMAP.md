@@ -56,13 +56,18 @@
 - [x] NFT-STUDIO-007C-ENG03-STAB01 Browser a11y harness stability — **local VERIFIED (lifecycle readiness; 3 consecutive clean `test:a11y`; uncommitted)**
 - [x] NFT-STUDIO-007C-BUILD01 Article date prerender investigation — **read-only; root cause: cache-deserialized ISO strings**
 - [x] NFT-STUDIO-007C-BUILD02 Cache-safe article date formatting — **local VERIFIED (`formatPublishedDate`; build PASS; uncommitted)**
+- [x] NFT-STUDIO-007C-ENG04-DISC01 Light palette contrast investigation — **read-only report**
+- [x] NFT-STUDIO-007C-ENG04-ENG01 Light palette semantic contrast remediation — **local VERIFIED (Option B light-scoped CSS)**
+- [x] NFT-STUDIO-007C-ENG04-REL01 Light palette contrast remediation release preflight — **GO WITH CONDITIONS**
+- [x] NFT-STUDIO-007C-ENG04-REL02 Light palette contrast remediation production release — **authorized gated code-only release (published design unchanged; light palettes unpublished)**
 
 ## Near-term
 - [ ] Operator authenticated production Studio visual confirmation of 007B typography gallery (no Save Draft / Publish)
 - [ ] Operator authenticated Studio confirmation of 007C-ENG01 accessibility panel (no Save Draft / Publish)
 - [ ] Operator public keyboard smoke of 007C-ENG02 (Tab / skip link / focus rings; no Save Draft / Publish)
 - [ ] NFT-STUDIO-007C-ENG03 release / CI wiring (separate authorization)
-- [ ] Light-palette rendered contrast remediation before any light-palette publish (separate authorization)
+- [ ] Operator production smoke confirmation of ENG04 Forest footer/pills after REL02 (no Save Draft / Publish)
+- [ ] Light-palette publish remains separately authorized (remaps shipped code-only)
 - [ ] NFT-STUDIO-007C+ publish-gate a11y follow-ons (separate authorization)
 - [ ] Operator authenticated production Studio visual confirmation of UX01 gallery layout (no Save Draft / Publish)
 - [ ] Operator authenticated production Studio smoke of 007A palette gallery (no Save Draft / Publish)
