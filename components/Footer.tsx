@@ -14,12 +14,13 @@ export function Footer({ profile }: FooterProps) {
       <div className="mb-3 flex items-center justify-center gap-2">
         <Image
           src="/images/fof-logo-mark.png"
-          alt="Flock of Fox, LLC"
+          alt=""
           width={64}
           height={64}
           quality={80}
           sizes="32px"
           className="site-border-accent h-8 w-8 rounded-full border object-cover"
+          aria-hidden="true"
         />
         <span className="site-accent-soft-muted font-heading text-sm font-semibold">
           Flock of Fox, LLC

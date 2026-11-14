@@ -58,13 +58,34 @@ export function estimateReadMinutes(content: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
-export function formatPublishedDate(date: Date | null | undefined): string {
-  if (!date) return "";
+/**
+ * Format a public essay date for display.
+ *
+ * Accepts Prisma `Date` values and ISO strings produced when Next.js
+ * `unstable_cache` JSON-deserializes cached article payloads. Invalid or
+ * missing values yield "" — never invents a publication date.
+ */
+export type FormatablePublishedDate = Date | string | null | undefined;
+
+export function formatPublishedDate(date: FormatablePublishedDate): string {
+  if (date == null || date === "") return "";
+
+  const normalized =
+    date instanceof Date
+      ? date
+      : typeof date === "string"
+        ? new Date(date)
+        : null;
+
+  if (!normalized || Number.isNaN(normalized.getTime())) {
+    return "";
+  }
+
   return new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(normalized);
 }
 
 async function loadPublishedArticles(): Promise<PublicArticle[]> {

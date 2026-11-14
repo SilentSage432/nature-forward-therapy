@@ -902,6 +902,11 @@
   scroll-margin-top: 5.5rem;
 }
 
+/* Text-resize / reflow resilience — does not change resting layout. */
+[data-site-theme] :is(h1, h2, h3, h4, h5, h6, p) {
+  overflow-wrap: break-word;
+}
+
 [data-site-theme] .skip-to-content {
   position: absolute;
   left: 1rem;

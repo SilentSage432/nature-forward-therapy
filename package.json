@@ -11,6 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test:site-design": "node --import tsx --test lib/site-design/**/*.test.ts lib/actions/site-design.auth.test.ts",
     "test:site-design:db": "tsx --test lib/site-design/service.integration.test.ts",
+    "test:a11y": "playwright test --config=playwright.a11y.config.ts",
+    "test:a11y:ui": "playwright test --config=playwright.a11y.config.ts --ui",
+    "test:a11y:policy": "node --import tsx --test e2e/a11y/helpers/**/*.test.ts",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:setup": "prisma db push && prisma db seed",
@@ -31,6 +34,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",

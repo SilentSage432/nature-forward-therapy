@@ -23,6 +23,14 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-007C-ENG02 (NFT-STUDIO-007C-REL04 production release):** Public keyboard accessibility — skip-to-main-content via `SiteTheme`/`SkipToContent`, `#main-content` landmarks, `[data-site-theme]` `:focus-visible` rings (accent + surface cushion). Resting visuals unchanged. Code-only release — no registry/Prisma/Studio Save/Publish, no migrations, no production DB writes. Published design remains forest-gold / Classic. Operator keyboard smoke (Tab / skip / focus rings) deferred.
 
+**NFT-STUDIO-007C-ENG03 (local, uncommitted):** Rendered browser accessibility harness — Playwright + axe-core on public routes (`npm run test:a11y`, config `playwright.a11y.config.ts`, specs in `e2e/a11y/`). Complements deterministic ENG01; does not authenticate, write SiteDesign, or claim WCAG conformance. Palette sampling is ephemeral DOM-only on representative light/dark + chrome fonts. Artifacts: `tmp/a11y/` (gitignored).
+
+**NFT-STUDIO-007C-ENG03-FIX01 (local, uncommitted):** Enforcement correction — removed inverted “light palette gaps must exist” assertion. Published/default routes + forest-gold axe are enforced; alternate palettes are advisory (recorded; zero gaps valid). See `e2e/a11y/helpers/enforcement-policy.ts` and `tmp/a11y/enforcement-summary.json`. `npm run test:a11y:policy` for unit checks. Green suite ≠ all palettes clean.
+
+**NFT-STUDIO-007C-ENG03-STAB01 (local, uncommitted):** Harness stability for intermittent `/articles` Next recovery UI. webServer readiness on `/articles`, opt-in reuse (`A11Y_REUSE_SERVER=1`), `global-setup` route warmup, `gotoPublic` requires `[data-site-theme]` with one recovery remount + diagnostics under `tmp/a11y/stab01/`. Three consecutive full `test:a11y` runs clean. Accessibility assertions unchanged. Report: `NFT-STUDIO-007C-ENG03-STAB01-REPORT.md`. No commit/push/deploy.
+
+**NFT-STUDIO-007C-BUILD01 / BUILD02 (local, uncommitted):** BUILD01 diagnosed prerender `Invalid time value` as `formatPublishedDate` rejecting ISO strings from `unstable_cache` (DB dates valid). BUILD02 hardened `formatPublishedDate` for `Date | string | null | undefined` + `lib/articles.test.ts`. Build now PASS with both article slugs SSG; a11y 15/15. Report: `NFT-STUDIO-007C-BUILD02-REPORT.md`. No commit/push/deploy.
+
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
 - `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)
@@ -64,6 +72,7 @@ Cache console: `http://localhost:3000/admin/cache`
 
 SiteDesign unit tests: `npm run test:site-design`
 SiteDesign isolated DB integration: `SITE_DESIGN_TEST_DATABASE_URL=postgresql://…@127.0.0.1:5432/nft_studio_004a_* npm run test:site-design:db` (refuses Supabase / non-`nft_studio_004a_*` names)
+Rendered public a11y (Playwright + axe): `npm run test:a11y` (optional `A11Y_BASE_URL=http://127.0.0.1:PORT` to reuse a running server; artifacts under `tmp/a11y/`). Policy unit tests: `npm run test:a11y:policy`. Read `enforcement-summary.json` for advisory findings — do not treat green runs as multi-palette certification.
 Local ISR verification helper: `scripts/nft-perf-002-verify.mjs` (uses isolated DB env vars; do not point at production for writes).
 
 ### Seeded accounts (from `.env` / `.env.example`)

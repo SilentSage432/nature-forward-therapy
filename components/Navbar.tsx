@@ -89,7 +89,8 @@ export function Navbar({ banner = null }: NavbarProps) {
           >
             <Image
               src="/images/fof-logo-mark.png"
-              alt="Flock of Fox, LLC"
+              alt=""
+              aria-hidden="true"
               width={64}
               height={64}
               quality={80}
@@ -102,7 +103,7 @@ export function Navbar({ banner = null }: NavbarProps) {
             </span>
           </Link>
 
-          <div className="hidden items-center gap-6 md:flex md:gap-8">
+          <div className="hidden max-w-full flex-wrap items-center justify-end gap-x-6 gap-y-2 md:flex md:gap-x-8">
             {links.map((link, index) => (
               <span key={link.href} className="contents">
                 {index > 0 ? (
