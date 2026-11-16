@@ -55,7 +55,7 @@ export default async function StudioOverviewPage() {
     <div className="space-y-6">
       <StudioShellHeader
         title="Overview"
-        description="Review the live presentation and prepare for future visual design tools. Editing, media, and publishing controls arrive in later Studio tranches."
+        description="Review the live presentation. Open Design to edit, save a draft, and publish when you are ready for the public site."
       />
       <StudioStatusCards workspace={workspaceResult.data} />
       <StudioPreviewFrame

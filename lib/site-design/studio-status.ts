@@ -107,7 +107,7 @@ export function deriveStudioWorkspaceStatus(
 
   const draftSummary =
     draftRelation === "unpublished-changes"
-      ? "The private draft differs from what is live. Publishing is not available in this workspace shell yet."
+      ? "The private draft differs from what is live. Save if needed, then publish from Design when you are ready."
       : draftRelation === "invalid-draft"
         ? "The private draft failed validation and was preserved without changes."
         : draftRelation === "matches-published"

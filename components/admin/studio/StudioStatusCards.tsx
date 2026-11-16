@@ -86,8 +86,8 @@ export function StudioStatusCards({ workspace }: StudioStatusCardsProps) {
         </p>
         <p className="mt-2 text-sm text-sage-light">
           {status.hasBeenPublished
-            ? "A published snapshot is available for future history tools."
-            : "No custom design has been published. Publishing controls arrive in a later Studio tranche."}
+            ? "Published snapshots appear under History. Restore remains a separate Studio step."
+            : "No custom design has been published yet. Use Design to save a draft, then publish when ready."}
         </p>
       </article>
     </section>

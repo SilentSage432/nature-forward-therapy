@@ -60,6 +60,10 @@
 - [x] NFT-STUDIO-007C-ENG04-ENG01 Light palette semantic contrast remediation — **local VERIFIED (Option B light-scoped CSS)**
 - [x] NFT-STUDIO-007C-ENG04-REL01 Light palette contrast remediation release preflight — **GO WITH CONDITIONS**
 - [x] NFT-STUDIO-007C-ENG04-REL02 Light palette contrast remediation production release — **authorized gated code-only release (published design unchanged; light palettes unpublished)**
+- [x] NFT-STUDIO-007D-DISC01 Website Studio publishing architecture & readiness audit — **read-only report**
+- [x] NFT-STUDIO-007D-ENG01 Website Studio safe publishing interface — **authorized gated production release (Publish UI; Restore deferred; published design unchanged)**
+- [x] NFT-STUDIO-007D-ENG01-REL01 Publishing interface release preflight — **GO WITH CONDITIONS**
+- [x] NFT-STUDIO-007D-ENG01-REL02 Publishing interface production release — **authorized gated code-only release (no SiteDesign publication)**
 
 ## Near-term
 - [ ] Operator authenticated production Studio visual confirmation of 007B typography gallery (no Save Draft / Publish)

@@ -59,6 +59,7 @@ describe("studio status helpers", () => {
     assert.equal(status.liveMode, "published-design");
     assert.equal(status.draftRelation, "unpublished-changes");
     assert.equal(status.hasBeenPublished, true);
+    assert.match(status.draftSummary, /publish from Design/i);
   });
 
   it("does not treat revision mismatch alone as unpublished changes", () => {

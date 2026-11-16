@@ -7,10 +7,22 @@ import {
   DesignPreviewPane,
   type DesignPreviewMode,
 } from "@/components/admin/studio/DesignPreviewPane";
+import { PublishDesignDialog } from "@/components/admin/studio/PublishDesignDialog";
 import { StudioShellHeader } from "@/components/admin/studio/StudioShellHeader";
 import { StudioStatusCards } from "@/components/admin/studio/StudioStatusCards";
 import { UnsavedDesignNavigationGuard } from "@/components/admin/studio/UnsavedDesignNavigationGuard";
-import { saveSiteDesignDraftAction } from "@/lib/actions/site-design";
+import {
+  publishSiteDesignAction,
+  saveSiteDesignDraftAction,
+} from "@/lib/actions/site-design";
+import {
+  buildPublishActionInput,
+  buildPublishConfirmSnapshot,
+  getPublishEligibility,
+  mapPublishActionResult,
+  publishEligibilityHint,
+  type PublishNotice,
+} from "@/lib/site-design/publish-ui";
 import { designsEqual } from "@/lib/site-design/studio-status";
 import type { SiteDesign } from "@/lib/site-design/schema";
 import type {
@@ -26,36 +38,96 @@ type DesignEditorProps = {
   initialDraft: SiteDesign;
 };
 
-type SaveNotice =
+type EditorNotice =
   | { tone: "success"; message: string }
+  | { tone: "warning"; message: string }
   | { tone: "error"; message: string; issues?: string[] }
-  | { tone: "conflict"; message: string; actualRevision?: number }
+  | {
+      tone: "conflict";
+      message: string;
+      actualRevision?: number;
+      actualPublishedRevision?: number;
+    }
   | null;
+
+function noticeFromPublish(notice: PublishNotice): EditorNotice {
+  if (notice.tone === "success") {
+    return { tone: "success", message: notice.message };
+  }
+  if (notice.tone === "warning") {
+    return { tone: "warning", message: notice.message };
+  }
+  if (notice.tone === "conflict") {
+    return {
+      tone: "conflict",
+      message: notice.message,
+      actualRevision: notice.actualDraftRevision,
+      actualPublishedRevision: notice.actualPublishedRevision,
+    };
+  }
+  return {
+    tone: "error",
+    message: notice.message,
+    issues: notice.issues,
+  };
+}
 
 export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
   const router = useRouter();
   const [baseline, setBaseline] = useState<SiteDesign>(initialDraft);
   const [draft, setDraft] = useState<SiteDesign>(initialDraft);
+  const [published, setPublished] = useState<SiteDesign>(workspace.published);
   const [draftRevision, setDraftRevision] = useState(workspace.draftRevision);
   const [publishedRevision, setPublishedRevision] = useState(
     workspace.publishedRevision,
   );
+  const [publishedAt, setPublishedAt] = useState(workspace.publishedAt);
+  const [publishedByEmail] = useState(workspace.publishedByEmail);
   const [previewMode, setPreviewMode] = useState<DesignPreviewMode>("desktop");
-  const [notice, setNotice] = useState<SaveNotice>(null);
+  const [notice, setNotice] = useState<EditorNotice>(null);
   const [reloadConfirmOpen, setReloadConfirmOpen] = useState(false);
+  const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
   const [pending, startTransition] = useTransition();
+  const publishInFlightRef = useRef(false);
   const reloadTitleId = useId();
   const reloadDescriptionId = useId();
   const reloadStayRef = useRef<HTMLButtonElement>(null);
   const reloadTriggerRef = useRef<HTMLElement | null>(null);
+  const publishTriggerRef = useRef<HTMLElement | null>(null);
 
   const dirty = useMemo(() => !designsEqual(draft, baseline), [draft, baseline]);
+
+  const publishEligibility = useMemo(
+    () =>
+      getPublishEligibility({
+        dirty,
+        pending,
+        draft,
+        published,
+      }),
+    [dirty, pending, draft, published],
+  );
+
+  const publishHint = publishEligibilityHint(publishEligibility);
+
+  const publishSnapshot = useMemo(() => {
+    if (!publishConfirmOpen) return null;
+    return buildPublishConfirmSnapshot({
+      draft,
+      published,
+      draftRevision,
+      publishedRevision,
+    });
+  }, [publishConfirmOpen, draft, published, draftRevision, publishedRevision]);
 
   const statusWorkspace: SiteDesignWorkspace = {
     ...workspace,
     draft,
+    published,
     draftRevision,
     publishedRevision,
+    publishedAt,
+    publishedByEmail,
     draftValid: true,
     publishedValid: true,
   };
@@ -130,6 +202,7 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
             result.message ||
             "Someone else saved a newer draft. Your unsaved choices are still here — reload to review the saved draft, or keep editing carefully.",
           actualRevision: result.actualDraftRevision,
+          actualPublishedRevision: result.actualPublishedRevision,
         });
         return;
       }
@@ -139,6 +212,60 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
         message: result.message || "Could not save the draft.",
         issues: "issues" in result ? result.issues : undefined,
       });
+    });
+  }
+
+  function requestPublish() {
+    if (!publishEligibility.canRequestPublish || publishInFlightRef.current) {
+      return;
+    }
+    publishTriggerRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    setNotice(null);
+    setPublishConfirmOpen(true);
+  }
+
+  function cancelPublish() {
+    setPublishConfirmOpen(false);
+    queueMicrotask(() => publishTriggerRef.current?.focus());
+  }
+
+  function confirmPublish() {
+    if (publishInFlightRef.current || dirty) {
+      return;
+    }
+    publishInFlightRef.current = true;
+    startTransition(async () => {
+      try {
+        const result = await publishSiteDesignAction(
+          buildPublishActionInput({
+            expectedDraftRevision: draftRevision,
+            expectedPublishedRevision: publishedRevision,
+          }),
+        );
+
+        const mapped = mapPublishActionResult(result);
+        setNotice(noticeFromPublish(mapped));
+
+        if (result.ok) {
+          setPublished(result.data.published);
+          setPublishedRevision(result.data.publishedRevision);
+          setDraftRevision(result.data.draftRevision);
+          setPublishedAt(new Date().toISOString());
+          setPublishConfirmOpen(false);
+          router.refresh();
+        }
+      } catch {
+        setNotice({
+          tone: "error",
+          message:
+            "Publish could not be confirmed (network or server error). The public website may or may not have changed — reload before trying again. No automatic retry was performed.",
+        });
+      } finally {
+        publishInFlightRef.current = false;
+      }
     });
   }
 
@@ -171,7 +298,7 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
       <div className="space-y-6">
         <StudioShellHeader
           title="Design"
-          description="Adjust curated colors and typography, preview privately, then save a draft when ready."
+          description="Adjust curated colors and typography, preview privately, save a draft, then publish when you are ready for the public site."
         />
 
         <StudioStatusCards workspace={statusWorkspace} />
@@ -182,15 +309,33 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
               <p className="font-semibold text-amber-200" aria-live="polite">
                 You have unsaved design changes.
               </p>
+            ) : designsEqual(draft, published) ? (
+              <p className="text-sage-light" aria-live="polite">
+                Saved draft matches what is live (draft revision {draftRevision}
+                {publishedRevision > 0
+                  ? ` · published revision ${publishedRevision}`
+                  : " · canonical default"}
+                ).
+              </p>
             ) : (
               <p className="text-sage-light" aria-live="polite">
                 Draft matches the last saved version (revision {draftRevision}).
+                Live site is still on{" "}
+                {publishedRevision > 0
+                  ? `published revision ${publishedRevision}`
+                  : "the canonical default"}
+                .
               </p>
             )}
             <p className="mt-1 text-xs text-sage-dark">
-              Saving updates the private draft only. Publishing is not available
-              in this tranche.
+              Saving updates the private draft only. Publishing requires an
+              explicit confirmation and changes the public website.
             </p>
+            {publishHint ? (
+              <p className="mt-1 text-xs text-sage-light" aria-live="polite">
+                {publishHint}
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -199,7 +344,16 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
               disabled={pending || !dirty}
               className="btn-gold inline-flex min-h-[44px] items-center rounded-lg px-5 py-2.5 font-heading text-sm font-semibold text-forest disabled:opacity-60"
             >
-              {pending ? "Saving…" : "Save Draft"}
+              {pending && dirty ? "Saving…" : "Save Draft"}
+            </button>
+            <button
+              type="button"
+              onClick={requestPublish}
+              disabled={!publishEligibility.canRequestPublish}
+              data-studio-publish-request=""
+              className="inline-flex min-h-[44px] items-center rounded-lg border border-gold/50 bg-gold/10 px-5 py-2.5 font-heading text-sm font-semibold text-gold transition hover:bg-gold/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-60"
+            >
+              Publish…
             </button>
           </div>
         </div>
@@ -211,9 +365,11 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
             className={`rounded-2xl border px-4 py-3 text-sm ${
               notice.tone === "success"
                 ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-100"
-                : notice.tone === "conflict"
-                  ? "border-amber-400/40 bg-amber-400/10 text-amber-100"
-                  : "border-red-400/40 bg-red-400/10 text-red-100"
+                : notice.tone === "warning"
+                  ? "border-sky-400/40 bg-sky-400/10 text-sky-100"
+                  : notice.tone === "conflict"
+                    ? "border-amber-400/40 bg-amber-400/10 text-amber-100"
+                    : "border-red-400/40 bg-red-400/10 text-red-100"
             }`}
           >
             <p>{notice.message}</p>
@@ -236,6 +392,9 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
                 {typeof notice.actualRevision === "number" ? (
                   <p className="inline-flex min-h-[44px] items-center text-xs text-amber-100/80">
                     Server draft revision: {notice.actualRevision}
+                    {typeof notice.actualPublishedRevision === "number"
+                      ? ` · published: ${notice.actualPublishedRevision}`
+                      : ""}
                   </p>
                 ) : null}
               </div>
@@ -261,6 +420,14 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
           />
         </div>
       </div>
+
+      <PublishDesignDialog
+        open={publishConfirmOpen}
+        snapshot={publishSnapshot}
+        pending={pending}
+        onCancel={cancelPublish}
+        onConfirm={confirmPublish}
+      />
 
       {reloadConfirmOpen ? (
         <div

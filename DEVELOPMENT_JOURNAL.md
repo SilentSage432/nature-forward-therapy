@@ -1,5 +1,17 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-15 — Website Studio publishing interface production release (NFT-STUDIO-007D-ENG01-REL02)
+
+Authorized gated code-only production release of ENG01. Ships Studio Design Publish UI wired to existing `publishSiteDesignAction` (saved-only, confirmation required, both revision tokens, informational a11y readiness). Preflight REL01: GO WITH CONDITIONS. Release: commit + push `main` + Vercel Ready. No SiteDesign Save/Publish/Restore during release; public published design remains forest-gold / Classic until a separately authorized intentional publish. Reports: ENG01 / REL01 / REL02.
+
+## 2026-11-15 — Website Studio safe publishing interface (NFT-STUDIO-007D-ENG01)
+
+Bounded local wiring of existing `publishSiteDesignAction` into Design. Save Draft unchanged; Publish only for saved drafts that differ from live; one accessible confirmation dialog with live vs candidate palette/typography, draft revision, and informational deterministic a11y findings (no WCAG claim, no hard a11y gate). Optimistic concurrency via both expected revisions; conflict / auth / validation / revalidation-warning handling; no automatic retry. Pure helpers: `lib/site-design/publish-ui.ts`. Restore UI still deferred. No Prisma/migrations, no production SiteDesign writes in this tranche. Report: `NFT-STUDIO-007D-ENG01-REPORT.md`.
+
+## 2026-11-15 — Website Studio publishing architecture discovery (NFT-STUDIO-007D-DISC01)
+
+Read-only audit: publish/restore backend complete; Studio UI exposed Save Draft only. Report: `NFT-STUDIO-007D-DISC01-REPORT.md`.
+
 ## 2026-11-13 — Light palette contrast remediation production release (NFT-STUDIO-007C-ENG04-REL02)
 
 Authorized gated code-only production release of ENG04-ENG01. Ships light-scoped Option B remaps for four Light & Airy palettes + deterministic `light-semantic-contrast` coverage + browser remediates assertions. Preflight REL01: GO WITH CONDITIONS. Public published design unchanged (forest-gold / Classic). No Save Draft/Publish, no migrations, no production DB writes. Light palettes remain unpublished. Report: `NFT-STUDIO-007C-ENG04-REL02-REPORT.md`.
