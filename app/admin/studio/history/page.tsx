@@ -1,7 +1,7 @@
 import { listSiteDesignVersionsAction } from "@/lib/actions/site-design";
+import { HistoryRestorePanel } from "@/components/admin/studio/HistoryRestorePanel";
 import { StudioLoadError } from "@/components/admin/studio/StudioLoadError";
 import { StudioShellHeader } from "@/components/admin/studio/StudioShellHeader";
-import { formatStudioTimestamp } from "@/lib/site-design/studio-status";
 import { loadStudioWorkspace } from "@/lib/site-design/studio-load";
 
 export default async function StudioHistoryPage() {
@@ -23,59 +23,21 @@ export default async function StudioHistoryPage() {
       ? versionsResult.data.versions
       : [];
 
+  const draftRevision = workspaceResult.data.draftRevision;
+  const publishedRevision = workspaceResult.data.publishedRevision;
+
   return (
     <div className="space-y-6">
       <StudioShellHeader
         title="History"
-        description="Published design snapshots will appear here so earlier looks can be reviewed later."
+        description="Review published design snapshots and restore one into your private draft when you want to revisit an earlier look."
       />
-      <section className="rounded-2xl border border-sage-dark/30 bg-forest-soft/70 p-6">
-        <h2 className="font-heading text-xl font-semibold text-white">
-          Published versions
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm text-sage-light">
-          History is created only when a design is published. Restore controls
-          are reserved for a later tranche.
-        </p>
-
-        {!versionsResult.ok ? (
-          <p className="mt-5 rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
-            {versionsResult.message}
-          </p>
-        ) : versions.length === 0 ? (
-          <div className="mt-5 rounded-xl border border-sage-dark/30 bg-forest/40 px-4 py-5">
-            <p className="font-heading text-lg text-white">No publications yet</p>
-            <p className="mt-2 text-sm text-sage-light">
-              The live website is using the established default design. When a
-              custom design is published in a future Studio release, immutable
-              snapshots will be listed here.
-            </p>
-          </div>
-        ) : (
-          <ul className="mt-5 space-y-3">
-            {versions.map((version) => (
-              <li
-                key={version.id}
-                className="rounded-xl border border-sage-dark/30 bg-forest/40 px-4 py-4"
-              >
-                <p className="font-heading text-base font-semibold text-white">
-                  Published revision {version.revision}
-                </p>
-                <p className="mt-1 text-sm text-sage-light">
-                  {formatStudioTimestamp(version.publishedAt) ??
-                    version.publishedAt}
-                  {version.publishedByEmail
-                    ? ` · ${version.publishedByEmail}`
-                    : ""}
-                </p>
-                {version.note ? (
-                  <p className="mt-2 text-sm text-sage-light">{version.note}</p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <HistoryRestorePanel
+        versions={versions}
+        draftRevision={draftRevision}
+        publishedRevision={publishedRevision}
+        versionsError={versionsResult.ok ? null : versionsResult.message}
+      />
     </div>
   );
 }

@@ -1,5 +1,13 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-16 — Website Studio restore to draft production release (NFT-STUDIO-007D-ENG02-REL02)
+
+Authorized gated code-only production release of ENG02. Ships History Restore to Draft UI wired to existing `restoreSiteDesignVersionAction` (confirmation required; draft-only; never auto-publishes). Preflight REL01: GO WITH CONDITIONS. Release: commit + push `main` + Vercel Ready. No SiteDesign restore/publish/save during release; public published design remains forest-gold / Classic. Operator History acceptance deferred. Reports: ENG02 / REL01 / REL02.
+
+## 2026-11-16 — Website Studio restore published version to draft (NFT-STUDIO-007D-ENG02)
+
+Bounded local wiring of existing `restoreSiteDesignVersionAction` into History. Restore to Draft requires confirmation; replaces private draft only; live published revision unchanged; no automatic publish. History entries show revision/date/publisher and snapshot palette/typography when the stored snapshot parses. Helpers: `lib/site-design/restore-ui.ts` + `HistoryRestorePanel` / `RestoreDesignDialog`. Optimistic `expectedDraftRevision` conflicts recoverable. No Prisma/migrations; no production SiteDesign restore/publish in this tranche. Report: `NFT-STUDIO-007D-ENG02-REPORT.md`.
+
 ## 2026-11-15 — Website Studio publishing interface production release (NFT-STUDIO-007D-ENG01-REL02)
 
 Authorized gated code-only production release of ENG01. Ships Studio Design Publish UI wired to existing `publishSiteDesignAction` (saved-only, confirmation required, both revision tokens, informational a11y readiness). Preflight REL01: GO WITH CONDITIONS. Release: commit + push `main` + Vercel Ready. No SiteDesign Save/Publish/Restore during release; public published design remains forest-gold / Classic until a separately authorized intentional publish. Reports: ENG01 / REL01 / REL02.

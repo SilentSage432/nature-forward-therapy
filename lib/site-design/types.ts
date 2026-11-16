@@ -97,6 +97,16 @@ export type SiteDesignVersionSummary = {
   publishedByEmail: string;
   note: string | null;
   sourceRevision: number | null;
+  /**
+   * Derived from stored snapshotJson when it parses as SiteDesign V1.
+   * Null when the snapshot is missing or invalid — never invented.
+   */
+  themeLabel: string | null;
+  /**
+   * Derived from stored snapshotJson when it parses as SiteDesign V1.
+   * Null when the snapshot is missing or invalid — never invented.
+   */
+  typographyLabel: string | null;
 };
 
 export type PublishDesignResult = {

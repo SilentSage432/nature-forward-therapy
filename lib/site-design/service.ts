@@ -3,6 +3,7 @@ import { writeAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import { revalidatePublicSurfaces } from "@/lib/public-cache";
 import { cloneCanonicalSiteDesign } from "@/lib/site-design/defaults";
+import { presentationLabelsFromDesign } from "@/lib/site-design/restore-ui";
 import { parseSiteDesign } from "@/lib/site-design/schema";
 import type { SiteDesign } from "@/lib/site-design/schema";
 import {
@@ -466,17 +467,26 @@ export async function listSiteDesignVersions(options?: {
       publishedByEmail: true,
       note: true,
       sourceRevision: true,
+      snapshotJson: true,
     },
   });
 
-  return rows.map((row) => ({
-    id: row.id,
-    revision: row.revision,
-    publishedAt: row.publishedAt.toISOString(),
-    publishedByEmail: row.publishedByEmail,
-    note: row.note,
-    sourceRevision: row.sourceRevision,
-  }));
+  return rows.map((row) => {
+    const parsed = parseSiteDesign(row.snapshotJson);
+    const labels = parsed.ok
+      ? presentationLabelsFromDesign(parsed.design)
+      : null;
+    return {
+      id: row.id,
+      revision: row.revision,
+      publishedAt: row.publishedAt.toISOString(),
+      publishedByEmail: row.publishedByEmail,
+      note: row.note,
+      sourceRevision: row.sourceRevision,
+      themeLabel: labels?.themeLabel ?? null,
+      typographyLabel: labels?.typographyLabel ?? null,
+    };
+  });
 }
 
 /**
