@@ -22,7 +22,7 @@ const repoRoot = path.resolve(
   "../..",
 );
 
-describe("palette gallery layout contract (007A-UX01)", () => {
+describe("palette gallery layout contract (007A-UX01 → 008-ENG01 compact)", () => {
   it("keeps the curated inventory at 15 stable IDs", () => {
     assert.equal(SITE_THEME_PRESET_IDS.length, 15);
     assert.equal(THEME_PALETTE_OPTIONS.length, 15);
@@ -43,21 +43,23 @@ describe("palette gallery layout contract (007A-UX01)", () => {
     assert.doesNotMatch(PALETTE_GALLERY_LAYOUT.gridClassName, /\bsm:grid-cols-2\b/);
   });
 
-  it("keeps stacked card composition without title/swatch horizontal competition", () => {
+  it("keeps compact picker semantics with swatches and radio selection", () => {
     const source = readFileSync(
       path.join(repoRoot, "components/admin/studio/DesignControlPanel.tsx"),
       "utf8",
     );
+    assert.match(source, /data-palette-trigger=/);
     assert.match(source, /data-palette-card=/);
     assert.match(source, /data-palette-swatches=/);
-    assert.match(source, /flex-col gap-2/);
-    // Swatches must not sit in a justify-between header row with the title.
+    assert.match(source, /type="radio"/);
+    assert.match(source, /role="radiogroup"/);
+    assert.match(source, /aria-expanded/);
+    // Open-panel option rows keep label + swatches without a competing
+    // justify-between header that wedges title against swatches.
     assert.doesNotMatch(
       source,
       /justify-between[\s\S]{0,120}PaletteSwatches/,
     );
-    assert.match(source, /type="radio"/);
-    assert.match(source, /role="radiogroup"/);
   });
 
   it("preserves accessible radio selection for every palette", () => {

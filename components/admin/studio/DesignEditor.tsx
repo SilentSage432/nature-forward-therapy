@@ -9,12 +9,15 @@ import {
 } from "@/components/admin/studio/DesignPreviewPane";
 import { PublishDesignDialog } from "@/components/admin/studio/PublishDesignDialog";
 import { StudioShellHeader } from "@/components/admin/studio/StudioShellHeader";
-import { StudioStatusCards } from "@/components/admin/studio/StudioStatusCards";
 import { UnsavedDesignNavigationGuard } from "@/components/admin/studio/UnsavedDesignNavigationGuard";
 import {
   publishSiteDesignAction,
   saveSiteDesignDraftAction,
 } from "@/lib/actions/site-design";
+import {
+  fontFamilyDisplayLabel,
+  themeDisplayLabel,
+} from "@/lib/site-design/options";
 import {
   buildPublishActionInput,
   buildPublishConfirmSnapshot,
@@ -82,7 +85,6 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
     workspace.publishedRevision,
   );
   const [publishedAt, setPublishedAt] = useState(workspace.publishedAt);
-  const [publishedByEmail] = useState(workspace.publishedByEmail);
   const [previewMode, setPreviewMode] = useState<DesignPreviewMode>("desktop");
   const [notice, setNotice] = useState<EditorNotice>(null);
   const [reloadConfirmOpen, setReloadConfirmOpen] = useState(false);
@@ -120,17 +122,10 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
     });
   }, [publishConfirmOpen, draft, published, draftRevision, publishedRevision]);
 
-  const statusWorkspace: SiteDesignWorkspace = {
-    ...workspace,
-    draft,
-    published,
-    draftRevision,
-    publishedRevision,
-    publishedAt,
-    publishedByEmail,
-    draftValid: true,
-    publishedValid: true,
-  };
+  const draftMatchesPublished = designsEqual(draft, published);
+  const savedDraftThemeLabel = themeDisplayLabel(baseline.theme.presetId);
+  const liveThemeLabel = themeDisplayLabel(published.theme.presetId);
+  const draftFontLabel = fontFamilyDisplayLabel(draft.typography.fontFamilyId);
 
   useEffect(() => {
     if (!dirty) return;
@@ -295,41 +290,64 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
 
   return (
     <UnsavedDesignNavigationGuard dirty={dirty}>
-      <div className="space-y-6">
+      <div className="space-y-4" data-design-workspace="">
         <StudioShellHeader
           title="Design"
           description="Adjust curated colors and typography, preview privately, save a draft, then publish when you are ready for the public site."
         />
 
-        <StudioStatusCards workspace={statusWorkspace} />
-
-        <div className="flex flex-col gap-3 rounded-2xl border border-sage-dark/30 bg-forest/50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm">
+        <div
+          className="sticky top-0 z-20 flex flex-col gap-3 rounded-2xl border border-sage-dark/30 bg-forest/95 px-4 py-3 shadow-lg shadow-black/20 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between"
+          data-design-session-strip=""
+        >
+          <div className="min-w-0 text-sm">
+            <div className="flex flex-wrap gap-2" data-design-status-compact="">
+              <span
+                className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                  dirty
+                    ? "border-amber-300/40 bg-amber-400/10 text-amber-100"
+                    : "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
+                }`}
+              >
+                {dirty ? "Unsaved changes" : "Draft saved"}
+              </span>
+              <span
+                className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                  draftMatchesPublished
+                    ? "border-sage-dark/40 bg-forest-soft text-sage-light"
+                    : "border-gold/35 bg-gold/10 text-gold"
+                }`}
+              >
+                {draftMatchesPublished
+                  ? "Matches live"
+                  : "Differs from live"}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-sage-dark/35 bg-forest-soft/80 px-2.5 py-1 text-xs text-sage-light">
+                Draft r{draftRevision}
+                {publishedRevision > 0
+                  ? ` · Live r${publishedRevision}`
+                  : " · Live default"}
+              </span>
+            </div>
             {dirty ? (
-              <p className="font-semibold text-amber-200" aria-live="polite">
+              <p className="mt-2 font-semibold text-amber-200" aria-live="polite">
                 You have unsaved design changes.
               </p>
-            ) : designsEqual(draft, published) ? (
-              <p className="text-sage-light" aria-live="polite">
-                Saved draft matches what is live (draft revision {draftRevision}
-                {publishedRevision > 0
-                  ? ` · published revision ${publishedRevision}`
-                  : " · canonical default"}
-                ).
+            ) : draftMatchesPublished ? (
+              <p className="mt-2 text-sage-light" aria-live="polite">
+                Saved draft matches what is live ({savedDraftThemeLabel} ·{" "}
+                {draftFontLabel}).
               </p>
             ) : (
-              <p className="text-sage-light" aria-live="polite">
-                Draft matches the last saved version (revision {draftRevision}).
-                Live site is still on{" "}
-                {publishedRevision > 0
-                  ? `published revision ${publishedRevision}`
-                  : "the canonical default"}
-                .
+              <p className="mt-2 text-sage-light" aria-live="polite">
+                Saved draft ready to publish. Live remains {liveThemeLabel}
+                {publishedAt ? ` · last published ${new Date(publishedAt).toLocaleString()}` : ""}.
               </p>
             )}
             <p className="mt-1 text-xs text-sage-dark">
               Saving updates the private draft only. Publishing requires an
-              explicit confirmation and changes the public website.
+              explicit confirmation and changes the public website. Rich status
+              lives on Studio Overview.
             </p>
             {publishHint ? (
               <p className="mt-1 text-xs text-sage-light" aria-live="polite">
@@ -402,8 +420,14 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
           </div>
         ) : null}
 
-        <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(280px,360px)_minmax(0,1fr)]">
-          <div className="min-w-0">
+        <div
+          className="flex min-w-0 flex-col gap-4 xl:grid xl:grid-cols-[minmax(260px,340px)_minmax(0,1fr)] xl:items-start xl:gap-5"
+          data-design-workspace-panes=""
+        >
+          <div
+            className="order-2 min-w-0 xl:order-1 xl:max-h-[calc(100dvh-11rem)] xl:overflow-y-auto xl:overscroll-contain"
+            data-design-control-scroll=""
+          >
             <DesignControlPanel
               design={draft}
               disabled={pending}
@@ -413,11 +437,16 @@ export function DesignEditor({ workspace, initialDraft }: DesignEditorProps) {
               onBodyScaleChange={onBodyScaleChange}
             />
           </div>
-          <DesignPreviewPane
-            design={draft}
-            mode={previewMode}
-            onModeChange={setPreviewMode}
-          />
+          <div
+            className="order-1 min-w-0 xl:order-2 xl:sticky xl:top-[5.5rem] xl:self-start"
+            data-design-preview-persist=""
+          >
+            <DesignPreviewPane
+              design={draft}
+              mode={previewMode}
+              onModeChange={setPreviewMode}
+            />
+          </div>
         </div>
       </div>
 

@@ -130,7 +130,7 @@ export function DesignPreviewPane({
             mode === "mobile" ? "max-w-[390px]" : "max-w-5xl"
           }`}
         >
-          <div className="max-h-[70vh] overflow-auto">
+          <div className="max-h-[min(70vh,42rem)] overflow-auto">
             <iframe
               ref={iframeRef}
               title="Private website draft preview"
@@ -138,7 +138,7 @@ export function DesignPreviewPane({
               className="block w-full border-0 bg-forest"
               style={{
                 width: "100%",
-                height: mode === "mobile" ? 720 : 820,
+                height: mode === "mobile" ? 640 : 700,
                 pointerEvents: "none",
               }}
               tabIndex={-1}

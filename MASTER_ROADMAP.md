@@ -67,8 +67,13 @@
 - [x] NFT-STUDIO-007D-ENG02 Website Studio restore published version to draft — **authorized gated production release (History Restore UI; no auto-publish)**
 - [x] NFT-STUDIO-007D-ENG02-REL01 Restore to Draft release preflight — **GO WITH CONDITIONS**
 - [x] NFT-STUDIO-007D-ENG02-REL02 Restore to Draft production release — **authorized gated code-only release (no SiteDesign restore/publish)**
+- [x] NFT-STUDIO-008-DISC01 Design workspace UX architecture discovery — **read-only report**
+- [x] NFT-STUDIO-008-ENG01 Compact Design workspace & persistent preview — **authorized gated production release (UX/layout only; published design unchanged)**
+- [x] NFT-STUDIO-008-ENG01-REL01 Compact Design workspace release preflight — **GO WITH CONDITIONS**
+- [x] NFT-STUDIO-008-ENG01-REL02 Compact Design workspace production release — **authorized gated code-only release (no SiteDesign save/publish)**
 
 ## Near-term
+- [ ] Operator authenticated Studio visual acceptance of 008-ENG01 compact workspace (no Save Draft / Publish unless separately authorized)
 - [ ] Operator authenticated production Studio visual confirmation of 007B typography gallery (no Save Draft / Publish)
 - [ ] Operator authenticated Studio confirmation of 007C-ENG01 accessibility panel (no Save Draft / Publish)
 - [ ] Operator public keyboard smoke of 007C-ENG02 (Tab / skip link / focus rings; no Save Draft / Publish)

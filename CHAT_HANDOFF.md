@@ -39,6 +39,10 @@ Next.js App Router site with Prisma/Postgres CMS and Auth.js RBAC. Public market
 
 **NFT-STUDIO-007D-ENG02 (NFT-STUDIO-007D-ENG02-REL02 production release):** History Restore to Draft UI wired to existing `restoreSiteDesignVersionAction`. Confirmation required; draft-only; never auto-publishes; live revision preserved. Helpers: `lib/site-design/restore-ui.ts` + `HistoryRestorePanel` / `RestoreDesignDialog`. Version list may show palette/typography labels when snapshot parses. Code-only release — no design restore/publish/save during release; public published design remains forest-gold / Classic. Operator History acceptance deferred. Reports: ENG02 / REL01 / REL02.
 
+**NFT-STUDIO-008-DISC01 (local report):** Design workspace UX architecture discovery — scrolling root cause is expanded option cards + status chrome + non-sticky preview; recommends compact left rail + persistent preview. Report: `NFT-STUDIO-008-DISC01-REPORT.md`.
+
+**NFT-STUDIO-008-ENG01 (NFT-STUDIO-008-ENG01-REL02 production release):** Compact Design workspace — left compact selectors (15 palettes / 9 pairings / segmented scales), right persistent draft preview (`xl` sticky + independent control scroll), compact a11y details, sticky Save/Publish session strip, four status cards removed from Design happy path (Overview keeps them). Reuses `DesignPreviewPane` / preview-frame protocol / `HomePresentation`. REL01: GO WITH CONDITIONS. Code-only release — no design Save/Publish/Restore during release; public published design remains forest-gold / Classic. Operator Studio visual acceptance deferred. Reports: ENG01 / REL01 / REL02.
+
 **Public caching (production-measured 2026-11-10):**
 - `/`, `/articles`, `/bookshelf`, `/articles/[slug]` → static/ISR (`x-vercel-cache: HIT`, prerender)
 - `/login`, `/admin/*` → dynamic (`login` private/no-store; `/admin` auth redirect)

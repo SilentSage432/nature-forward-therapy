@@ -1,5 +1,17 @@
 # Development Journal — Nature-Forward Therapy
 
+## 2026-11-16 — Compact Design workspace production release (NFT-STUDIO-008-ENG01-REL02)
+
+Authorized gated code-only production release of ENG01. Ships compact Design workspace (left controls, persistent preview, sticky Save/Publish, compact pickers). Preflight REL01: GO WITH CONDITIONS. Release: commit + push `main` + Vercel Ready. No SiteDesign save/publish/restore during release; public published design remains forest-gold / Classic. Operator Studio visual acceptance deferred. Reports: ENG01 / REL01 / REL02.
+
+## 2026-11-16 — Compact Design workspace & persistent preview (NFT-STUDIO-008-ENG01)
+
+Bounded local UX/layout implementation for `/admin/studio/design`. Two-pane workspace: compact left control rail (palette/font pickers + segmented scales + compact a11y) and sticky/persistent draft preview on the right at `xl+`; preview-first stack below `xl`. Replaces permanently expanded option cards; preserves all 15 palettes / 9 pairings / scale IDs and registries. Removes four large `StudioStatusCards` from Design happy path (Overview retains them); compact draft/live/unsaved chips + sticky Save Draft / Publish strip. No design engine, registry, preview-protocol, Prisma, or production SiteDesign writes. Report: `NFT-STUDIO-008-ENG01-REPORT.md`. No commit/push/deploy.
+
+## 2026-11-16 — Design workspace UX architecture discovery (NFT-STUDIO-008-DISC01)
+
+Read-only investigation of Design scrolling and preview-centered workspace architecture. Report: `NFT-STUDIO-008-DISC01-REPORT.md`.
+
 ## 2026-11-16 — Website Studio restore to draft production release (NFT-STUDIO-007D-ENG02-REL02)
 
 Authorized gated code-only production release of ENG02. Ships History Restore to Draft UI wired to existing `restoreSiteDesignVersionAction` (confirmation required; draft-only; never auto-publishes). Preflight REL01: GO WITH CONDITIONS. Release: commit + push `main` + Vercel Ready. No SiteDesign restore/publish/save during release; public published design remains forest-gold / Classic. Operator History acceptance deferred. Reports: ENG02 / REL01 / REL02.

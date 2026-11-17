@@ -12,6 +12,8 @@ import {
 
 type DesignAccessibilityPanelProps = {
   design: SiteDesign;
+  /** Compact Studio rail presentation (NFT-STUDIO-008-ENG01). */
+  compact?: boolean;
 };
 
 function overallToneClass(
@@ -100,6 +102,7 @@ function PairSection({
 
 export function DesignAccessibilityPanel({
   design,
+  compact = false,
 }: DesignAccessibilityPanelProps) {
   const headingId = useId();
   const summaryId = useId();
@@ -117,80 +120,8 @@ export function DesignAccessibilityPanel({
     evaluation.nearThreshold.length +
     evaluation.pairRenderedReview.length;
 
-  return (
-    <section
-      className="@container min-w-0 space-y-4 rounded-xl border border-sage-dark/30 bg-forest/35 p-4"
-      aria-labelledby={headingId}
-      data-studio-accessibility-panel=""
-      data-a11y-overall={evaluation.overallStatus}
-      data-a11y-theme={evaluation.themePresetId}
-    >
-      <div className="space-y-1">
-        <h2
-          id={headingId}
-          className="font-heading text-lg font-semibold text-white"
-        >
-          Accessibility
-        </h2>
-        <p className="text-sm text-sage-light">
-          Solid-color checks for{" "}
-          <span className="font-medium text-white">{evaluation.themeLabel}</span>
-          . Updates as you change the design — no Save Draft needed. This is not
-          a full accessibility certificate.
-        </p>
-      </div>
-
-      <div
-        id={summaryId}
-        role="status"
-        className={`rounded-xl border px-3 py-3 text-sm ${overallToneClass(evaluation.overallStatus)} ${overallTextClass(evaluation.overallStatus)}`}
-        data-a11y-summary=""
-      >
-        <p className="font-semibold">{evaluation.summaryLabel}</p>
-        <p className="mt-1 text-xs leading-relaxed opacity-95">
-          {evaluation.summaryDetail}
-        </p>
-        <p className="mt-2 text-xs opacity-90">
-          {evaluation.passingCount} of {evaluation.requiredPairCount} solid
-          color checks meet Studio minimums
-          {evaluation.nearThresholdCount > 0
-            ? ` (${evaluation.nearThresholdCount} close to the line)`
-            : ""}
-          {evaluation.failingCount > 0
-            ? ` · ${evaluation.failingCount} need attention`
-            : ""}
-          .
-        </p>
-      </div>
-
-      <div className="space-y-2 rounded-lg border border-sage-dark/25 px-3 py-3">
-        <h3 className="text-sm font-semibold text-white">Typography context</h3>
-        <dl className="grid gap-1.5 text-xs text-sage-light">
-          <div className="flex min-w-0 flex-wrap gap-x-2">
-            <dt className="text-sage-dark">Pairing</dt>
-            <dd>
-              {evaluation.typography.fontFamilyLabel} (
-              {evaluation.typography.headingFaceLabel} /{" "}
-              {evaluation.typography.bodyFaceLabel})
-            </dd>
-          </div>
-          <div className="flex min-w-0 flex-wrap gap-x-2">
-            <dt className="text-sage-dark">Heading size</dt>
-            <dd>{evaluation.typography.headingScaleLabel}</dd>
-          </div>
-          <div className="flex min-w-0 flex-wrap gap-x-2">
-            <dt className="text-sage-dark">Body size</dt>
-            <dd>{evaluation.typography.bodyScaleLabel}</dd>
-          </div>
-        </dl>
-        <p className="text-xs leading-relaxed text-sage-light">
-          {evaluation.typography.curatedNote}
-        </p>
-        <p className="text-xs leading-relaxed text-sage-light">
-          {evaluation.typography.renderedEvaluationNote}
-        </p>
-      </div>
-
+  const detailSections = (
+    <>
       <details className="group min-w-0 rounded-lg border border-sage-dark/30 bg-forest/30 open:bg-forest/45">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 text-sm font-semibold text-white outline-none marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold [&::-webkit-details-marker]:hidden">
           <span>
@@ -211,10 +142,7 @@ export function DesignAccessibilityPanel({
           </span>
         </summary>
         <div className="space-y-4 border-t border-sage-dark/25 px-3 py-3">
-          <PairSection
-            title="Needs attention"
-            pairs={evaluation.failing}
-          />
+          <PairSection title="Needs attention" pairs={evaluation.failing} />
           <PairSection
             title="Close to the minimum"
             pairs={evaluation.nearThreshold}
@@ -268,6 +196,118 @@ export function DesignAccessibilityPanel({
           ))}
         </ul>
       </details>
+    </>
+  );
+
+  const typographyContext = (
+    <div className="space-y-2 rounded-lg border border-sage-dark/25 px-3 py-3">
+      <h3 className="text-sm font-semibold text-white">Typography context</h3>
+      <dl className="grid gap-1.5 text-xs text-sage-light">
+        <div className="flex min-w-0 flex-wrap gap-x-2">
+          <dt className="text-sage-dark">Pairing</dt>
+          <dd>
+            {evaluation.typography.fontFamilyLabel} (
+            {evaluation.typography.headingFaceLabel} /{" "}
+            {evaluation.typography.bodyFaceLabel})
+          </dd>
+        </div>
+        <div className="flex min-w-0 flex-wrap gap-x-2">
+          <dt className="text-sage-dark">Heading size</dt>
+          <dd>{evaluation.typography.headingScaleLabel}</dd>
+        </div>
+        <div className="flex min-w-0 flex-wrap gap-x-2">
+          <dt className="text-sage-dark">Body size</dt>
+          <dd>{evaluation.typography.bodyScaleLabel}</dd>
+        </div>
+      </dl>
+      <p className="text-xs leading-relaxed text-sage-light">
+        {evaluation.typography.curatedNote}
+      </p>
+      <p className="text-xs leading-relaxed text-sage-light">
+        {evaluation.typography.renderedEvaluationNote}
+      </p>
+    </div>
+  );
+
+  return (
+    <section
+      className={`@container min-w-0 rounded-xl border border-sage-dark/30 bg-forest/35 ${
+        compact ? "space-y-3 p-3" : "space-y-4 p-4"
+      }`}
+      aria-labelledby={headingId}
+      data-studio-accessibility-panel=""
+      data-a11y-compact={compact ? "true" : "false"}
+      data-a11y-overall={evaluation.overallStatus}
+      data-a11y-theme={evaluation.themePresetId}
+    >
+      <div className="space-y-1">
+        <h2
+          id={headingId}
+          className={`font-heading font-semibold text-white ${
+            compact ? "text-base" : "text-lg"
+          }`}
+        >
+          Accessibility
+        </h2>
+        <p className={`text-sage-light ${compact ? "text-xs" : "text-sm"}`}>
+          Solid-color checks for{" "}
+          <span className="font-medium text-white">{evaluation.themeLabel}</span>
+          . Updates as you change the design — no Save Draft needed. This is not
+          a full accessibility certificate.
+        </p>
+      </div>
+
+      <div
+        id={summaryId}
+        role="status"
+        className={`rounded-xl border px-3 py-3 text-sm ${overallToneClass(evaluation.overallStatus)} ${overallTextClass(evaluation.overallStatus)}`}
+        data-a11y-summary=""
+      >
+        <p className="font-semibold">{evaluation.summaryLabel}</p>
+        <p className="mt-1 text-xs leading-relaxed opacity-95">
+          {evaluation.summaryDetail}
+        </p>
+        <p className="mt-2 text-xs opacity-90">
+          {evaluation.passingCount} of {evaluation.requiredPairCount} solid
+          color checks meet Studio minimums
+          {evaluation.nearThresholdCount > 0
+            ? ` (${evaluation.nearThresholdCount} close to the line)`
+            : ""}
+          {evaluation.failingCount > 0
+            ? ` · ${evaluation.failingCount} need attention`
+            : ""}
+          .
+        </p>
+      </div>
+
+      {compact ? (
+        <details className="group min-w-0 rounded-lg border border-sage-dark/30 bg-forest/30 open:bg-forest/45">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 text-sm font-semibold text-white outline-none marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold [&::-webkit-details-marker]:hidden">
+            <span>Details and typography context</span>
+            <span
+              className="text-xs font-medium text-gold/80 group-open:hidden"
+              aria-hidden="true"
+            >
+              Show
+            </span>
+            <span
+              className="hidden text-xs font-medium text-gold/80 group-open:inline"
+              aria-hidden="true"
+            >
+              Hide
+            </span>
+          </summary>
+          <div className="space-y-3 border-t border-sage-dark/25 px-3 py-3">
+            {typographyContext}
+            {detailSections}
+          </div>
+        </details>
+      ) : (
+        <>
+          {typographyContext}
+          {detailSections}
+        </>
+      )}
     </section>
   );
 }
